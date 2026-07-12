@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Target GPA Calculator — Study Metrics</title>
+<meta name="description" content="Free target GPA calculator. Find the exact GPA you need in your remaining courses to hit your cumulative goal. No signup required.">
+<link rel="canonical" href="https://studymetrics.app/target-gpa.html">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="Target GPA Calculator — Study Metrics">
+<meta property="og:description" content="Find out exactly what you need to score to hit your GPA goal.">
+<meta property="og:url" content="https://studymetrics.app/target-gpa.html">
+<meta property="og:image" content="images/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <nav class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+    <div class="nav-links">
+        <a href="index.html#tools">Tools</a>
+        <a href="target-gpa.html" class="on">Target GPA</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+    </div>
+    <div class="nav-cta">
+        <a href="index.html#tools" class="btn btn-ghost">All tools</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </div>
+  </nav>
+</header>
+
+<section class="tool-head">
+  <div class="grid-bg"></div>
+  <div class="wrap reveal">
+    <div class="crumb"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg><span>Target GPA Calculator</span></div>
+    <h1>Target GPA Calculator</h1>
+    <p>Know exactly what GPA you need in your remaining credits to reach your target. Everything updates live as you adjust the numbers.</p>
+  </div>
+</section>
+
+<div class="wrap reveal">
+  <div class="tool-layout wide-rail">
+    <div class="calc-main">
+      <div class="panel">
+        <div class="inputs">
+          <div class="pair">
+            <div class="field">
+                <label for="curGpa">Current GPA</label>
+                <input class="input lg tnum" id="curGpa" type="number" min="0" max="4" step="0.01" value="3.20">
+                <div class="hint">Your current cumulative GPA</div>
+            </div>
+            <div class="field">
+                <label for="curCredits">Credits completed</label>
+                <input class="input lg tnum" id="curCredits" type="number" min="0" step="1" value="60">
+                <div class="hint">Total hours finished so far</div>
+            </div>
+          </div>
+          <div class="pair">
+            <div class="field">
+                <label for="remCredits">Credits remaining</label>
+                <input class="input lg tnum" id="remCredits" type="number" min="1" step="1" value="60">
+                <div class="hint">Hours left in your degree</div>
+            </div>
+            <div class="field">
+                <label for="goalGpa">Goal GPA</label>
+                <input class="input lg tnum" id="goalGpa" type="number" min="0" max="4" step="0.01" value="3.50">
+                <div class="hint">GPA you want to achieve</div>
+            </div>
+          </div>
+          <div class="field slider-wrap">
+            <div class="slider-val">
+                <label for="goalSlide">Adjust your goal</label>
+                <b class="tnum" id="goalSlideVal">3.50</b>
+            </div>
+            <input type="range" id="goalSlide" min="0" max="4" step="0.01" value="3.50">
+          </div>
+          
+          <div class="calc-actions" style="margin-top: 24px;">
+            <button id="resetBtn" class="btn btn-ghost">Reset Fields</button>
+            <button id="shareBtn" class="btn btn-ghost">Copy Result</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top: 24px;">
+        <h3 style="font-size: var(--step-sm); text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-3); margin-bottom: 16px;">Degree progress</h3>
+        <div class="bar-track"><div class="bar-seg done" id="segDone"></div><div class="bar-seg need" id="segNeed"></div></div>
+        <div class="bar-legend">
+            <span><span class="dot" style="background:var(--ink)"></span>Completed: <b class="tnum" id="legDone">60 cr</b></span>
+            <span><span class="dot" style="background:var(--accent)"></span>Remaining: <b class="tnum" id="legNeed">60 cr</b></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-rail">
+      <div class="res-hero">
+          <div class="label">Required average GPA</div>
+          <div class="res-big tnum" id="need">—</div>
+          <div class="res-sub" id="needSub">across your remaining credits</div>
+      </div>
+      
+      <div class="verdict info" id="verdict">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span id="verdictText">Enter your credits to see your path.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap reveal">
+  <div class="prose">
+    <h2>How the target GPA is calculated</h2>
+    <p>Your cumulative GPA is a weighted average of your grade points. To find the required future GPA, we use this formula:</p>
+    <p><code>Required GPA = (Target × Total Credits − Current × Completed) / Remaining Credits</code></p>
+    <div class="faq">
+      <details open><summary>What if I need more than a 4.0?</summary><p>If the calculator shows you need more than a 4.0, your goal is mathematically unreachable with the number of credits you have left. You may need to adjust your target or take more classes.</p></details>
+      <details><summary>Is this accurate for my school?</summary><p>Most schools use this standard weighted average. However, if your school weights different classes differently (like honors or AP), verify with your advisor.</p></details>
+    </div>
+  </div>
+</div>
+
+<div id="backToTop">↑</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+        <p>A free collection of fast, focused tools for students worldwide. No accounts, no clutter.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Calculators</h4>
+        <a href="gpa.html">GPA Calculator</a>
+        <a href="cgpa.html">CGPA Calculator</a>
+        <a href="target-gpa.html">Target GPA</a>
+        <a href="final-grade.html">Final Grade</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-and-conditions.html">Terms & Conditions</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+        <span>© 2026 Study Metrics. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+<script src="js/target-gpa.js"></script>
+</body>
+</html>```

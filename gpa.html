@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPA Calculator — Study Metrics</title>
+<meta name="description" content="Free weighted GPA calculator. Add your courses, grades, and credit hours to calculate your GPA on a 4.0 scale instantly. No signup required.">
+<link rel="canonical" href="https://studymetrics.app/gpa.html">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="GPA Calculator — Study Metrics">
+<meta property="og:description" content="Calculate your semester GPA weighted by credit hours.">
+<meta property="og:url" content="https://studymetrics.app/gpa.html">
+<meta property="og:image" content="images/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <nav class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+    <div class="nav-links">
+        <a href="index.html#tools">Tools</a>
+        <a href="gpa.html" class="on">GPA</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+    </div>
+    <div class="nav-cta">
+        <a href="index.html#tools" class="btn btn-ghost">All tools</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </div>
+  </nav>
+</header>
+
+<section class="tool-head">
+  <div class="grid-bg"></div>
+  <div class="wrap reveal">
+    <div class="crumb">
+        <a href="index.html">Home</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span>GPA Calculator</span>
+    </div>
+    <h1>GPA Calculator</h1>
+    <p>Calculate your semester GPA weighted by credit hours. Switch between letter grades, percentages, or grade points instantly.</p>
+  </div>
+</section>
+
+<div class="wrap reveal">
+  <div class="tool-layout">
+    <div class="calc-main">
+      <div class="panel">
+        <div class="calc-toolbar">
+          <div class="field">
+            <label for="scale">Grading scale</label>
+            <select class="select" id="scale">
+                <option value="letter">Letter grades (A, B, C…)</option>
+                <option value="percent">Percentage (0–100)</option>
+                <option value="points">Grade points (0–4.0)</option>
+            </select>
+          </div>
+          <button class="btn btn-ghost" id="addRow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Add course
+          </button>
+        </div>
+        
+        <div class="rows-gpa">
+          <div class="rows-head">
+              <span>Course Name</span>
+              <span>Grade</span>
+              <span>Credits</span>
+              <span></span>
+          </div>
+          <div id="rows"></div>
+        </div>
+
+        <div class="calc-actions">
+          <button class="btn btn-primary" id="addRow2">Add another course</button>
+          <button class="btn btn-danger" id="clearAll">Clear all data</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-rail">
+      <div class="gpa-hero">
+        <div class="label">Semester GPA · 4.0 Scale</div>
+        <div class="gpa-big tnum" id="gpaOut">0.00</div>
+        <div class="gpa-sub" id="gpaLetter">Add a course to begin</div>
+        <div class="gpa-meta">
+            <div><div class="n tnum" id="mCourses">0</div><div class="l">Courses</div></div>
+            <div><div class="n tnum" id="mCredits">0</div><div class="l">Total Credits</div></div>
+        </div>
+        <button class="btn btn-ghost" id="shareBtn" style="width:100%; margin-top:20px; background:rgba(255,255,255,0.1); color:white; border-color:rgba(255,255,255,0.2);">Copy Result</button>
+      </div>
+      
+      <div class="scale-note" id="scaleNote"></div>
+      
+      <div class="scale-note info">
+          <b>Studying abroad?</b> Try the <a href="gpa-converter.html">Global GPA Converter</a> to convert international marks to US 4.0.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap reveal">
+  <div class="prose">
+    <h2>How GPA weighting works</h2>
+    <p>Your GPA is calculated by multiplying the points for each grade by the credit hours for that course. These are summed up and divided by the total number of credit hours.</p>
+    <p><code>GPA = Σ(Grade Points × Credits) / Σ(Total Credits)</code></p>
+    <div class="faq">
+        <details open><summary>What is a 4.0 scale?</summary><p>The 4.0 scale is the most common grading system in the US, where an A is 4.0, a B is 3.0, and so on. F always equals 0.</p></details>
+        <details><summary>Does course name matter?</summary><p>No, the course name is just for your own organization. Only the grade and credits affect the math.</p></details>
+    </div>
+  </div>
+</div>
+
+<div id="backToTop">↑</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+        <p>A free, focused collection of tools for students worldwide. No accounts, no clutter.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Calculators</h4>
+        <a href="gpa.html">GPA Calculator</a>
+        <a href="cgpa.html">CGPA Calculator</a>
+        <a href="target-gpa.html">Target GPA</a>
+        <a href="final-grade.html">Final Grade</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-and-conditions.html">Terms & Conditions</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+        <span>© 2026 Study Metrics. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+<script src="js/gpa.js"></script>
+</body>
+</html>

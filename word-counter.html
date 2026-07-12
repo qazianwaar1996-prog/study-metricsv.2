@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Counter — Study Metrics</title>
+<meta name="description" content="Free word and character counter for students. Live word count, characters, sentences, paragraphs and reading time. Auto-saves your draft in your browser.">
+<link rel="canonical" href="https://studymetrics.app/word-counter.html">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="Word Counter — Study Metrics">
+<meta property="og:description" content="Live word and character count for essays and assignments.">
+<meta property="og:url" content="https://studymetrics.app/word-counter.html">
+<meta property="og:image" content="images/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <nav class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+    <div class="nav-links">
+        <a href="index.html#tools">Tools</a>
+        <a href="word-counter.html" class="on">Word Counter</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+    </div>
+    <div class="nav-cta">
+        <a href="index.html#tools" class="btn btn-ghost">All tools</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </div>
+  </nav>
+</header>
+
+<section class="tool-head">
+  <div class="grid-bg"></div>
+  <div class="wrap reveal">
+    <div class="crumb">
+        <a href="index.html">Home</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span>Word Counter</span>
+    </div>
+    <h1>Word &amp; Character Counter</h1>
+    <p>Paste or type your essay to see live word count, character density, and estimated reading time. Your draft is auto-saved as you work.</p>
+  </div>
+</section>
+
+<div class="wrap reveal">
+  <div class="counter">
+    <div class="stat-strip">
+      <div class="stat hero-stat"><div class="n tnum" id="s_words">0</div><div class="l">Words</div></div>
+      <div class="stat"><div class="n tnum" id="s_chars">0</div><div class="l">Characters</div></div>
+      <div class="stat"><div class="n tnum" id="s_nospace">0</div><div class="l">No spaces</div></div>
+      <div class="stat"><div class="n tnum" id="s_sent">0</div><div class="l">Sentences</div></div>
+      <div class="stat"><div class="n tnum" id="s_para">0</div><div class="l">Paragraphs</div></div>
+      <div class="stat"><div class="n tnum" id="s_read">0s</div><div class="l">Reading time</div></div>
+    </div>
+    <div style="position:relative">
+      <textarea class="editor" id="editor" placeholder="Start typing or paste your assignment here..."></textarea>
+      <div class="editor-bar">
+        <div class="editor-info">
+          <span class="chip">Avg words/sentence <b id="s_avg">0</b></span>
+          <span class="chip">Longest word <b id="s_long">—</b></span>
+        </div>
+        <div class="mini-actions">
+          <button class="btn btn-ghost" id="copyBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy text
+          </button>
+          <button class="btn btn-ghost" id="clearBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:15px;height:15px"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m-9 0v14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6"/></svg>Clear all
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap reveal">
+  <div class="prose">
+    <h2>Why track word count?</h2>
+    <p>Most academic assignments come with strict length requirements. This tool allows you to monitor your progress in real-time, helping you hit your targets without exceeding word limits. Reading time is estimated at a standard academic pace of 200 words per minute.</p>
+    <div class="faq">
+      <details open><summary>Is my writing private?</summary><p>Yes. Your text never leaves your computer. We use local browser storage to save your draft, meaning only you can see what you write.</p></details>
+      <details><summary>Does it count symbols?</summary><p>Characters include every letter, space, and symbol. The "No spaces" metric ignores whitespace to give you the raw content count.</p></details>
+    </div>
+  </div>
+</div>
+
+<div id="backToTop">↑</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+        <p>A free, focused collection of tools for students. No accounts, no clutter.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Tools</h4>
+        <a href="gpa.html">GPA Calculator</a>
+        <a href="cgpa.html">CGPA Calculator</a>
+        <a href="grade-calculator.html">Grade Calculator</a>
+        <a href="word-counter.html">Word Counter</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-and-conditions.html">Terms & Conditions</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+        <span>© 2026 Study Metrics. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+<script src="js/word-counter.js"></script>
+</body>
+</html>

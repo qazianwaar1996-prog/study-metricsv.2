@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global GPA Converter — Study Metrics</title>
+<meta name="description" content="Free global GPA converter. Convert grades from 30+ countries to the US 4.0 scale, or reverse a US GPA into any system. No signup required.">
+<link rel="canonical" href="https://studymetrics.app/gpa-converter.html">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="Global GPA Converter — Study Metrics">
+<meta property="og:description" content="Convert international grades to US 4.0 GPA instantly.">
+<meta property="og:url" content="https://studymetrics.app/gpa-converter.html">
+<meta property="og:image" content="images/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/gpa-converter.css">
+</head>
+<body>
+
+<header class="site-head">
+  <nav class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+    <div class="nav-links">
+        <a href="index.html#tools">Tools</a>
+        <a href="gpa-converter.html" class="on">Converter</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+    </div>
+    <div class="nav-cta">
+        <a href="index.html#tools" class="btn btn-ghost">All tools</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </div>
+  </nav>
+</header>
+
+<section class="tool-head">
+  <div class="grid-bg"></div>
+  <div class="wrap reveal">
+    <div class="crumb">
+        <a href="index.html">Home</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span>Global GPA Converter</span>
+    </div>
+    <h1>Global GPA Converter</h1>
+    <p>Convert grades from 30+ countries to the US 4.0 scale, or reverse a US GPA into your home system. Everything updates live as you type.</p>
+  </div>
+</section>
+
+<div class="wrap reveal mode-bar">
+  <div class="mode-seg" role="tablist">
+    <button class="on" data-mode="toUS">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Local → US
+    </button>
+    <button data-mode="toLocal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>US → Local
+    </button>
+  </div>
+  <button class="btn btn-primary" id="exportBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Export PDF
+  </button>
+</div>
+
+<!-- PANEL: LOCAL TO US -->
+<div class="wrap reveal" id="panel-toUS">
+  <div class="tool-layout wide-rail-lg">
+    <div class="calc-main">
+      <div class="panel">
+        <div class="conv-toolbar">
+          <div class="field">
+              <label for="country">Country</label>
+              <select class="select" id="country"></select>
+          </div>
+          <div class="field">
+              <label for="scaleSel">Grading scale</label>
+              <select class="select" id="scaleSel"></select>
+          </div>
+          <button class="btn btn-ghost" id="addRow">+ Add course</button>
+        </div>
+        
+        <div class="rows-conv">
+          <div class="rows-head">
+              <span>Course Name</span>
+              <span>Grade</span>
+              <span>Credits</span>
+              <span></span>
+          </div>
+          <div id="rows"></div>
+        </div>
+
+        <div class="calc-actions">
+          <button class="btn btn-primary" id="addRow2">Add another course</button>
+          <button class="btn btn-danger" id="clearAll">Clear all</button>
+        </div>
+      </div>
+      
+      <div class="panel breakdown-panel">
+        <h3>Course breakdown</h3>
+        <div class="conv-breakdown" id="breakdown"></div>
+      </div>
+    </div>
+
+    <div class="result-rail">
+      <div class="gpa-hero">
+        <div class="label">Converted US GPA (4.0)</div>
+        <div class="gpa-big tnum" id="gpaOut">0.00</div>
+        <div class="gpa-sub" id="gpaLetter">Add a course to begin</div>
+        <div class="gpa-meta">
+            <div><div class="n tnum" id="mCourses">0</div><div class="l">Courses</div></div>
+            <div><div class="n tnum" id="mCredits">0</div><div class="l">Credits</div></div>
+            <div><div class="n tnum" id="mQp">0</div><div class="l">Quality Pts</div></div>
+        </div>
+      </div>
+
+      <div class="ref-card">
+        <div class="ref-head">
+            <h3 id="refTitle">Reference scale</h3>
+            <span class="badge" id="refBadge">—</span>
+        </div>
+        <div class="ref-scroll">
+          <table class="ref-table">
+              <thead><tr><th>Local Grade</th><th>US Letter</th><th>GPA Pts</th></tr></thead>
+              <tbody id="refBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL: US TO LOCAL (REVERSE) -->
+<div class="wrap reveal hidden" id="panel-toLocal">
+  <div class="tool-layout wide-rail-lg">
+    <div class="calc-main">
+      <div class="panel rev-input-big">
+        <label for="revGpa">Enter your US GPA (4.0 scale)</label>
+        <input class="tnum" id="revGpa" type="number" min="0" max="4.3" step="0.01" value="3.60">
+        <div id="revUsLetter" class="rev-letter-hint">US letter ≈ A-</div>
+        <div class="scalemax">Maximum usually 4.0 or 4.33</div>
+      </div>
+      
+      <div class="panel equivalents-panel">
+        <h3>Estimated equivalents</h3>
+        <div class="rev-grid" id="revGrid"></div>
+      </div>
+    </div>
+    
+    <div class="result-rail">
+      <div class="scale-note info">
+          <b>How this works:</b> We map your US GPA to the corresponding band in each international system. Use these results as a general guide for applications.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="report"></div>
+<div id="backToTop" title="Back to Top">↑</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+        <p>A free collection of fast, focused tools for students worldwide. No accounts, no clutter.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Calculators</h4>
+        <a href="gpa.html">GPA Calculator</a>
+        <a href="cgpa.html">CGPA Calculator</a>
+        <a href="target-gpa.html">Target GPA</a>
+        <a href="gpa-converter.html">GPA Converter</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-and-conditions.html">Terms & Conditions</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+        <span>© 2026 Study Metrics. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+<script src="js/gpa-converter.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Percentage & Marks Calculator — Study Metrics</title>
+<meta name="description" content="Free percentage calculator. Convert marks to percentage, find portions, and calculate increases or decreases instantly. No signup required.">
+<link rel="canonical" href="https://studymetrics.app/percentage-calculator.html">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="Percentage Calculator — Study Metrics">
+<meta property="og:description" content="Convert marks to percentage and calculate portions instantly.">
+<meta property="og:url" content="https://studymetrics.app/percentage-calculator.html">
+<meta property="og:image" content="images/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <nav class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+    <div class="nav-links">
+        <a href="index.html#tools">Tools</a>
+        <a href="percentage-calculator.html" class="on">Percentage</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+    </div>
+    <div class="nav-cta">
+        <a href="index.html#tools" class="btn btn-ghost">All tools</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </div>
+  </nav>
+</header>
+
+<section class="tool-head">
+  <div class="grid-bg"></div>
+  <div class="wrap reveal">
+    <div class="crumb"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg><span>Percentage Calculator</span></div>
+    <h1>Percentage &amp; Marks Calculator</h1>
+    <p>Convert marks into a percentage, find portions, or calculate an increase. Fast, simple, and accurate results as you type.</p>
+  </div>
+</section>
+
+<div class="wrap reveal">
+  <div class="calc-shell">
+    <div class="tabs" role="tablist">
+      <button class="on" data-tab="marks">Marks → %</button>
+      <button data-tab="xofy">X is what % of Y</button>
+      <button data-tab="percentof">% of a number</button>
+      <button data-tab="change">Increase / decrease</button>
+    </div>
+
+    <!-- Panel: Marks to % -->
+    <div class="panel panel-lg" id="panel-marks">
+      <div class="q">I scored <input class="tnum" id="m_got" type="number" value="47"> out of <input class="tnum" id="m_max" type="number" value="60"></div>
+      <div class="result-box">
+        <div class="rl">Resulting Percentage</div>
+        <div class="rv tnum" id="m_out">—</div>
+        <div class="rx" id="m_note"></div>
+      </div>
+    </div>
+
+    <!-- Panel: X is what % of Y -->
+    <div class="panel panel-lg" id="panel-xofy" style="display:none">
+      <div class="q"><input class="tnum" id="x_a" type="number" value="18"> is what percent of <input class="tnum" id="x_b" type="number" value="24">?</div>
+      <div class="result-box">
+        <div class="rl">Calculated Percentage</div>
+        <div class="rv tnum" id="x_out">—</div>
+      </div>
+    </div>
+
+    <!-- Panel: X% of Y -->
+    <div class="panel panel-lg" id="panel-percentof" style="display:none">
+      <div class="q">What is <input class="tnum" id="p_pct" type="number" value="15">% of <input class="tnum" id="p_num" type="number" value="200">?</div>
+      <div class="result-box">
+        <div class="rl">Calculated Value</div>
+        <div class="rv tnum" id="p_out">—</div>
+      </div>
+    </div>
+
+    <!-- Panel: Increase/Decrease -->
+    <div class="panel panel-lg" id="panel-change" style="display:none">
+      <div class="q">From <input class="tnum" id="c_from" type="number" value="80"> to <input class="tnum" id="c_to" type="number" value="92"></div>
+      <div class="result-box">
+        <div class="rl">Percentage Change</div>
+        <div class="rv tnum" id="c_out">—</div>
+        <div class="rx" id="c_note"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap reveal">
+  <div class="prose">
+    <h2>How percentage calculations work</h2>
+    <p>A percentage is simply a ratio or a fraction where the denominator is always 100. To find the percentage of marks obtained, divide your score by the total marks and multiply by 100.</p>
+    <p><code>Percentage = (Score / Total) × 100</code></p>
+    <div class="faq">
+      <details open><summary>How do I find a percentage increase?</summary><p>Subtract the original value from the new value, divide that difference by the original value, and multiply by 100.</p></details>
+      <details><summary>Is my data saved?</summary><p>No data is sent to our servers. Your calculations happen entirely in your browser.</p></details>
+    </div>
+  </div>
+</div>
+
+<div id="backToTop" title="Back to Top">↑</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+        <p>A free collection of fast, focused tools for students worldwide. No accounts, no clutter.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Calculators</h4>
+        <a href="gpa.html">GPA Calculator</a>
+        <a href="cgpa.html">CGPA Calculator</a>
+        <a href="grade-calculator.html">Grade Calculator</a>
+        <a href="percentage-calculator.html">Percentage</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-and-conditions.html">Terms & Conditions</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Study Metrics. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+<script src="js/percentage-calculator.js"></script>
+</body>
+</html>
+ 
