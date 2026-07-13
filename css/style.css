@@ -103,7 +103,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 #backToTop:hover { background: var(--accent); transform: translateY(-4px); }
 
 /* --- Tools Grid --- */
-.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--s4)}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:var(--s4)}
 .tool{position:relative;display:flex;flex-direction:column;gap:var(--s3);padding:var(--s5);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);transition:transform .22s var(--ease),border-color .22s,box-shadow .22s}
 .tool.live:hover{transform:translateY(-4px);border-color:var(--ink-3);box-shadow:var(--shadow)}
 .tool-ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--accent-dim);color:var(--accent-strong)}
@@ -120,7 +120,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 
 /* --- How it Works & CTA --- */
 .hiw{background:var(--surface);border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft)}
-.hiw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--s6)}
+.hiw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:var(--s6)}
 .hiw-step{display:flex;flex-direction:column;gap:var(--s3)}
 .hiw-num{font-family:var(--font-display);font-weight:700;font-size:var(--step-lg);color:var(--accent);width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--accent-dim)}
 .hiw-step h3{font-size:var(--step-md)}
@@ -268,7 +268,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .tabs button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);font-weight:600}
 .panel-lg{padding:var(--s7)}
 .q{font-family:var(--font-display);font-weight:600;font-size:var(--step-lg);margin-bottom:var(--s5);display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap;line-height:1.4}
-.q input{width:120px;padding:8px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);font-family:var(--font-body);font-weight:500;font-size:var(--step-md);text-align:center;transition:border-color .16s,box-shadow .16s}
+.q input{width:min(120px,100%);padding:8px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);font-family:var(--font-body);font-weight:500;font-size:var(--step-md);text-align:center;transition:border-color .16s,box-shadow .16s}
 .q input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);background:var(--surface)}
 
 /* --- Result Boxes & Word Counter --- */
@@ -321,7 +321,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
 /* --- Related Content & Footer --- */
 .related{background:var(--surface);border-top:1px solid var(--border-soft);padding:var(--s7) 0}
-.rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--s3);margin-top:var(--s5)}
+.rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:var(--s3);margin-top:var(--s5)}
 .rel-card{display:flex;align-items:center;gap:var(--s3);padding:var(--s4);border:1px solid var(--border);border-radius:var(--r-md);transition:border-color .18s var(--ease),transform .18s}
 .rel-card:hover{border-color:var(--ink-3);transform:translateY(-2px)}
 .rel-ico{width:38px;height:38px;border-radius:10px;background:var(--accent-dim);color:var(--accent-strong);display:grid;place-items:center;flex-shrink:0}
@@ -399,3 +399,151 @@ textarea.input{min-height:140px;resize:vertical;line-height:1.6;padding:12px var
   .crow .c-credit{grid-area:credit}
   .crow .c-a{grid-area:a}.crow .c-b{grid-area:b}
 }
+
+/* ============================================================
+   GLOBAL OVERFLOW PROTECTION — prevents horizontal scroll
+   ============================================================ */
+html, body { overflow-x: hidden; max-width: 100%; }
+.wrap { overflow-x: clip; }
+
+/* Ensure images never overflow */
+img, svg { max-width: 100%; height: auto; }
+
+/* Gauge wrap — centered, overflow hidden */
+.gauge-wrap { max-width: 100%; overflow: hidden; }
+
+/* Ring — scale down on tiny screens */
+@media (max-width: 375px) {
+  .ring { width: 150px; height: 150px; }
+  .ring .pct { font-size: 2rem; }
+  .gauge-wrap { width: 170px; height: 90px; }
+  .gauge-num .n { font-size: 2.2rem; }
+}
+
+/* Word counter editor on mobile */
+@media (max-width: 560px) {
+  .editor { min-height: 200px; padding: var(--s4); }
+}
+
+/* Tabs wrap on tiny screens */
+@media (max-width: 375px) {
+  .tabs { width: 100%; }
+  .tabs button { flex: 1; padding: 8px 10px; font-size: .8rem; }
+}
+
+/* Navigation height fix for mobile */
+@media (max-width: 860px) {
+  .nav-links { top: 68px; }
+}
+
+/* Fix hero-actions on very small screens */
+@media (max-width: 375px) {
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+}
+
+/* Fix .cta-inner padding on mobile */
+@media (max-width: 560px) {
+  .cta-inner { padding: var(--s7) var(--s5); }
+}
+
+/* Prevent long words from overflowing in prose/legal */
+.prose, .legal {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ============================================================
+   MISSING CLASS DEFINITIONS (audit fix)
+   ============================================================ */
+
+/* .actions — generic action row wrapper */
+.actions { display: flex; gap: var(--s3); flex-wrap: wrap; margin-top: var(--s4); }
+
+/* .big — 404 large number */
+.big {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 20vw, 10rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.04em;
+  color: var(--accent-strong);
+}
+
+/* 404 page sections */
+.e404 {
+  padding: var(--s9) 0 var(--s7);
+  text-align: center;
+}
+.e404-tools {
+  padding: var(--s7) 0 var(--s8);
+  background: var(--surface);
+  border-top: 1px solid var(--border-soft);
+}
+
+/* Word counter editor info area */
+.editor-info {
+  font-size: var(--step-sm);
+  color: var(--ink-3);
+  padding: var(--s3) 0;
+  line-height: 1.6;
+}
+
+/* GPA converter panels */
+.equivalents-panel { /* extends .panel */ }
+.mode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  padding: var(--s5) 0;
+  flex-wrap: wrap;
+}
+
+/* Reverse lookup hint */
+.rev-letter-hint {
+  font-size: var(--step-sm);
+  color: var(--ink-2);
+  margin-top: var(--s2);
+}
+
+/* Table of contents (legal pages) */
+.toc {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--s5);
+  margin-bottom: var(--s6);
+}
+.toc ol { padding-left: var(--s5); color: var(--ink-2); }
+.toc li { margin-bottom: var(--s2); font-size: var(--step-sm); }
+.toc a { color: var(--accent-strong); font-weight: 500; }
+
+/* About page values grid */
+.values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: var(--s5);
+  margin: var(--s6) 0;
+}
+.value {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  padding: var(--s5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+.value .ico {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--accent-dim);
+  color: var(--accent-strong);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.value .ico svg { width: 22px; height: 22px; }
+.value h3 { font-size: var(--step-md); }
+.value p  { font-size: var(--step-sm); color: var(--ink-2); line-height: 1.55; }
