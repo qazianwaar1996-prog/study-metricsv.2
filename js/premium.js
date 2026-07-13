@@ -12,12 +12,25 @@
   var pRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isTouch = window.matchMedia('(pointer: coarse)').matches;
 
+  /* ── DEVICE CAPABILITY GUARDS (added) ─────────────────────── */
+  var deviceMemory = navigator.deviceMemory || 4; // GB (best-effort)
+  var cores = navigator.hardwareConcurrency || 4;
+  var smallViewport = (window.innerWidth || 1024) < 860;
+  // Heavy visual features only allowed when motion is OK, not touch, and device seems capable
+  var heavyAllowed = !pRM && !isTouch && deviceMemory >= 2 && cores >= 2 && !smallViewport;
+
   /* ── FIX #6/#20: Page fade-in via CSS, not JS opacity ───────── */
   /* CSS class handles the fade — no JS opacity risk of blank page */
   document.documentElement.classList.add('js-loaded');
 
   /* ── FIX #1: Apply premium class ONCE before anything runs ──── */
   document.body.classList.add('premium');
+
+  /* Pause/Resume helper (visibility) — toggles a CSS state so animations can be paused in CSS */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) document.body.classList.add('premium-paused');
+    else document.body.classList.remove('premium-paused');
+  });
 
   /* ============================================================
      1. BACKGROUND — Aurora blobs, noise, glow (decorative only)
@@ -51,12 +64,23 @@
     bar.setAttribute('aria-valuenow', '0');
     document.body.appendChild(bar);
 
-    window.addEventListener('scroll', function () {
-      var scrolled = window.scrollY;
+    /* Throttle updates into rAF to avoid layout thrash */
+    var lastScrollY = 0, ticking = false;
+    function update () {
+      var scrolled = lastScrollY;
       var total = document.documentElement.scrollHeight - window.innerHeight;
       var pct = total > 0 ? Math.round((scrolled / total) * 100) : 0;
       bar.style.width = pct + '%';
       bar.setAttribute('aria-valuenow', pct);
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      lastScrollY = window.scrollY;
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
     }, { passive: true });
   }
 
@@ -83,6 +107,12 @@
     }, { passive: true });
 
     function animRing () {
+      // If page is hidden/paused, don't perform heavy updates
+      if (document.hidden || document.body.classList.contains('premium-paused')) {
+        // keep scheduling a light wake-check so we can resume when visible
+        rAF = requestAnimationFrame(animRing);
+        return;
+      }
       rx += (mx - rx) * 0.14;
       ry += (my - ry) * 0.14;
       ring.style.left = Math.round(rx) + 'px';
@@ -125,6 +155,10 @@
     }, { passive: true });
 
     function update () {
+      if (document.hidden || document.body.classList.contains('premium-paused')) {
+        requestAnimationFrame(update);
+        return;
+      }
       cX += (tX - cX) * 0.07;
       cY += (tY - cY) * 0.07;
       glow.style.left = Math.round(cX) + 'px';
@@ -220,10 +254,18 @@
     var navLinks = qs('.nav-links');
     var btt     = qs('#backToTop');
 
-    /* Scroll handler — single addEventListener, replaces window.onscroll */
+    /* Scroll handler — single addEventListener, uses rAF batching */
+    var lastY = 0, ticking = false;
+    function onScrollFrame () {
+      if (header) header.classList.toggle('nav-scrolled', lastY > 50);
+      if (btt)    btt.classList.toggle('show', lastY > 400);
+      ticking = false;
+    }
     window.addEventListener('scroll', function () {
-      if (header) header.classList.toggle('nav-scrolled', window.scrollY > 50);
-      if (btt)    btt.classList.toggle('show', window.scrollY > 400);
+      lastY = window.scrollY;
+      if (!ticking) {
+        ticking = true; requestAnimationFrame(onScrollFrame);
+      }
     }, { passive: true });
 
     /* FIX #4: Single back-to-top handler */
@@ -424,7 +466,7 @@
 
     btn.addEventListener('click', function () {
       var orig = btn.innerHTML;
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Printing…';
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> ' + orig;
       btn.classList.add('btn-loading');
       setTimeout(function () {
         window.print();
@@ -443,7 +485,7 @@
     qsa('#shareBtn, #copyBtn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var orig = btn.innerHTML;
-        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Copied!';
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
         btn.classList.add('btn-copied');
         setTimeout(function () {
           btn.innerHTML = orig;
@@ -520,7 +562,9 @@
       'rgba(124,58,237,.5)', 'rgba(37,99,235,.45)',
       'rgba(6,182,212,.45)', 'rgba(139,92,246,.5)'
     ];
+    // Base count adjusted conservatively and further capped by deviceMemory
     var count = window.innerWidth > 1024 ? 16 : window.innerWidth > 768 ? 10 : 6;
+    if (deviceMemory < 4) count = Math.max(4, Math.floor(count / 2));
 
     for (var i = 0; i < count; i++) {
       var p = document.createElement('div');
@@ -580,22 +624,22 @@
     /* Input effects */
     initInputEffects();
 
-    /* Heavy animations — only if motion is ok */
-    if (!pRM) {
-      initReveal();
-      initCounters();
+    /* Heavy animations — gated by capability checks */
+    // Reveal and counters are relatively lightweight and helpful even on modest devices
+    initReveal();
+    initCounters();
+
+    if (heavyAllowed) {
       initCardTilt();
       initMagneticButtons();
       initIconAnims();
       initParticles();
 
-      /* FIX #8: Floating removed from hero-stats to prevent misalignment */
-      /* FIX #13: Animated underlines removed — broke text-wrap:balance */
       /* Cursor and glow — last, lowest priority */
       initCursor();
       initMouseGlow();
     } else {
-      /* Reduced motion: instantly activate all reveals */
+      // Provide minimal fallbacks: ensure reveal elements are visible for reduced/memory-constrained devices
       qsa('.reveal').forEach(function (el) { el.classList.add('active'); });
     }
 
