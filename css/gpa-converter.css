@@ -279,3 +279,16 @@
     width: 160px;
   }
 }
+
+/* ── GPA Converter Premium Overrides ── */
+body.premium .conv-ref { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: 16px; }
+body.premium #refBody tr:hover td { background: rgba(124,58,237,.08); }
+body.premium #refBody td, body.premium .ref-table th { border-color: rgba(255,255,255,.05); color: var(--p-ink-2); }
+body.premium .breakdown { background: transparent; }
+body.premium .bd-row { border-bottom: 1px solid rgba(255,255,255,.04); }
+body.premium .bd-name { color: var(--p-ink-2); }
+body.premium .bd-qp { color: #a78bfa; font-weight: 600; }
+body.premium #gpaOut { 
+  background: linear-gradient(135deg,#fff,#a78bfa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
