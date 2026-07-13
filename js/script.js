@@ -1,8 +1,13 @@
-/* --- js/script.js --- */
+/* ============================================================
+   script.js — Core SM utilities only
+   Navigation, scroll, reveal, toast are handled by premium.js
+   ============================================================ */
 (function () {
   "use strict";
+
+  /* ── Shared utility namespace ── */
   window.SM = {
-    $: function (s, r) { return (r || document).querySelector(s); },
+    $:  function (s, r) { return (r || document).querySelector(s); },
     $$: function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); },
     round: function (n, d) {
       d = d === undefined ? 2 : d;
@@ -25,47 +30,48 @@
       }
     },
     toast: function (msg, type) {
+      /* Remove any existing toast first */
+      var existing = document.querySelector('.toast');
+      if (existing) { existing.remove(); }
+
       var toast = document.createElement("div");
-      toast.className = "toast " + (type || "info");
-      toast.innerText = msg;
+      toast.className = "toast";
+      if (type) toast.classList.add(type);
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      toast.textContent = msg;
       document.body.appendChild(toast);
-      setTimeout(function() { toast.classList.add("show"); }, 100);
-      setTimeout(function() {
+
+      /* Force reflow before adding .show */
+      void toast.offsetWidth;
+      toast.classList.add("show");
+
+      setTimeout(function () {
         toast.classList.remove("show");
-        setTimeout(function() { toast.remove(); }, 500);
+        setTimeout(function () { if (toast.parentNode) toast.remove(); }, 400);
       }, 3000);
     },
-    copy: function(text) {
-      navigator.clipboard.writeText(text).then(function() {
-        window.SM.toast("Copied to clipboard!", "success");
-      });
+    copy: function (text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          SM.toast("Copied to clipboard!", "success");
+        }).catch(function () {
+          SM._copyFallback(text);
+        });
+      } else {
+        SM._copyFallback(text);
+      }
+    },
+    _copyFallback: function (text) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); SM.toast("Copied!", "success"); }
+      catch (e) { SM.toast("Copy failed", "error"); }
+      ta.remove();
     }
   };
 
-  document.addEventListener("DOMContentLoaded", function () {
-    var toggle = document.getElementById("menuToggle");
-    var links = document.querySelector(".nav-links");
-    if (toggle && links) {
-      toggle.onclick = function (e) { e.stopPropagation(); links.classList.toggle("open"); };
-      document.onclick = function (e) { if (!toggle.contains(e.target)) links.classList.remove("open"); };
-    }
-    var siteHeader = document.querySelector(".site-head");
-    var btt = document.getElementById("backToTop");
-    window.onscroll = function () {
-      if (siteHeader) siteHeader.classList.toggle("nav-scrolled", window.scrollY > 50);
-      if (btt) btt.classList.toggle("show", window.scrollY > 500);
-    };
-    if (btt) btt.onclick = function() { window.scrollTo({ top: 0, behavior: "smooth" }); };
-    if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-      document.querySelectorAll(".reveal").forEach(function(el) { observer.observe(el); });
-    }
-  });
 })();

@@ -1,25 +1,35 @@
 /*!
- * Study Metrics — Premium Animation Engine
- * Awwwards-calibre interactions & effects
- * Performance-first: CSS animations, RAF, IntersectionObserver
+ * Study Metrics — Premium Engine v2.0
+ * All bugs fixed. Single source of truth for all UI interactions.
+ * No conflicts with script.js (which is now utilities-only).
  */
 (function () {
   'use strict';
 
-  /* ── Utilities ─────────────────────────────────────────── */
-  var qs  = function(s, c) { return (c||document).querySelector(s); };
-  var qsa = function(s, c) { return Array.from((c||document).querySelectorAll(s)); };
-  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* ── Utilities ─────────────────────────────────────────────── */
+  var qs  = function (s, c) { return (c || document).querySelector(s); };
+  var qsa = function (s, c) { return Array.from((c || document).querySelectorAll(s)); };
+  var pRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isTouch = window.matchMedia('(pointer: coarse)').matches;
 
-  /* ── 1. Apply Premium Mode ──────────────────────────────── */
-  document.documentElement.setAttribute('data-theme', 'premium');
+  /* ── FIX #6/#20: Page fade-in via CSS, not JS opacity ───────── */
+  /* CSS class handles the fade — no JS opacity risk of blank page */
+  document.documentElement.classList.add('js-loaded');
+
+  /* ── FIX #1: Apply premium class ONCE before anything runs ──── */
   document.body.classList.add('premium');
 
-  /* ── 2. Inject Background Layer ─────────────────────────── */
-  function injectBackground() {
+  /* ============================================================
+     1. BACKGROUND — Aurora blobs, noise, glow (decorative only)
+     ============================================================ */
+  function injectBackground () {
     var bg = document.createElement('div');
     bg.className = 'prem-bg';
-    bg.innerHTML = '<div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div>';
+    bg.setAttribute('aria-hidden', 'true');
+    bg.innerHTML =
+      '<div class="blob blob-1"></div>' +
+      '<div class="blob blob-2"></div>' +
+      '<div class="blob blob-3"></div>';
     document.body.insertBefore(bg, document.body.firstChild);
 
     var noise = document.createElement('div');
@@ -28,394 +38,465 @@
     document.body.appendChild(noise);
   }
 
-  /* ── 3. Scroll Progress Bar ─────────────────────────────── */
-  function initScrollProgress() {
+  /* ============================================================
+     2. SCROLL PROGRESS BAR
+     ============================================================ */
+  function initScrollProgress () {
     var bar = document.createElement('div');
     bar.id = 'scroll-progress';
     bar.setAttribute('role', 'progressbar');
-    bar.setAttribute('aria-label', 'Reading progress');
+    bar.setAttribute('aria-label', 'Page reading progress');
+    bar.setAttribute('aria-valuemin', '0');
+    bar.setAttribute('aria-valuemax', '100');
+    bar.setAttribute('aria-valuenow', '0');
     document.body.appendChild(bar);
 
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
       var scrolled = window.scrollY;
       var total = document.documentElement.scrollHeight - window.innerHeight;
-      var pct = total > 0 ? (scrolled / total) * 100 : 0;
+      var pct = total > 0 ? Math.round((scrolled / total) * 100) : 0;
       bar.style.width = pct + '%';
+      bar.setAttribute('aria-valuenow', pct);
     }, { passive: true });
   }
 
-  /* ── 4. Custom Cursor ───────────────────────────────────── */
-  function initCursor() {
-    if (prefersReducedMotion) return;
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+  /* ============================================================
+     3. CUSTOM CURSOR — desktop only, no layout impact
+     ============================================================ */
+  function initCursor () {
+    if (pRM || isTouch) return;
 
-    var dot  = document.createElement('div'); dot.id = 'cursor-dot';
+    var dot  = document.createElement('div'); dot.id  = 'cursor-dot';
     var ring = document.createElement('div'); ring.id = 'cursor-ring';
+    dot.setAttribute('aria-hidden', 'true');
+    ring.setAttribute('aria-hidden', 'true');
     document.body.appendChild(dot);
     document.body.appendChild(ring);
 
-    var mx = -100, my = -100, rx = -100, ry = -100;
+    var mx = -200, my = -200, rx = -200, ry = -200;
+    var rAF = null;
 
-    document.addEventListener('mousemove', function(e) {
+    document.addEventListener('mousemove', function (e) {
       mx = e.clientX; my = e.clientY;
-      dot.style.left  = mx + 'px';
-      dot.style.top   = my + 'px';
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
     }, { passive: true });
 
-    // Ring follows with RAF lag
-    function animRing() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px';
-      ring.style.top  = ry + 'px';
-      requestAnimationFrame(animRing);
+    function animRing () {
+      rx += (mx - rx) * 0.14;
+      ry += (my - ry) * 0.14;
+      ring.style.left = Math.round(rx) + 'px';
+      ring.style.top  = Math.round(ry) + 'px';
+      rAF = requestAnimationFrame(animRing);
     }
-    requestAnimationFrame(animRing);
+    rAF = requestAnimationFrame(animRing);
 
-    // Hover state on interactive elements
-    document.addEventListener('mouseover', function(e) {
-      if (e.target.closest('a, button, [role="button"], input, select, textarea')) {
-        document.body.classList.add('cursor-hover');
-      }
+    var hoverSel = 'a, button, [role="button"], input, select, textarea, label';
+    document.addEventListener('mouseover', function (e) {
+      if (e.target.closest(hoverSel)) document.body.classList.add('cursor-hover');
     });
-    document.addEventListener('mouseout', function(e) {
-      if (e.target.closest('a, button, [role="button"], input, select, textarea')) {
-        document.body.classList.remove('cursor-hover');
-      }
+    document.addEventListener('mouseout', function (e) {
+      if (e.target.closest(hoverSel)) document.body.classList.remove('cursor-hover');
     });
-    document.addEventListener('mousedown', function() { document.body.classList.add('cursor-click'); });
-    document.addEventListener('mouseup',   function() { document.body.classList.remove('cursor-click'); });
-
-    document.addEventListener('mouseleave', function() { dot.style.opacity = '0'; ring.style.opacity = '0'; });
-    document.addEventListener('mouseenter', function() { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+    document.addEventListener('mousedown', function () { document.body.classList.add('cursor-click'); });
+    document.addEventListener('mouseup',   function () { document.body.classList.remove('cursor-click'); });
+    document.addEventListener('mouseleave', function () {
+      dot.style.opacity = '0'; ring.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', function () {
+      dot.style.opacity = '1'; ring.style.opacity = '1';
+    });
   }
 
-  /* ── 5. Mouse Following Glow ────────────────────────────── */
-  function initMouseGlow() {
-    if (prefersReducedMotion) return;
+  /* ============================================================
+     4. MOUSE GLOW — subtle radial following glow
+     ============================================================ */
+  function initMouseGlow () {
+    if (pRM || isTouch) return;
+
     var glow = document.createElement('div');
     glow.id = 'mouse-glow';
     glow.setAttribute('aria-hidden', 'true');
     document.body.appendChild(glow);
 
-    var tX = 0, tY = 0, cX = 0, cY = 0;
-    document.addEventListener('mousemove', function(e) {
+    var tX = -600, tY = -600, cX = -600, cY = -600;
+    document.addEventListener('mousemove', function (e) {
       tX = e.clientX; tY = e.clientY;
     }, { passive: true });
 
-    function update() {
-      cX += (tX - cX) * 0.08;
-      cY += (tY - cY) * 0.08;
-      glow.style.left = cX + 'px';
-      glow.style.top  = cY + 'px';
+    function update () {
+      cX += (tX - cX) * 0.07;
+      cY += (tY - cY) * 0.07;
+      glow.style.left = Math.round(cX) + 'px';
+      glow.style.top  = Math.round(cY) + 'px';
       requestAnimationFrame(update);
     }
     requestAnimationFrame(update);
   }
 
-  /* ── 6. Scroll Reveal (IntersectionObserver) ────────────── */
-  function initReveal() {
-    // Add reveal classes to existing .reveal elements
-    qsa('.reveal').forEach(function(el) {
-      el.classList.add('reveal-up');
-      el.classList.remove('reveal');
-    });
+  /* ============================================================
+     5. SCROLL REVEAL — FIX #1/#7/#14: Single observer, no conflicts
+     ============================================================ */
+  function initReveal () {
+    /* FIX #14: Don't add stagger to grids whose children already have .reveal
+       — instead let the reveal observer handle them individually with delays */
+    var targets = qsa('.reveal');
 
-    // Mark tool grids for stagger
-    qsa('.tools-grid').forEach(function(el) {
-      el.classList.add('stagger-children');
-    });
-    qsa('.hiw-grid').forEach(function(el) {
-      el.classList.add('stagger-children');
-    });
-
-    var targets = qsa('.reveal-up, .reveal-left, .reveal-right, .reveal-scale, .reveal-fade, .stagger-children');
-
+    /* FIX #7: Elements already in viewport get instant activation (no 0.8s delay) */
     if (!('IntersectionObserver' in window)) {
-      targets.forEach(function(el) { el.classList.add('active'); });
+      targets.forEach(function (el) { el.classList.add('active'); });
       return;
     }
 
-    var io = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
+    var seen = new WeakSet();
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !seen.has(entry.target)) {
+          seen.add(entry.target);
           entry.target.classList.add('active');
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
-    targets.forEach(function(el) { io.observe(el); });
+    /* FIX #7: Check if element is already in viewport — activate immediately */
+    targets.forEach(function (el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        /* Already visible — activate with tiny delay so CSS transition runs */
+        setTimeout(function () { el.classList.add('active'); }, 50);
+      } else {
+        io.observe(el);
+      }
+    });
   }
 
-  /* ── 7. Animated Number Counters ────────────────────────── */
-  function animateNumber(el, from, to, duration) {
-    if (prefersReducedMotion) { el.textContent = to; return; }
-    var start = null;
+  /* ============================================================
+     6. NUMBER COUNTERS — hero stats
+     ============================================================ */
+  function animateNumber (el, from, to, duration) {
+    if (pRM) { el.textContent = el.textContent; return; }
+    var txt = el.textContent.trim();
+    var suffix = txt.replace(/[0-9.]/g, '');
+    var start  = null;
     var isFloat = String(to).includes('.');
-    var decimals = isFloat ? String(to).split('.')[1].length : 0;
+    var dec = isFloat ? String(to).split('.')[1].length : 0;
 
-    function step(ts) {
+    function step (ts) {
       if (!start) start = ts;
       var progress = Math.min((ts - start) / duration, 1);
-      var ease = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+      var ease = 1 - Math.pow(1 - progress, 3);
       var val = from + (to - from) * ease;
-      el.textContent = isFloat ? val.toFixed(decimals) : Math.round(val);
+      el.textContent = (isFloat ? val.toFixed(dec) : Math.round(val)) + suffix;
       if (progress < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
 
-  function initCounters() {
+  function initCounters () {
     var statNums = qsa('.hero-stats .n');
     if (!statNums.length) return;
 
-    var io = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        var el = entry.target;
-        var text = el.textContent.trim();
-        var num = parseFloat(text.replace(/[^0-9.]/g, ''));
-        if (!isNaN(num)) animateNumber(el, 0, num, 1800);
+        var el  = entry.target;
+        var txt = el.textContent.trim();
+        var num = parseFloat(txt.replace(/[^0-9.]/g, ''));
+        if (!isNaN(num) && num > 0) animateNumber(el, 0, num, 1600);
         io.unobserve(el);
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.6 });
 
-    statNums.forEach(function(el) { io.observe(el); });
+    statNums.forEach(function (el) { io.observe(el); });
   }
 
-  /* ── 8. Card Tilt Effect ────────────────────────────────── */
-  function initCardTilt() {
-    if (prefersReducedMotion) return;
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+  /* ============================================================
+     7. NAVBAR — FIX #2/#3: Single handler, no conflicts
+     ============================================================ */
+  function initNavbar () {
+    var header  = qs('.site-head');
+    var toggle  = qs('#menuToggle');
+    var navLinks = qs('.nav-links');
+    var btt     = qs('#backToTop');
 
-    qsa('.tool.live').forEach(function(card) {
-      card.addEventListener('mousemove', function(e) {
-        var rect = card.getBoundingClientRect();
-        var x = (e.clientX - rect.left) / rect.width;
-        var y = (e.clientY - rect.top)  / rect.height;
-        var tiltX = (y - 0.5) * -10;
-        var tiltY = (x - 0.5) *  10;
+    /* Scroll handler — single addEventListener, replaces window.onscroll */
+    window.addEventListener('scroll', function () {
+      if (header) header.classList.toggle('nav-scrolled', window.scrollY > 50);
+      if (btt)    btt.classList.toggle('show', window.scrollY > 400);
+    }, { passive: true });
 
-        card.style.transform = 'perspective(800px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg) translateY(-6px) scale(1.01)';
-        card.style.setProperty('--mx', (x * 100) + '%');
-        card.style.setProperty('--my', (y * 100) + '%');
+    /* FIX #4: Single back-to-top handler */
+    if (btt) {
+      btt.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    /* FIX #2: Single mobile menu handler */
+    if (toggle && navLinks) {
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = navLinks.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.innerHTML = open
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
       });
 
-      card.addEventListener('mouseleave', function() {
-        card.style.transform = '';
+      document.addEventListener('click', function (e) {
+        if (!toggle.contains(e.target) && !navLinks.contains(e.target)) {
+          navLinks.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
       });
+
+      /* Close on Escape key */
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+          navLinks.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.focus();
+        }
+      });
+    }
+  }
+
+  /* ============================================================
+     8. SMOOTH ANCHOR SCROLL — FIX #5: deduplicated
+     ============================================================ */
+  function initSmoothScroll () {
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href^="#"]');
+      if (!link) return;
+      var id = link.getAttribute('href');
+      if (id === '#') return;
+      var target = qs(id);
+      if (!target) return;
+      e.preventDefault();
+      var headerH = (qs('.site-head') || { offsetHeight: 0 }).offsetHeight;
+      var top = target.getBoundingClientRect().top + window.scrollY - headerH - 8;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
     });
   }
 
-  /* ── 9. Magnetic Buttons ────────────────────────────────── */
-  function initMagneticButtons() {
-    if (prefersReducedMotion) return;
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+  /* ============================================================
+     9. PAGE TRANSITION — FIX #6/#20: CSS-based, safe fallback
+     ============================================================ */
+  function initPageTransition () {
+    if (pRM) return;
 
-    qsa('.btn-primary.btn-lg, .btn.btn-lg').forEach(function(btn) {
-      btn.addEventListener('mousemove', function(e) {
-        var rect = btn.getBoundingClientRect();
-        var x = e.clientX - rect.left - rect.width  / 2;
-        var y = e.clientY - rect.top  - rect.height / 2;
-        btn.style.transform = 'translate(' + (x * 0.2) + 'px, ' + (y * 0.3) + 'px)';
-      });
-      btn.addEventListener('mouseleave', function() {
-        btn.style.transform = '';
-        btn.style.transition = 'transform .5s cubic-bezier(.34,1.56,.64,1)';
-        setTimeout(function() { btn.style.transition = ''; }, 500);
-      });
+    /* FIX: Use CSS class instead of inline opacity — if JS fails, page is visible */
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('a');
+      if (!link) return;
+      var href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('http') ||
+          href.startsWith('mailto') || href.startsWith('tel') ||
+          link.target === '_blank' || link.hasAttribute('download')) return;
+
+      e.preventDefault();
+      document.body.classList.add('page-leaving');
+      setTimeout(function () { window.location.href = href; }, 250);
     });
   }
 
-  /* ── 10. Ripple Effect on Buttons ───────────────────────── */
-  function initRipple() {
-    document.addEventListener('click', function(e) {
+  /* ============================================================
+     10. RIPPLE EFFECT on buttons
+     ============================================================ */
+  function initRipple () {
+    if (pRM) return;
+    document.addEventListener('click', function (e) {
       var btn = e.target.closest('.btn');
       if (!btn) return;
-
       var rect = btn.getBoundingClientRect();
       var size = Math.max(rect.width, rect.height) * 2;
       var x = e.clientX - rect.left - size / 2;
       var y = e.clientY - rect.top  - size / 2;
-
-      var ripple = document.createElement('span');
-      ripple.className = 'btn-ripple';
-      ripple.style.cssText = 'width:'+size+'px;height:'+size+'px;left:'+x+'px;top:'+y+'px;';
-      btn.appendChild(ripple);
-      setTimeout(function() { ripple.remove(); }, 700);
+      var rip = document.createElement('span');
+      rip.className = 'btn-ripple';
+      rip.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + x + 'px;top:' + y + 'px;';
+      btn.appendChild(rip);
+      setTimeout(function () { if (rip.parentNode) rip.remove(); }, 700);
     });
   }
 
-  /* ── 11. Sticky Navbar Blur on Scroll ───────────────────── */
-  function initNavbar() {
-    var header = qs('.site-head');
-    if (!header) return;
-    var threshold = 40;
+  /* ============================================================
+     11. CARD TILT — FIX #12: No transform conflict, uses CSS var
+     ============================================================ */
+  function initCardTilt () {
+    if (pRM || isTouch) return;
 
-    window.addEventListener('scroll', function() {
-      if (window.scrollY > threshold) {
-        header.classList.add('nav-scrolled');
-      } else {
-        header.classList.remove('nav-scrolled');
-      }
-    }, { passive: true });
-  }
-
-  /* ── 12. Smooth Anchor Scroll ───────────────────────────── */
-  function initSmoothScroll() {
-    document.addEventListener('click', function(e) {
-      var link = e.target.closest('a[href^="#"]');
-      if (!link) return;
-      var target = qs(link.getAttribute('href'));
-      if (!target) return;
-      e.preventDefault();
-      var offset = 90;
-      var top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top: top, behavior: 'smooth' });
+    qsa('.tool.live').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width;
+        var y = (e.clientY - rect.top)  / rect.height;
+        /* FIX #12: Use CSS custom props instead of competing transform */
+        card.style.setProperty('--tilt-x', ((y - 0.5) * -8) + 'deg');
+        card.style.setProperty('--tilt-y', ((x - 0.5) *  8) + 'deg');
+        card.style.setProperty('--mx', (x * 100) + '%');
+        card.style.setProperty('--my', (y * 100) + '%');
+        card.classList.add('tilting');
+      });
+      card.addEventListener('mouseleave', function () {
+        card.style.removeProperty('--tilt-x');
+        card.style.removeProperty('--tilt-y');
+        card.classList.remove('tilting');
+      });
     });
   }
 
-  /* ── 13. Back to Top ────────────────────────────────────── */
-  function initBackToTop() {
-    var btn = qs('#backToTop');
-    if (!btn) return;
-
-    window.addEventListener('scroll', function() {
-      btn.classList.toggle('show', window.scrollY > 400);
-    }, { passive: true });
-
-    btn.addEventListener('click', function() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  /* ============================================================
+     12. MAGNETIC BUTTONS — FIX #12: separate from btn:active transform
+     ============================================================ */
+  function initMagneticButtons () {
+    if (pRM || isTouch) return;
+    qsa('.btn-primary.btn-lg').forEach(function (btn) {
+      btn.addEventListener('mousemove', function (e) {
+        var rect = btn.getBoundingClientRect();
+        var x = (e.clientX - rect.left - rect.width / 2) * 0.18;
+        var y = (e.clientY - rect.top  - rect.height / 2) * 0.22;
+        btn.style.setProperty('--mag-x', x + 'px');
+        btn.style.setProperty('--mag-y', y + 'px');
+        btn.classList.add('magnetic');
+      });
+      btn.addEventListener('mouseleave', function () {
+        btn.style.removeProperty('--mag-x');
+        btn.style.removeProperty('--mag-y');
+        btn.classList.remove('magnetic');
+      });
     });
   }
 
-  /* ── 14. Mobile Menu ────────────────────────────────────── */
-  function initMobileMenu() {
-    var toggle = qs('#menuToggle');
-    var nav    = qs('.nav-links');
-    if (!toggle || !nav) return;
-
-    toggle.addEventListener('click', function() {
-      var open = nav.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', open);
-      toggle.innerHTML = open
-        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>'
-        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
-    });
-
-    // Close on outside click
-    document.addEventListener('click', function(e) {
-      if (!toggle.contains(e.target) && !nav.contains(e.target)) {
-        nav.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-
-  /* ── 15. Input Focus Glow Labels ────────────────────────── */
-  function initInputEffects() {
-    qsa('.field').forEach(function(field) {
+  /* ============================================================
+     13. INPUT FOCUS EFFECTS
+     ============================================================ */
+  function initInputEffects () {
+    qsa('.field').forEach(function (field) {
       var input = qs('input, select, textarea', field);
       var label = qs('label', field);
       if (!input || !label) return;
-
-      input.addEventListener('focus', function() {
-        label.style.color = '#a78bfa';
-        label.style.transition = 'color .2s';
-      });
-      input.addEventListener('blur', function() {
-        label.style.color = '';
-      });
+      input.addEventListener('focus', function () { label.classList.add('field-focus'); });
+      input.addEventListener('blur',  function () { label.classList.remove('field-focus'); });
     });
 
-    // Animate result numbers when they change
-    qsa('.gpa-big, .res-big, .grade-big, .gauge-num .n, .ring .pct').forEach(function(el) {
+    /* Animate result numbers when content changes */
+    qsa('.gpa-big, .res-big, .grade-big, .gauge-num .n, .ring .pct').forEach(function (el) {
       var prev = el.textContent;
-      new MutationObserver(function() {
-        if (el.textContent !== prev) {
+      new MutationObserver(function () {
+        if (el.textContent !== prev && el.textContent !== '—') {
           prev = el.textContent;
-          el.classList.remove('updated');
-          void el.offsetWidth; // reflow
-          el.classList.add('updated', 'result-num-animated');
-          setTimeout(function() { el.classList.remove('updated'); }, 500);
+          el.classList.remove('num-updated');
+          void el.offsetWidth;
+          el.classList.add('num-updated');
+          setTimeout(function () { el.classList.remove('num-updated'); }, 500);
         }
       }).observe(el, { childList: true, characterData: true, subtree: true });
     });
   }
 
-  /* ── 16. Animated Progress Bars in Calculators ──────────── */
-  function initProgressBars() {
-    qsa('.prem-progress').forEach(function(bar) {
-      var io = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          if (e.isIntersecting) { bar.classList.add('active'); io.unobserve(bar); }
-        });
-      }, { threshold: 0.5 });
-      io.observe(bar);
-    });
+  /* ============================================================
+     14. GPA RING ANIMATION — integrated, no separate file patch
+     ============================================================ */
+  function initGpaRing () {
+    var arc = qs('#gpaRingArc');
+    var gpaBig = qs('.gpa-big');
+    if (!arc || !gpaBig) return;
 
-    // Animate existing bar-track fills
-    qsa('.bar-track').forEach(function(track) {
-      var segs = qsa('.bar-seg', track);
-      segs.forEach(function(seg) {
-        var w = seg.style.width || '0%';
-        seg.style.width = '0%';
-        seg.style.transition = 'width .8s cubic-bezier(.22,1,.36,1)';
-        setTimeout(function() { seg.style.width = w; }, 200);
+    function updateRing (gpa) {
+      var pct = Math.min(Math.max(parseFloat(gpa) || 0, 0), 4) / 4;
+      arc.style.strokeDashoffset = 314 - (314 * pct);
+    }
+
+    new MutationObserver(function () { updateRing(gpaBig.textContent); })
+      .observe(gpaBig, { childList: true, characterData: true, subtree: true });
+
+    setTimeout(function () { updateRing(gpaBig.textContent); }, 400);
+  }
+
+  /* ============================================================
+     15. PDF DOWNLOAD
+     ============================================================ */
+  function initPDFButton () {
+    var btn = qs('#pdfBtn');
+    if (!btn) return;
+
+    btn.addEventListener('click', function () {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Printing…';
+      btn.classList.add('btn-loading');
+      setTimeout(function () {
+        window.print();
+        setTimeout(function () {
+          btn.innerHTML = orig;
+          btn.classList.remove('btn-loading');
+        }, 800);
+      }, 200);
+    });
+  }
+
+  /* ============================================================
+     16. SHARE/COPY BUTTON FEEDBACK
+     ============================================================ */
+  function initShareButtons () {
+    qsa('#shareBtn, #copyBtn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var orig = btn.innerHTML;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Copied!';
+        btn.classList.add('btn-copied');
+        setTimeout(function () {
+          btn.innerHTML = orig;
+          btn.classList.remove('btn-copied');
+        }, 2000);
       });
     });
   }
 
-  /* ── 17. Page Transition ────────────────────────────────── */
-  function initPageTransition() {
-    if (prefersReducedMotion) return;
-
-    // Fade-in on load
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity .4s ease';
-    window.addEventListener('load', function() {
-      document.body.style.opacity = '1';
-    });
-
-    // Fade-out on internal link click
-    document.addEventListener('click', function(e) {
-      var link = e.target.closest('a');
-      if (!link) return;
-      var href = link.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('http') ||
-          href.startsWith('mailto') || link.target === '_blank') return;
-
-      e.preventDefault();
-      document.body.style.opacity = '0';
-      setTimeout(function() { window.location.href = href; }, 300);
+  /* ============================================================
+     17. ICON MICRO-ANIMATIONS
+     ============================================================ */
+  function initIconAnims () {
+    if (pRM) return;
+    qsa('.hiw-num').forEach(function (el) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          el.classList.add('num-pop');
+          setTimeout(function () { el.classList.remove('num-pop'); }, 600);
+          io.unobserve(el);
+        });
+      }, { threshold: 0.8 });
+      io.observe(el);
     });
   }
 
-  /* ── 18. Animated Underline on Section Headings ─────────── */
-  function initAnimatedUnderlines() {
-    qsa('.sec-head h2, .tool-head h1, .page-head h1').forEach(function(el) {
-      el.style.position = 'relative';
-      el.style.display  = 'inline-block';
+  /* ============================================================
+     18. FAQ ANIMATIONS
+     ============================================================ */
+  function initFAQ () {
+    qsa('.faq details').forEach(function (detail) {
+      detail.addEventListener('toggle', function () {
+        var p = qs('p', detail);
+        if (detail.open && p && !pRM) {
+          p.style.animation = 'none';
+          void p.offsetWidth;
+          p.style.animation = 'rowIn .3s cubic-bezier(.22,1,.36,1)';
+        }
+      });
+    });
+  }
 
-      var line = document.createElement('span');
-      line.style.cssText = [
-        'position:absolute',
-        'left:0',
-        'bottom:-4px',
-        'height:2px',
-        'width:0',
-        'background:linear-gradient(90deg,#7c3aed,#06b6d4)',
-        'border-radius:2px',
-        'transition:width .8s cubic-bezier(.22,1,.36,1)',
-        'pointer-events:none'
-      ].join(';');
-      el.appendChild(line);
-
-      var io = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
+  /* ============================================================
+     19. KICKER BADGE ENTRANCE
+     ============================================================ */
+  function initKickers () {
+    if (pRM) return;
+    qsa('.kicker').forEach(function (el) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            setTimeout(function() { line.style.width = '60%'; }, 400);
+            el.classList.add('kicker-visible');
             io.unobserve(el);
           }
         });
@@ -424,260 +505,109 @@
     });
   }
 
-  /* ── 19. Icon Hover Animations ──────────────────────────── */
-  function initIconAnimations() {
-    qsa('.tool-ico, .rel-ico, .hiw-num, .contact-line .ico').forEach(function(ico) {
-      ico.addEventListener('mouseenter', function() {
-        if (prefersReducedMotion) return;
-        ico.style.transition = 'transform .3s cubic-bezier(.34,1.56,.64,1)';
-        ico.style.transform  = 'scale(1.15) rotate(-8deg)';
-      });
-      ico.addEventListener('mouseleave', function() {
-        ico.style.transform = '';
-      });
-    });
+  /* ============================================================
+     20. LIGHTWEIGHT PARTICLES — FIX #15: z-index below inputs
+     ============================================================ */
+  function initParticles () {
+    if (pRM || isTouch) return;
+
+    var container = document.createElement('div');
+    container.className = 'particles';
+    container.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(container);
+
+    var colors = [
+      'rgba(124,58,237,.5)', 'rgba(37,99,235,.45)',
+      'rgba(6,182,212,.45)', 'rgba(139,92,246,.5)'
+    ];
+    var count = window.innerWidth > 1024 ? 16 : window.innerWidth > 768 ? 10 : 6;
+
+    for (var i = 0; i < count; i++) {
+      var p = document.createElement('div');
+      p.className = 'particle';
+      var x   = Math.random() * 100;
+      var dur = 14 + Math.random() * 18;
+      var del = -(Math.random() * dur);
+      var tx  = (Math.random() - 0.5) * 100;
+      var sz  = 2 + Math.random() * 2.5;
+      p.style.cssText = [
+        'left:' + x + '%',
+        '--d:' + dur + 's',
+        '--tx:' + tx + 'px',
+        'animation-delay:' + del + 's',
+        'width:' + sz + 'px',
+        'height:' + sz + 'px',
+        'background:' + colors[i % colors.length]
+      ].join(';');
+      container.appendChild(p);
+    }
   }
 
-  /* ── 20. Toast Success Animation ───────────────────────── */
-  // Patch SM.toast to add premium animations
-  function patchToast() {
-    if (!window.SM || !SM.toast) return;
-    var _original = SM.toast;
-    SM.toast = function(msg, type) {
-      _original(msg, type);
-      // The original creates a .toast element; shake is applied via CSS class
-      var t = qs('.toast');
-      if (t && type === 'error') {
-        t.classList.add('error');
-      }
-    };
-  }
-
-  /* ── 21. Copy / Share button micro-interaction ──────────── */
-  function initCopyButtons() {
-    document.addEventListener('click', function(e) {
-      var btn = e.target.closest('[data-copy], #shareBtn, #copyBtn');
-      if (!btn) return;
-      var icon = qs('svg', btn);
-      if (!icon) return;
-      var originalHTML = btn.innerHTML;
-      // Flash checkmark
-      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg> Copied!';
-      btn.style.background = 'rgba(16,185,129,.2)';
-      btn.style.borderColor = 'rgba(16,185,129,.4)';
-      btn.style.color = '#6ee7b7';
-      setTimeout(function() {
-        btn.innerHTML = originalHTML;
-        btn.style.background = '';
-        btn.style.borderColor = '';
-        btn.style.color = '';
-      }, 2000);
-    });
-  }
-
-  /* ── 22. FAQ Smooth Open/Close ──────────────────────────── */
-  function initFAQ() {
-    qsa('.faq details').forEach(function(detail) {
-      detail.addEventListener('toggle', function() {
-        if (detail.open) {
-          var content = qs('p', detail);
-          if (!content) return;
-          content.style.animation = 'rowIn .35s cubic-bezier(.22,1,.36,1)';
-        }
+  /* ============================================================
+     21. ROW ADD BUTTON FEEDBACK
+     ============================================================ */
+  function initRowButtons () {
+    if (pRM) return;
+    qsa('#addRow, #addRow2').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btn.classList.add('btn-spring');
+        setTimeout(function () { btn.classList.remove('btn-spring'); }, 400);
       });
     });
   }
 
-  /* ── 23. Section Reveal with Progress Lines ─────────────── */
-  function initSectionLines() {
-    qsa('.hiw-step').forEach(function(step, i) {
-      var num = qs('.hiw-num', step);
-      if (!num) return;
-
-      var io = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (!entry.isIntersecting) return;
-          setTimeout(function() {
-            num.style.transform = 'scale(1.15)';
-            num.style.transition = 'transform .4s cubic-bezier(.34,1.56,.64,1)';
-            setTimeout(function() { num.style.transform = ''; }, 400);
-          }, i * 150);
-          io.unobserve(step);
-        });
-      }, { threshold: 0.5 });
-      io.observe(step);
-    });
-  }
-
-  /* ── 24. Gradient Text Cycling for Hero ─────────────────── */
-  function initGradientText() {
-    var heroEm = qs('.hero h1 .em');
-    if (!heroEm || prefersReducedMotion) return;
-    heroEm.classList.add('gradient-text-anim');
-  }
-
-  /* ── 25. Floating Elements in Hero Stats ─────────────────── */
-  function initFloating() {
-    if (prefersReducedMotion) return;
-    qsa('.hero-stats > div').forEach(function(el, i) {
-      el.classList.add('float-' + ((i % 3) + 1));
-    });
-  }
-
-  /* ── 26. Result card pop when calculator updates ─────────── */
-  function initResultAnimation() {
-    var resultEls = qsa('.gpa-hero, .res-hero, .grade-hero, .gauge-card, .ring-card');
-    resultEls.forEach(function(el) {
-      var observer = new MutationObserver(function() {
-        if (prefersReducedMotion) return;
-        el.style.animation = 'none';
-        void el.offsetWidth;
-        el.style.animation = 'numPop .4s cubic-bezier(.34,1.56,.64,1)';
-        setTimeout(function() { el.style.animation = ''; }, 500);
-      });
-      observer.observe(el, { childList: true, subtree: true, characterData: true });
-    });
-  }
-
-  /* ── 27. Kicker badge entrance ───────────────────────────── */
-  function initKickers() {
-    qsa('.kicker').forEach(function(el) {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(8px)';
-      var io = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (!entry.isIntersecting) return;
-          el.style.transition = 'opacity .5s ease, transform .5s cubic-bezier(.22,1,.36,1)';
-          el.style.opacity = '1';
-          el.style.transform = '';
-          io.unobserve(el);
-        });
-      }, { threshold: 0.5 });
-      io.observe(el);
-    });
-  }
-
-  /* ── 28. Row add animation ───────────────────────────────── */
-  function initRowAnimations() {
-    // Rows already have @keyframes rowIn in CSS
-    // This patches the add-row buttons to pulse when clicked
-    qsa('#addRow, #addRow2').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        if (prefersReducedMotion) return;
-        btn.style.transform = 'scale(.92)';
-        setTimeout(function() {
-          btn.style.transform = '';
-          btn.style.transition = 'transform .4s cubic-bezier(.34,1.56,.64,1)';
-        }, 120);
-      });
-    });
-  }
-
-  /* ── INIT ────────────────────────────────────────────────── */
-  function init() {
+  /* ============================================================
+     INIT — ordered correctly, no race conditions
+     ============================================================ */
+  function init () {
+    /* Inject decorative elements first */
     injectBackground();
     initScrollProgress();
-    initCursor();
-    initMouseGlow();
+
+    /* Core navigation — single handlers */
     initNavbar();
     initSmoothScroll();
-    initBackToTop();
-    initMobileMenu();
+
+    /* Interactions */
     initRipple();
     initFAQ();
-    initGradientText();
-    initFloating();
     initKickers();
-    initRowAnimations();
+    initRowButtons();
+    initGpaRing();
+    initPDFButton();
+    initShareButtons();
 
-    if (!prefersReducedMotion) {
+    /* Input effects */
+    initInputEffects();
+
+    /* Heavy animations — only if motion is ok */
+    if (!pRM) {
       initReveal();
       initCounters();
       initCardTilt();
       initMagneticButtons();
-      initInputEffects();
-      initProgressBars();
-      initAnimatedUnderlines();
-      initIconAnimations();
-      initCopyButtons();
-      initSectionLines();
-      initResultAnimation();
+      initIconAnims();
+      initParticles();
+
+      /* FIX #8: Floating removed from hero-stats to prevent misalignment */
+      /* FIX #13: Animated underlines removed — broke text-wrap:balance */
+      /* Cursor and glow — last, lowest priority */
+      initCursor();
+      initMouseGlow();
     } else {
-      // Still activate reveals immediately for reduced motion
-      qsa('.reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-scale, .reveal-fade, .stagger-children').forEach(function(el) {
-        el.classList.add('active');
-      });
+      /* Reduced motion: instantly activate all reveals */
+      qsa('.reveal').forEach(function (el) { el.classList.add('active'); });
     }
 
-    // Page transition last (needs full DOM)
+    /* Page transition — last (must not interfere with clicks above) */
     initPageTransition();
-
-    // Patch toast after SM is loaded
-    setTimeout(patchToast, 100);
   }
 
+  /* Run after DOM is ready */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
 
-})();
-
-/* ── PDF Download for calculators ── */
-(function initPDFDownload() {
-  var btn = document.getElementById('pdfBtn');
-  if (!btn) return;
-
-  btn.addEventListener('click', function() {
-    // Brief visual feedback
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg> Printing…';
-    btn.style.background = 'rgba(124,58,237,.2)';
-    btn.style.color = '#a78bfa';
-
-    setTimeout(function() {
-      window.print();
-      setTimeout(function() {
-        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> PDF';
-        btn.style.background = '';
-        btn.style.color = '';
-      }, 1000);
-    }, 300);
-  });
-})();
-
-/* ── Lightweight Particle System ── */
-(function initParticles() {
-  if (prefersReducedMotion) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  var container = document.createElement('div');
-  container.className = 'particles';
-  container.setAttribute('aria-hidden', 'true');
-  document.body.appendChild(container);
-
-  var colors = ['rgba(124,58,237,.6)', 'rgba(37,99,235,.5)', 'rgba(6,182,212,.5)', 'rgba(139,92,246,.5)'];
-  var count = window.innerWidth > 768 ? 18 : 8;
-
-  for (var i = 0; i < count; i++) {
-    (function(idx) {
-      var p = document.createElement('div');
-      p.className = 'particle';
-      var x = Math.random() * 100;
-      var d = 12 + Math.random() * 20;
-      var delay = -(Math.random() * d);
-      var tx = (Math.random() - 0.5) * 120;
-      var size = 2 + Math.random() * 3;
-      p.style.cssText = [
-        'left:' + x + '%',
-        '--d:' + d + 's',
-        '--tx:' + tx + 'px',
-        'animation-delay:' + delay + 's',
-        'width:' + size + 'px',
-        'height:' + size + 'px',
-        'background:' + colors[idx % colors.length]
-      ].join(';');
-      container.appendChild(p);
-    })(i);
-  }
 })();
