@@ -22,6 +22,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/premium.css">
 </head>
 <body>
 
@@ -45,9 +46,18 @@
 
 <section class="hero reveal">
   <div class="hero-grid"></div>
+  <div class="hero-shapes" aria-hidden="true">
+    <div class="hs hs-1"></div>
+    <div class="hs hs-2"></div>
+    <div class="hs hs-3"></div>
+    <div class="hs hs-4"></div>
+  </div>
   <div class="wrap hero-inner">
-    <span class="pill"><span class="dot"></span>Free forever · <b>No signup</b></span>
-    <h1>Every student tool you need,<br><span class="em">in one calm place.</span></h1>
+    <span class="pill float-1" aria-label="Free forever, no signup required">
+      <span class="dot"></span>Free forever &middot; <b>No signup required</b>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </span>
+    <h1>Every student tool<br>you need, <span class="em gradient-text-anim">in one place.</span></h1>
     <p>Study Metrics is a focused toolkit for students. Convert grades across 30+ countries, calculate GPAs, and plan your semester without accounts or paywalls.</p>
     <div class="hero-actions">
       <a href="#tools" class="btn btn-primary btn-lg">Explore the tools</a>
@@ -132,6 +142,7 @@
 
 <div class="ad-slot" aria-hidden="true"><div class="ad-inner"><span class="tag">Advertisement</span></div></div>
 
+<hr class="glow-divider" aria-hidden="true">
 <section class="section hiw" id="how">
   <div class="wrap reveal">
     <div class="sec-head">
@@ -139,9 +150,9 @@
       <h2>No accounts. No noise.</h2>
     </div>
     <div class="hiw-grid">
-      <div class="hiw-step"><div class="hiw-num">1</div><h3>Pick a tool</h3><p>Browse the toolkit and open what you need. Every tool loads instantly in your browser.</p></div>
-      <div class="hiw-step"><div class="hiw-num">2</div><h3>Enter your info</h3><p>Type in your grades or credits. Results update live as you go, nothing to submit.</p></div>
-      <div class="hiw-step"><div class="hiw-num">3</div><h3>Get your answer</h3><p>Copy or export your results. Your data never leaves your device.</p></div>
+      <div class="hiw-step"><div class="hiw-num" aria-hidden="true">1</div><h3>Pick a tool</h3><p>Browse the toolkit and open what you need. Every tool loads instantly in your browser.</p></div>
+      <div class="hiw-step"><div class="hiw-num" aria-hidden="true">2</div><h3>Enter your info</h3><p>Type in your grades or credits. Results update live as you go, nothing to submit.</p></div>
+      <div class="hiw-step"><div class="hiw-num" aria-hidden="true">3</div><h3>Get your answer</h3><p>Copy or export your results. Your data never leaves your device.</p></div>
     </div>
   </div>
 </section>
@@ -157,6 +168,7 @@
   </div>
 </section>
 
+<hr class="glow-divider" aria-hidden="true">
 <div class="cta-band reveal">
   <div class="cta-inner">
     <h2>Ready to crush your goals?</h2>
@@ -201,6 +213,7 @@
 </footer>
 
 <script src="js/script.js"></script>
+<script src="js/premium.js"></script>
 </body>
 </html>
  
