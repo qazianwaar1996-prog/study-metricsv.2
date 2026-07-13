@@ -213,3 +213,25 @@
     setScaleNote();
   });
 })();
+
+/* ── Premium GPA Ring Animation ── */
+(function patchGpaRing() {
+  function updateRing(gpa) {
+    var arc = document.getElementById('gpaRingArc');
+    if (!arc) return;
+    var pct = Math.min(Math.max(parseFloat(gpa) || 0, 0), 4) / 4;
+    var circumference = 314;
+    arc.style.strokeDashoffset = circumference - (circumference * pct);
+  }
+
+  // Hook into the existing compute cycle via MutationObserver
+  var gpaBig = document.querySelector('.gpa-big');
+  if (!gpaBig) return;
+
+  new MutationObserver(function() {
+    updateRing(gpaBig.textContent);
+  }).observe(gpaBig, { childList: true, characterData: true, subtree: true });
+
+  // Initial
+  setTimeout(function() { updateRing(gpaBig.textContent); }, 300);
+})();
