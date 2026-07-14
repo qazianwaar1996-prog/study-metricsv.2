@@ -1554,3 +1554,82 @@ body.premium .value p  { color: var(--p-ink-2); }
 body.premium .editor-info { color: var(--p-ink-3); }
 body.premium .rev-letter-hint { color: var(--p-ink-2); }
 body.premium .mode-bar { border-bottom: 1px solid var(--glass-border); margin-bottom: 4px; }
+
+/* ============================================================
+   SECTION 40: NEW HOMEPAGE SECTIONS — dark theme overrides
+   (Why Choose reuses SECTION 39 .value rules already above;
+   FAQ reuses SECTION 22 .faq rules already above. New: hero
+   illustration, stats, testimonials, footer newsletter/social)
+   ============================================================ */
+
+/* Hero floating illustration */
+body.premium .hf-mock {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--sh-md);
+}
+body.premium .hf-mock-title { color: var(--p-ink-3); }
+body.premium .hf-ring-track { stroke: rgba(255,255,255,.08); }
+body.premium .hf-ring-val   { stroke: var(--g1); }
+body.premium .hf-ring-num   { color: var(--p-ink); }
+body.premium .hf-ring-lbl   { color: var(--p-ink-3); }
+body.premium .hf-mock-foot  { color: var(--p-ink-3); }
+body.premium .hf-chip {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  color: var(--p-ink-2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+body.premium .hf-chip svg { color: #a78bfa; }
+
+/* Stats */
+body.premium .stats-sec {
+  background: rgba(255,255,255,.015);
+  border-color: var(--glass-border);
+  position: relative;
+  z-index: 3;
+}
+body.premium .stat .n {
+  background: linear-gradient(135deg, #fff, #c4b5fd);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+body.premium .stat .l { color: var(--p-ink-3); }
+
+/* Testimonials */
+body.premium .testi {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition: border-color .2s, transform .2s var(--ease-spring);
+}
+body.premium .testi:hover {
+  border-color: rgba(124,58,237,.3);
+  transform: translateY(-3px);
+}
+body.premium .testi p { color: var(--p-ink-2); }
+body.premium .testi-avatar {
+  background: linear-gradient(135deg, var(--g1), var(--g2));
+  color: #fff;
+}
+body.premium .testi-by b { color: var(--p-ink); }
+body.premium .testi-by span { color: var(--p-ink-3); }
+
+/* Footer newsletter + social */
+body.premium .foot-news .input {
+  background: rgba(255,255,255,.05);
+  border-color: var(--glass-border);
+  color: var(--p-ink);
+}
+body.premium .foot-news .input::placeholder { color: var(--p-ink-3); }
+body.premium .foot-news-note { color: var(--p-ink-3); }
+body.premium .foot-social a {
+  background: rgba(255,255,255,.06);
+  color: var(--p-ink-2);
+}
+body.premium .foot-social a:hover {
+  background: linear-gradient(135deg, var(--g1), var(--g2));
+  color: #fff;
+}
