@@ -194,7 +194,7 @@
   }
 
   function initCounters () {
-    var statNums = qsa('.hero-stats .n');
+    var statNums = qsa('.hero-stats .n, .stats-grid .n');
     if (!statNums.length) return;
 
     var io = new IntersectionObserver(function (entries) {
@@ -557,6 +557,24 @@
   }
 
   /* ============================================================
+     22. NEWSLETTER FORM (footer)
+     NOTE: front-end only — wire #newsletterForm up to a real
+     email provider (e.g. Mailchimp/ConvertKit/Buttondown) before
+     relying on this to actually collect addresses.
+     ============================================================ */
+  function initNewsletter () {
+    var form = qs('#newsletterForm');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var input = qs('input[type="email"]', form);
+      if (!input || !input.checkValidity()) return;
+      if (window.SM && SM.toast) SM.toast("Thanks — you're subscribed!", 'success');
+      form.reset();
+    });
+  }
+
+  /* ============================================================
      INIT — ordered correctly, no race conditions
      ============================================================ */
   function init () {
@@ -573,6 +591,7 @@
     initFAQ();
     initKickers();
     initRowButtons();
+    initNewsletter();
     initGpaRing();
     initPDFButton();
     initShareButtons();
