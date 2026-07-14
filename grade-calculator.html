@@ -20,6 +20,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/premium.css">
+<link rel="stylesheet" href="css/calculators.css">
 </head>
 <body>
 
@@ -49,6 +50,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
         <span>Weighted Grade Calculator</span>
     </div>
+    <div class="calc-kicker" aria-label="Grade Calculator tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Grade Calculator</div>
     <h1>Weighted Grade Calculator</h1>
     <p>Input your scores and their respective weights to see your overall course grade in real-time. Everything is saved automatically as you type.</p>
   </div>
@@ -80,11 +82,16 @@
         <div class="label">Current overall grade</div>
         <div class="grade-big tnum" id="gradeOut">—</div>
         <div class="grade-letter" id="gradeLetter">—</div>
-        <button class="btn btn-ghost" id="pdfBtn" aria-label="Download result as PDF">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          PDF
-        </button>
-        <button class="btn btn-ghost" id="shareBtn">Copy Result</button>
+        <div class="result-btn-row">
+          <button class="btn" id="shareBtn" aria-label="Copy result to clipboard">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+          <button class="btn" id="pdfBtn" aria-label="Download result as PDF">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            PDF
+          </button>
+        </div>
       </div>
       
       <div class="weight-note" id="weightNote"></div>
@@ -145,5 +152,6 @@
 <script src="js/script.js"></script>
 <script src="js/grade-calculator.js"></script>
 <script src="js/premium.js"></script>
+<script src="js/calculators.js"></script>
 </body>
 </html>
