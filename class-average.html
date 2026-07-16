@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class Average Calculator — Study Metrics</title>
+<meta name="description" content="Calculate the mean, median, highest, and lowest grade for a class. Enter all student scores and get instant statistics.">
+<link rel="canonical" href="https://studymetrics.app/class-average.html">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="Class Average Calculator — Study Metrics">
+<meta property="og:description" content="Calculate the mean, median, highest, and lowest grade for a class. Enter all student scores and get instant statistics.">
+<meta property="og:url" content="https://studymetrics.app/class-average.html">
+<meta property="og:image" content="images/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Class Average Calculator","url":"https://studymetrics.app/class-average.html","applicationCategory":"EducationalApplication","isAccessibleForFree":true,"operatingSystem":"All"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/premium.css">
+<link rel="stylesheet" href="css/calculators.css">
+</head>
+<body>
+<header class="site-head">
+  <nav class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+    <div class="nav-links">
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#how">How it works</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+    </div>
+    <div class="nav-cta">
+      <a href="index.html#tools" class="btn btn-ghost">All tools</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+<section class="tool-head">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="wrap reveal">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Class Average</span>
+    </nav>
+    <div class="calc-kicker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Class Average</div>
+    <h1>Class Average Calculator</h1>
+    <p>Enter all student scores to get mean, median, highest, lowest, and grade distribution. Great for teachers and students.</p>
+  </div>
+</section>
+<div class="wrap reveal">
+  <div class="tool-layout">
+    <div class="calc-main">
+      <div class="panel">
+        <div class="panel-head"><h2>Enter Scores</h2></div>
+        <div class="field">
+          <label for="caScores">Student Scores (one per line or comma-separated)</label>
+          <textarea class="input editor" id="caScores" rows="8" placeholder="78&#10;85&#10;92&#10;67&#10;88&#10;73&#10;95&#10;61" aria-label="Enter scores" style="font-family:var(--font-body);resize:vertical"></textarea>
+          <span class="hint">Enter percentage scores between 0 and 100</span>
+        </div>
+        <div class="calc-actions">
+          <button class="btn btn-primary" id="caCalculate">Calculate</button>
+          <button class="btn btn-danger" id="caReset">Reset</button>
+        </div>
+        <div class="prose tight" style="margin-top:var(--s6)">
+          <h2>Statistics Explained</h2>
+          <p><strong>Mean:</strong> The arithmetic average of all scores.</p>
+          <p><strong>Median:</strong> The middle score when sorted — better for skewed distributions.</p>
+          <p><strong>Standard Deviation:</strong> How spread out the scores are. Low SD = tight cluster; high SD = wide spread.</p>
+          <div class="faq"><details open><summary>Why use median instead of mean?</summary><p>If a few students score very high or very low, the mean gets pulled toward those outliers. The median is more representative of a typical student's performance.</p></details>
+<details><summary>What is a good class average?</summary><p>Most instructors aim for a class average around 70–80%. Averages below 60% may indicate the assessment was too difficult; above 90% may indicate it was too easy.</p></details>
+</div>
+        </div>
+      </div>
+    </div>
+    <div class="result-rail">
+      <div class="res-hero" aria-live="polite">
+        <div class="label">Class Mean</div>
+        <div class="res-big tnum" id="caMean">—</div>
+        <div class="res-sub" id="caLetter"></div>
+        <div class="gpa-meta">
+          <div><div class="n tnum" id="caStudents">0</div><div class="l">Students</div></div>
+          <div><div class="n tnum" id="caMedian">—</div><div class="l">Median</div></div>
+        </div>
+        <div class="result-btn-row">
+          <button class="btn" id="caShare" aria-label="Copy result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+          <button class="btn" id="pdfBtn" aria-label="Print PDF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button>
+        </div>
+      </div>
+      <div class="panel" style="padding:var(--s4)" aria-live="polite">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);text-align:center">
+          <div><div class="n tnum" id="caHigh" style="font-family:var(--font-display);font-weight:700;font-size:var(--step-lg);color:var(--ok)">—</div><div style="font-size:var(--step-xs);color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em">Highest</div></div>
+          <div><div class="n tnum" id="caLow" style="font-family:var(--font-display);font-weight:700;font-size:var(--step-lg);color:var(--danger)">—</div><div style="font-size:var(--step-xs);color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em">Lowest</div></div>
+          <div><div class="n tnum" id="caStdDev" style="font-family:var(--font-display);font-weight:700;font-size:var(--step-md)">—</div><div style="font-size:var(--step-xs);color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em">Std Dev</div></div>
+          <div><div class="n tnum" id="caRange" style="font-family:var(--font-display);font-weight:700;font-size:var(--step-md)">—</div><div style="font-size:var(--step-xs);color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em">Range</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="related" aria-labelledby="relHead">
+  <div class="wrap">
+    <h2 id="relHead" style="font-size:var(--step-md);margin-bottom:var(--s3)">Related Tools</h2>
+    <div class="rel-grid">
+      <a href="grade-calculator.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></div>
+        <div><b>Grade Calculator</b><span>Individual grade weighting</span></div>
+      </a>
+      <a href="percentage-calculator.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
+        <div><b>Percentage Calc</b><span>Marks to percentage</span></div>
+      </a>
+      <a href="grade-predictor.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div><b>Grade Predictor</b><span>Predict final grade</span></div>
+      </a>
+      <a href="assignment-weight.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+        <div><b>Assignment Weight</b><span>Component weight check</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+<div id="backToTop" aria-label="Back to top">↑</div>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid" style="grid-template-columns:1.2fr 1fr 1fr 1fr 1fr">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+        <p>Free academic tools for students. No accounts, no clutter.</p>
+      </div>
+      <div class="foot-col">
+        <h4>GPA Tools</h4>
+        <a href="gpa.html">GPA Calculator</a>
+        <a href="cgpa.html">CGPA Calculator</a>
+        <a href="semester-gpa.html">Semester GPA</a>
+        <a href="target-gpa.html">Target GPA</a>
+        <a href="gpa-improvement-planner.html">GPA Planner</a>
+        <a href="gpa-converter.html">GPA Converter</a>
+        <a href="gpa-to-percentage.html">GPA to %</a>
+        <a href="percentage-to-gpa.html">% to GPA</a>
+      </div>
+      <div class="foot-col">
+        <h4>Grade Tools</h4>
+        <a href="grade-calculator.html">Grade Calculator</a>
+        <a href="final-grade.html">Final Grade</a>
+        <a href="final-exam-calculator.html">Final Exam</a>
+        <a href="required-marks.html">Required Marks</a>
+        <a href="grade-predictor.html">Grade Predictor</a>
+        <a href="assignment-weight.html">Assignment Weight</a>
+        <a href="class-average.html">Class Average</a>
+        <a href="percentage-calculator.html">Percentage</a>
+      </div>
+      <div class="foot-col">
+        <h4>Planning</h4>
+        <a href="attendance-calculator.html">Attendance</a>
+        <a href="attendance-goal.html">Attendance Goal</a>
+        <a href="credit-hour-planner.html">Credit Planner</a>
+        <a href="study-time.html">Study Time</a>
+        <a href="pomodoro.html">Pomodoro Timer</a>
+        <a href="study-schedule.html">Study Schedule</a>
+        <a href="scientific-calculator.html">Scientific Calc</a>
+        <a href="basic-calculator.html">Basic Calc</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms-and-conditions.html">Terms</a>
+      </div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 Study Metrics. All rights reserved.</span></div>
+  </div>
+</footer>
+<script src="js/script.js"></script>
+<script src="js/class-average.js"></script>
+<script src="js/premium.js"></script>
+<script src="js/calculators.js"></script>
+</body>
+</html>

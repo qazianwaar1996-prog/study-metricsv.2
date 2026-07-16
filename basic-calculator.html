@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basic Calculator Online — Study Metrics</title>
+<meta name="description" content="A clean, fast basic calculator for quick arithmetic. Works on mobile, tablet and desktop. No signup needed.">
+<link rel="canonical" href="https://studymetrics.app/basic-calculator.html">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="Basic Calculator Online — Study Metrics">
+<meta property="og:description" content="A clean, fast basic calculator for quick arithmetic. Works on mobile, tablet and desktop. No signup needed.">
+<meta property="og:url" content="https://studymetrics.app/basic-calculator.html">
+<meta property="og:image" content="images/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Basic Calculator Online","url":"https://studymetrics.app/basic-calculator.html","applicationCategory":"EducationalApplication","isAccessibleForFree":true,"operatingSystem":"All"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/premium.css">
+<link rel="stylesheet" href="css/calculators.css">
+</head>
+<body>
+<header class="site-head">
+  <nav class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+    <div class="nav-links">
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#how">How it works</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+    </div>
+    <div class="nav-cta">
+      <a href="index.html#tools" class="btn btn-ghost">All tools</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+<section class="tool-head">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="wrap reveal">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Basic Calculator</span>
+    </nav>
+    <div class="calc-kicker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>Basic Calculator</div>
+    <h1>Basic Calculator</h1>
+    <p>A clean, responsive basic calculator for quick arithmetic. Fast, mobile-friendly, and works entirely in your browser.</p>
+  </div>
+</section>
+<div class="wrap reveal">
+  <div style="max-width:340px;margin:0 auto;padding:var(--s7) 0">
+    <div class="panel" style="padding:var(--s4)">
+      <div id="bcDisplay" style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s4) var(--s5);margin-bottom:var(--s4);text-align:right">
+        <div id="bcExpr" style="font-size:var(--step-sm);color:var(--ink-3);min-height:20px"></div>
+        <div id="bcResult" class="tnum" style="font-family:var(--font-display);font-size:2.8rem;font-weight:700;letter-spacing:-.03em">0</div>
+      </div>
+      <div id="bcKeypad" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px"></div>
+    </div>
+  </div>
+  <div class="wrap" style="max-width:700px;padding-top:0">
+    <div class="prose tight">
+      <h2>About This Calculator</h2>
+      <p>This basic calculator supports addition, subtraction, multiplication, division, and percentage operations. It uses standard order of operations and handles decimals accurately.</p>
+      <div class="faq"><details open><summary>Can I use keyboard shortcuts?</summary><p>Yes — type digits and operators directly from your keyboard. Press Enter or = to calculate. Backspace removes the last character. Escape clears all.</p></details>
+<details><summary>Need more functions?</summary><p>Try the Scientific Calculator for trigonometry, logarithms, and powers.</p></details>
+</div>
+    </div>
+  </div>
+</div>
+<section class="related" aria-labelledby="relHead">
+  <div class="wrap">
+    <h2 id="relHead" style="font-size:var(--step-md);margin-bottom:var(--s3)">Related Tools</h2>
+    <div class="rel-grid">
+      <a href="scientific-calculator.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 16s4-4 8-4 8 4 8 4"/><path d="m5 19 4-8"/><path d="M15 5 19 13"/></svg></div>
+        <div><b>Scientific Calc</b><span>Full scientific functions</span></div>
+      </a>
+      <a href="percentage-calculator.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
+        <div><b>Percentage Calc</b><span>Percentage calculations</span></div>
+      </a>
+      <a href="grade-calculator.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></div>
+        <div><b>Grade Calculator</b><span>Weighted grade calc</span></div>
+      </a>
+      <a href="gpa.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg></div>
+        <div><b>GPA Calculator</b><span>GPA from grades</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+<div id="backToTop" aria-label="Back to top">↑</div>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid" style="grid-template-columns:1.2fr 1fr 1fr 1fr 1fr">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+        <p>Free academic tools for students. No accounts, no clutter.</p>
+      </div>
+      <div class="foot-col">
+        <h4>GPA Tools</h4>
+        <a href="gpa.html">GPA Calculator</a>
+        <a href="cgpa.html">CGPA Calculator</a>
+        <a href="semester-gpa.html">Semester GPA</a>
+        <a href="target-gpa.html">Target GPA</a>
+        <a href="gpa-improvement-planner.html">GPA Planner</a>
+        <a href="gpa-converter.html">GPA Converter</a>
+        <a href="gpa-to-percentage.html">GPA to %</a>
+        <a href="percentage-to-gpa.html">% to GPA</a>
+      </div>
+      <div class="foot-col">
+        <h4>Grade Tools</h4>
+        <a href="grade-calculator.html">Grade Calculator</a>
+        <a href="final-grade.html">Final Grade</a>
+        <a href="final-exam-calculator.html">Final Exam</a>
+        <a href="required-marks.html">Required Marks</a>
+        <a href="grade-predictor.html">Grade Predictor</a>
+        <a href="assignment-weight.html">Assignment Weight</a>
+        <a href="class-average.html">Class Average</a>
+        <a href="percentage-calculator.html">Percentage</a>
+      </div>
+      <div class="foot-col">
+        <h4>Planning</h4>
+        <a href="attendance-calculator.html">Attendance</a>
+        <a href="attendance-goal.html">Attendance Goal</a>
+        <a href="credit-hour-planner.html">Credit Planner</a>
+        <a href="study-time.html">Study Time</a>
+        <a href="pomodoro.html">Pomodoro Timer</a>
+        <a href="study-schedule.html">Study Schedule</a>
+        <a href="scientific-calculator.html">Scientific Calc</a>
+        <a href="basic-calculator.html">Basic Calc</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms-and-conditions.html">Terms</a>
+      </div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 Study Metrics. All rights reserved.</span></div>
+  </div>
+</footer>
+<script src="js/script.js"></script>
+<script src="js/basic-calculator.js"></script>
+<script src="js/premium.js"></script>
+<script src="js/calculators.js"></script>
+</body>
+</html>

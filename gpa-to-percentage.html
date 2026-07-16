@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPA to Percentage Converter — Study Metrics</title>
+<meta name="description" content="Convert your GPA on any scale (4.0, 5.0, 10.0) to percentage marks. Supports US, India, Pakistan, Nigeria and more.">
+<link rel="canonical" href="https://studymetrics.app/gpa-to-percentage.html">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="GPA to Percentage Converter — Study Metrics">
+<meta property="og:description" content="Convert your GPA on any scale (4.0, 5.0, 10.0) to percentage marks. Supports US, India, Pakistan, Nigeria and more.">
+<meta property="og:url" content="https://studymetrics.app/gpa-to-percentage.html">
+<meta property="og:image" content="images/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"GPA to Percentage Converter","url":"https://studymetrics.app/gpa-to-percentage.html","applicationCategory":"EducationalApplication","isAccessibleForFree":true,"operatingSystem":"All"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/premium.css">
+<link rel="stylesheet" href="css/calculators.css">
+</head>
+<body>
+<header class="site-head">
+  <nav class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+    <div class="nav-links">
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#how">How it works</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+    </div>
+    <div class="nav-cta">
+      <a href="index.html#tools" class="btn btn-ghost">All tools</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+<section class="tool-head">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="wrap reveal">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      <span>GPA → Percentage</span>
+    </nav>
+    <div class="calc-kicker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>GPA → Percentage</div>
+    <h1>GPA to Percentage Converter</h1>
+    <p>Enter your GPA and select your scale. Get the equivalent percentage mark instantly for any grading system.</p>
+  </div>
+</section>
+<div class="wrap reveal">
+  <div class="tool-layout">
+    <div class="calc-main">
+      <div class="panel">
+        <div class="panel-head"><h2>Your GPA</h2></div>
+        <div style="display:grid;gap:var(--s5)">
+          <div class="field">
+            <label for="g2pGpa">Your GPA</label>
+            <input class="input lg" type="number" id="g2pGpa" min="0" max="10" step="0.01" placeholder="e.g. 3.5">
+          </div>
+          <div class="field">
+            <label for="g2pScale">GPA Scale</label>
+            <select class="select" id="g2pScale" aria-label="GPA scale">
+              <option value="us4">US 4.0 Scale</option>
+              <option value="pak4">Pakistan 4.0</option>
+              <option value="india10">India 10-point</option>
+              <option value="nigeria5">Nigeria 5.0</option>
+            </select>
+          </div>
+        </div>
+        <div class="calc-actions"><button class="btn btn-danger" id="g2pReset">Reset</button></div>
+        <div class="prose tight" style="margin-top:var(--s6)">
+          <h2>Why convert GPA to percentage?</h2>
+          <p>Many scholarship applications, job applications, and international university admissions require percentage marks. If your transcript shows a GPA, this tool gives you the equivalent percentage to include on applications.</p>
+          <p>Note that conversion formulas vary by institution. The values here follow the most widely accepted approximations for each scale.</p>
+          <div class="faq"><details open><summary>Is the conversion exact?</summary><p>No universal standard exists. Different universities use slightly different formulas. This tool uses widely accepted approximations. Always verify with your institution if the stakes are high.</p></details>
+<details><summary>How do Indian universities calculate percentage from CGPA?</summary><p>Most affiliated to CBSE multiply CGPA by 9.5. Others use their own multiplier. Select "India 10-point" for the standard CBSE formula.</p></details>
+</div>
+        </div>
+      </div>
+    </div>
+    <div class="result-rail">
+      <div class="res-hero" aria-live="polite">
+        <div class="label">Equivalent Percentage</div>
+        <div class="res-big tnum" id="g2pOut">—</div>
+        <div class="res-sub" id="g2pClass"></div>
+        <div class="result-btn-row">
+          <button class="btn" id="g2pShare" aria-label="Copy result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+          <button class="btn" id="pdfBtn" aria-label="Print PDF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button>
+        </div>
+      </div>
+      <div class="scale-note info"><b>Reverse?</b> Use <a href="percentage-to-gpa.html">Percentage to GPA</a> to go the other direction.</div>
+    </div>
+  </div>
+</div>
+<section class="related" aria-labelledby="relHead">
+  <div class="wrap">
+    <h2 id="relHead" style="font-size:var(--step-md);margin-bottom:var(--s3)">Related Tools</h2>
+    <div class="rel-grid">
+      <a href="percentage-to-gpa.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
+        <div><b>% → GPA</b><span>Convert percentage to GPA</span></div>
+      </a>
+      <a href="gpa-converter.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div><b>Global GPA Converter</b><span>30+ country scales</span></div>
+      </a>
+      <a href="cgpa.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg></div>
+        <div><b>CGPA Calculator</b><span>Cumulative GPA tracking</span></div>
+      </a>
+      <a href="gpa.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg></div>
+        <div><b>GPA Calculator</b><span>Semester GPA</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+<div id="backToTop" aria-label="Back to top">↑</div>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid" style="grid-template-columns:1.2fr 1fr 1fr 1fr 1fr">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+        <p>Free academic tools for students. No accounts, no clutter.</p>
+      </div>
+      <div class="foot-col">
+        <h4>GPA Tools</h4>
+        <a href="gpa.html">GPA Calculator</a>
+        <a href="cgpa.html">CGPA Calculator</a>
+        <a href="semester-gpa.html">Semester GPA</a>
+        <a href="target-gpa.html">Target GPA</a>
+        <a href="gpa-improvement-planner.html">GPA Planner</a>
+        <a href="gpa-converter.html">GPA Converter</a>
+        <a href="gpa-to-percentage.html">GPA to %</a>
+        <a href="percentage-to-gpa.html">% to GPA</a>
+      </div>
+      <div class="foot-col">
+        <h4>Grade Tools</h4>
+        <a href="grade-calculator.html">Grade Calculator</a>
+        <a href="final-grade.html">Final Grade</a>
+        <a href="final-exam-calculator.html">Final Exam</a>
+        <a href="required-marks.html">Required Marks</a>
+        <a href="grade-predictor.html">Grade Predictor</a>
+        <a href="assignment-weight.html">Assignment Weight</a>
+        <a href="class-average.html">Class Average</a>
+        <a href="percentage-calculator.html">Percentage</a>
+      </div>
+      <div class="foot-col">
+        <h4>Planning</h4>
+        <a href="attendance-calculator.html">Attendance</a>
+        <a href="attendance-goal.html">Attendance Goal</a>
+        <a href="credit-hour-planner.html">Credit Planner</a>
+        <a href="study-time.html">Study Time</a>
+        <a href="pomodoro.html">Pomodoro Timer</a>
+        <a href="study-schedule.html">Study Schedule</a>
+        <a href="scientific-calculator.html">Scientific Calc</a>
+        <a href="basic-calculator.html">Basic Calc</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms-and-conditions.html">Terms</a>
+      </div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 Study Metrics. All rights reserved.</span></div>
+  </div>
+</footer>
+<script src="js/script.js"></script>
+<script src="js/gpa-to-percentage.js"></script>
+<script src="js/premium.js"></script>
+<script src="js/calculators.js"></script>
+</body>
+</html>

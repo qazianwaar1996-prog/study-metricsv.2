@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Required Marks Calculator — Study Metrics</title>
+<meta name="description" content="Calculate the marks you need in remaining subjects to achieve your target percentage. Enter done subjects and get instant results.">
+<link rel="canonical" href="https://studymetrics.app/required-marks.html">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="Required Marks Calculator — Study Metrics">
+<meta property="og:description" content="Calculate the marks you need in remaining subjects to achieve your target percentage. Enter done subjects and get instant results.">
+<meta property="og:url" content="https://studymetrics.app/required-marks.html">
+<meta property="og:image" content="images/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Required Marks Calculator","url":"https://studymetrics.app/required-marks.html","applicationCategory":"EducationalApplication","isAccessibleForFree":true}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/premium.css">
+<link rel="stylesheet" href="css/calculators.css">
+</head>
+<body>
+
+<header class="site-head">
+  <nav class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+    <div class="nav-links">
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#how">How it works</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+    </div>
+    <div class="nav-cta">
+      <a href="index.html#tools" class="btn btn-ghost">All tools</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<section class="tool-head">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="wrap reveal">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Required Marks Calculator</span>
+    </nav>
+    <div class="calc-kicker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Required Marks</div>
+    <h1>Required Marks Calculator</h1>
+    <p>Enter your obtained marks in completed subjects and see what average you need in remaining subjects to hit your target.</p>
+  </div>
+</section>
+
+<div class="wrap reveal">
+  <div class="tool-layout wide-rail">
+    <div class="calc-main">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Subjects</h2>
+          <div class="calc-actions">
+            <div class="field" style="flex-direction:row;align-items:center;gap:var(--s3)">
+              <label for="rmTarget" style="white-space:nowrap">Target %</label>
+              <div class="input-unit" style="width:140px">
+                <input class="input" type="number" id="rmTarget" min="0" max="100" step="0.1" placeholder="e.g. 75" aria-label="Target percentage">
+                <span class="unit">%</span>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="rmAddRow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add</button>
+            <button class="btn btn-ghost" id="rmReset">Reset</button>
+            <button class="btn btn-danger" id="rmClear">Clear</button>
+          </div>
+        </div>
+        <div class="rows-head" style="display:grid;grid-template-columns:1fr 110px 90px 44px 44px;gap:var(--s3);padding:0 var(--s3) var(--s2);font-size:var(--step-xs);text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:600" aria-hidden="true">
+          <span>Subject</span><span>Obtained</span><span>Max</span><span>Status</span><span></span>
+        </div>
+        <div id="rmRows" role="list" aria-label="Subject list"></div>
+        <div class="calc-actions"><button class="btn btn-ghost" id="rmAddRow2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add Subject</button></div>
+      </div>
+      <div class="prose tight" style="margin-top:var(--s6)">
+        <h2>How It Works</h2>
+        <p>Mark subjects as <strong>Done</strong> (enter obtained marks) or <strong>Pending</strong>. The calculator finds the average marks per pending subject needed to reach your target percentage.</p>
+        <p><strong>Formula:</strong> Required Avg = (Target Total − Obtained Sum) ÷ Number of Pending Subjects</p>
+        <div class="faq">
+          <details open><summary>What does the ✓ / ⏱ button do?</summary><p>Toggle each subject between Done (marks locked in) and Pending (marks still to be scored). Only pending subjects factor into the required marks calculation.</p></details>
+          <details><summary>Can I use different max marks per subject?</summary><p>Yes — each subject row has its own Max Marks field. This handles mixed-weight subjects like 50-mark practicals and 100-mark theory papers.</p></details>
+        </div>
+      </div>
+    </div>
+    <div class="result-rail">
+      <div class="res-hero" aria-live="polite">
+        <div class="label">Avg Required per Subject</div>
+        <div class="res-big tnum" id="rmRequired">—</div>
+        <div class="res-sub" id="rmSubOut">Set target % above</div>
+        <div class="gpa-meta">
+          <div><div class="n tnum" id="rmPctRequired">—</div><div class="l">% Required</div></div>
+          <div><div class="n tnum" id="rmPending">0</div><div class="l">Pending</div></div>
+        </div>
+        <div class="result-btn-row">
+          <button class="btn" id="rmShare" aria-label="Copy result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+          <button class="btn" id="pdfBtn" aria-label="Print PDF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button>
+        </div>
+      </div>
+      <div class="res-hero" aria-live="polite" style="padding:var(--s4)">
+        <div class="label">Current Standing</div>
+        <div class="res-big tnum" id="rmCurrentPct" style="font-size:2.5rem">—</div>
+        <div class="res-sub">of obtained subjects</div>
+      </div>
+      <div id="rmVerdict" class="verdict info" aria-live="polite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <div><b>How to use</b> Set your target %, enter marks, toggle subjects done/pending.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="related" aria-labelledby="relHead">
+  <div class="wrap">
+    <h2 id="relHead" style="font-size:var(--step-md);margin-bottom:var(--s3)">Related Tools</h2>
+    <div class="rel-grid">
+      <a href="final-exam-calculator.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div><b>Final Exam Calc</b><span>Score needed on final</span></div>
+      </a>
+      <a href="grade-predictor.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <div><b>Grade Predictor</b><span>Predict your final grade</span></div>
+      </a>
+      <a href="percentage-calculator.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
+        <div><b>Percentage Calc</b><span>Marks to percentage</span></div>
+      </a>
+      <a href="gpa.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg></div>
+        <div><b>GPA Calculator</b><span>Calculate semester GPA</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+<div id="backToTop" aria-label="Back to top">↑</div>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid" style="grid-template-columns:1.2fr 1fr 1fr 1fr 1fr">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+        <p>Free academic tools for students. No accounts, no clutter.</p>
+      </div>
+      <div class="foot-col">
+        <h4>GPA Tools</h4>
+        <a href="gpa.html">GPA Calculator</a>
+        <a href="cgpa.html">CGPA Calculator</a>
+        <a href="semester-gpa.html">Semester GPA</a>
+        <a href="target-gpa.html">Target GPA</a>
+        <a href="gpa-improvement-planner.html">GPA Planner</a>
+        <a href="gpa-converter.html">GPA Converter</a>
+        <a href="gpa-to-percentage.html">GPA → %</a>
+        <a href="percentage-to-gpa.html">% → GPA</a>
+      </div>
+      <div class="foot-col">
+        <h4>Grade Tools</h4>
+        <a href="grade-calculator.html">Grade Calculator</a>
+        <a href="final-grade.html">Final Grade</a>
+        <a href="final-exam-calculator.html">Final Exam</a>
+        <a href="required-marks.html">Required Marks</a>
+        <a href="grade-predictor.html">Grade Predictor</a>
+        <a href="assignment-weight.html">Assignment Weight</a>
+        <a href="class-average.html">Class Average</a>
+        <a href="percentage-calculator.html">Percentage</a>
+      </div>
+      <div class="foot-col">
+        <h4>Planning</h4>
+        <a href="attendance-calculator.html">Attendance</a>
+        <a href="attendance-goal.html">Attendance Goal</a>
+        <a href="credit-hour-planner.html">Credit Planner</a>
+        <a href="study-time.html">Study Time</a>
+        <a href="pomodoro.html">Pomodoro Timer</a>
+        <a href="study-schedule.html">Study Schedule</a>
+        <a href="scientific-calculator.html">Scientific Calc</a>
+        <a href="basic-calculator.html">Basic Calc</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms-and-conditions.html">Terms</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Study Metrics. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+<script src="js/script.js"></script>
+<script src="js/required-marks.js"></script>
+<script src="js/premium.js"></script>
+<script src="js/calculators.js"></script>
+</body>
+</html>
