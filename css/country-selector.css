@@ -9,6 +9,7 @@
 .sm-country-wrap {
   display: flex;
   align-items: center;
+  flex-shrink: 0;   /* never compress off-screen in the nav flex row */
 }
 
 /* ── Country select dropdown ────────────────────────────────── */
@@ -16,7 +17,9 @@
   font-size: .78rem;
   padding: 6px 28px 6px 10px;
   border-radius: 10px;
-  max-width: 200px;
+  width: 172px;          /* fixed width so flex never squeezes it */
+  max-width: 172px;
+  min-width: 120px;
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
@@ -113,9 +116,42 @@ body.premium #smAllCountries .rel-card.active-country {
 }
 
 /* ── Responsive: hide country selector on very small screens ─── */
-@media (max-width: 480px) {
-  .sm-country-select { max-width: 140px; font-size: .72rem; }
-  .sm-country-wrap   { display: none; } /* only show in tool-head on mobile */
+/* Between 860px and 1024px: shrink the select to save space */
+@media (max-width: 1024px) and (min-width: 861px) {
+  .sm-country-select { width: 140px; max-width: 140px; font-size: .74rem; }
+}
+
+/* Below 860px: nav-links collapse to hamburger menu.
+   Hide the country picker from .nav-cta (too cramped next to hamburger).
+   It remains accessible via the dedicated .sm-country-picker on each page. */
+@media (max-width: 860px) {
+  .sm-country-wrap { display: none; }
+}
+
+
+/* ── Mobile inline picker (injected into .tool-head .wrap) ─────
+   Visible only on ≤860px when the nav picker is hidden.         */
+.sm-country-inline {
+  display: none;                 /* hidden on desktop — nav picker handles it */
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+.sm-country-inline::before {
+  content: "Grading system:";
+  font-size: .75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ink-3);
+}
+.sm-country-inline .sm-country-select {
+  width: 100%;
+  max-width: 220px;
+}
+body.premium .sm-country-inline::before { color: var(--p-ink-3); }
+
+@media (max-width: 860px) {
+  .sm-country-inline { display: flex; }  /* show on mobile when nav picker hides */
 }
 
 /* ── Reduced motion ──────────────────────────────────────────── */
