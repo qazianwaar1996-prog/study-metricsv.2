@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/premium.css">
 <link rel="stylesheet" href="css/calculators.css">
+<link rel="stylesheet" href="css/country-selector.css">
 </head>
 <body>
 <header class="site-head">
@@ -92,6 +93,7 @@
           <button class="btn" id="caShare" aria-label="Copy result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
           <button class="btn" id="pdfBtn" aria-label="Print PDF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button>
         </div>
+        <div id="smConvResult" class="sm-conv-result" aria-live="polite" aria-label="Equivalent grade in your country"></div>
       </div>
       <div class="panel" style="padding:var(--s4)" aria-live="polite">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);text-align:center">
@@ -182,6 +184,8 @@
 </footer>
 <script src="js/script.js"></script>
 <script src="js/class-average.js"></script>
+<script src="js/grading-systems.js"></script>
+<script src="js/country-selector.js"></script>
 <script src="js/premium.js"></script>
 <script src="js/calculators.js"></script>
 </body>
