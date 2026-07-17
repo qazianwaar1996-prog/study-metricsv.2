@@ -11,5 +11,9 @@ Disallow: /LAUNCH-CHECKLIST.md
 User-agent: Mediapartners-Google
 Allow: /
 
+# Allow all major crawlers full access to images and CSS/JS
+User-agent: Googlebot-Image
+Allow: /images/
+
 # Sitemap location
 Sitemap: https://studymetrics.app/sitemap.xml
