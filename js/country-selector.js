@@ -26,6 +26,10 @@ window.SM_COUNTRY = (function () {
   function _emit(sys) {
     _current = sys;
     G.save(sys.id);
+    /* Sync all country selects (nav + mobile inline) to show the new value */
+    document.querySelectorAll(".sm-country-select").forEach(function(sel) {
+      if (sel.value !== sys.id) sel.value = sys.id;
+    });
     _listeners.forEach(function(fn) { try { fn(sys); } catch(e) {} });
     document.dispatchEvent(new CustomEvent("sm:country-change", { detail: { system: sys } }));
   }
@@ -34,11 +38,11 @@ window.SM_COUNTRY = (function () {
      Injected into any element with id="sm-country-picker" or
      class="sm-country-picker". Also appended to .site-head nav.
   ─────────────────────────────────────────────────────────────── */
-  function _buildSelect() {
+  function _buildSelect(assignId) {
     var sel = document.createElement("select");
     sel.className  = "select sm-country-select";
     sel.setAttribute("aria-label", "Select your country grading system");
-    sel.id = "smCountrySelect";
+    if (assignId) sel.id = "smCountrySelect";
 
     /* Group by region */
     Object.keys(G.regions).sort().forEach(function(region) {
@@ -89,20 +93,33 @@ window.SM_COUNTRY = (function () {
     note.classList.add("info");
   }
 
-  /* ── 5. Inject into navbar ────────────────────────────────────
-     Adds the selector to .nav-cta so it appears right-most.
-     Only injected on calc pages (those that load a calc JS file).
+  /* ── 5. Inject into navbar (desktop) + tool-head (mobile) ────
+     Desktop (>860px): injects into .nav-cta
+     Mobile (≤860px): injects below .tool-head h1 description
   ─────────────────────────────────────────────────────────────── */
   function _injectNav() {
-    var navCta = document.querySelector(".nav-cta");
-    if (!navCta) return;
     if (document.getElementById("smCountrySelect")) return; /* already there */
 
-    var wrap = document.createElement("div");
-    wrap.className = "sm-country-wrap";
-    wrap.setAttribute("aria-label", "Country grading system selector");
-    wrap.appendChild(_buildSelect());
-    navCta.insertBefore(wrap, navCta.firstChild);
+    /* Desktop: inject into nav-cta */
+    var navCta = document.querySelector(".nav-cta");
+    if (navCta) {
+      var wrap = document.createElement("div");
+      wrap.className = "sm-country-wrap";
+      wrap.setAttribute("aria-label", "Country grading system selector");
+      wrap.appendChild(_buildSelect(true));
+      navCta.insertBefore(wrap, navCta.firstChild);
+    }
+
+    /* Mobile fallback: also inject a picker below the tool-head description */
+    /* This is visible when the nav one is hidden via CSS at ≤860px */
+    var toolHead = document.querySelector(".tool-head .wrap");
+    if (toolHead && !toolHead.querySelector(".sm-country-inline")) {
+      var mobileWrap = document.createElement("div");
+      mobileWrap.className = "sm-country-inline";
+      mobileWrap.setAttribute("aria-label", "Select country grading system");
+      mobileWrap.appendChild(_buildSelect(false));
+      toolHead.appendChild(mobileWrap);
+    }
   }
 
   /* ── 6. Inject into explicit placeholder elements ─────────────*/
@@ -201,14 +218,21 @@ window.SM_COUNTRY = (function () {
   }
 
   /* ── INIT ────────────────────────────────────────────────────*/
-  document.addEventListener("DOMContentLoaded", function() {
+  function _init() {
     _injectNav();
     _injectPlaceholders();
     _updateBadge(_current);
     _updateScaleNote(_current);
     _liveConversion();
     _renderGuidePanel("smGuidePanel");
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", _init);
+  } else {
+    /* DOM already parsed — run immediately (handles cached/fast pages) */
+    _init();
+  }
 
   /* ── Public API ──────────────────────────────────────────────*/
   return {
