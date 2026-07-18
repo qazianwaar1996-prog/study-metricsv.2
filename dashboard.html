@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard — Study Metrics</title>
+<meta name="description" content="Your personal Study Metrics dashboard. View your GPA history, CGPA, recent calculations, favorite tools, and quickly access all calculators in one place.">
+<link rel="canonical" href="https://studymetrics.app/dashboard.html">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="Student Dashboard — Study Metrics">
+<meta property="og:description" content="Your personal academic dashboard: GPA, CGPA, recent calculations, and quick tool access.">
+<meta property="og:url" content="https://studymetrics.app/dashboard.html">
+<meta property="og:image" content="https://studymetrics.app/images/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Student Dashboard — Study Metrics">
+<meta name="twitter:description" content="Your personal academic dashboard: GPA, CGPA, recent calculations, and quick tool access.">
+<meta name="twitter:image" content="https://studymetrics.app/images/og-image.svg">
+<meta name="robots" content="noindex">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Study Metrics","url":"https://studymetrics.app/","logo":"https://studymetrics.app/images/favicon.svg","sameAs":[]}</script>
+
+<!-- Phase 7.3: Apply saved theme before first paint — prevents dark-mode FOUC -->
+<script>(function(){try{var t=localStorage.getItem('sm_theme');document.documentElement.setAttribute('data-theme',t||(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));}catch(e){}}());</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/print.css" media="print">
+<link rel="stylesheet" href="css/premium.css">
+<link rel="stylesheet" href="css/content-platform.css">
+<link rel="stylesheet" href="css/personalization.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-head">
+  <nav class="wrap nav">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics
+    </a>
+    <div class="nav-links">
+      <a href="study-guides.html">Guides</a>
+      <a href="index.html#tools">Tools</a>
+      <a href="dashboard.html" class="on">Dashboard</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+    </div>
+    <div class="nav-cta">
+      <a href="index.html#tools" class="btn btn-ghost">All tools</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+
+<!-- ── Page heading ──────────────────────────────────────── -->
+<section class="tool-head">
+  <div class="grid-bg"></div>
+  <div class="wrap reveal">
+    <div class="crumb">
+      <a href="index.html">Home</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Dashboard</span>
+    </div>
+    <div class="calc-kicker" aria-label="Student Dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      Student Dashboard
+    </div>
+    <h1>Your Academic Dashboard</h1>
+    <p>All your saved calculations and tools in one place. Data lives in your browser — nothing is sent to a server.</p>
+  </div>
+</section>
+
+<!-- ── Section navigation (sticky) ─────────────────────── -->
+<nav class="db-section-nav" aria-label="Dashboard sections">
+  <div class="wrap">
+    <button type="button" class="db-nav-btn active" data-section="overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </button>
+    <button type="button" class="db-nav-btn" data-section="gpa">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      GPA History
+    </button>
+    <button type="button" class="db-nav-btn" data-section="calcs">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 7H6a2 2 0 00-2 2v9a2 2 0 002 2h9a2 2 0 002-2v-3"/><path d="M9 15h3l8.5-8.5a1.5 1.5 0 00-3-3L9 12v3"/></svg>
+      Calculations
+    </button>
+    <button type="button" class="db-nav-btn" data-section="favorites">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Favorites
+    </button>
+    <button type="button" class="db-nav-btn" data-section="tools">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="3" width="6" height="6" rx="1"/><rect x="9" y="3" width="6" height="6" rx="1"/><rect x="16" y="3" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="11" rx="1"/><rect x="9" y="10" width="13" height="4" rx="1"/><rect x="9" y="17" width="13" height="4" rx="1"/></svg>
+      Quick Access
+    </button>
+    <button type="button" class="db-nav-btn" data-section="recent">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Recently Visited
+    </button>
+    <button type="button" class="db-nav-btn" data-section="recommended">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+      Recommended
+    </button>
+  </div>
+</nav>
+
+<!-- ── Dashboard body ────────────────────────────────────── -->
+<div class="wrap db-body">
+
+  <!-- Phase 7.2: Continue where you left off slot -->
+  <div id="sm-continue-slot" hidden></div>
+
+  <!-- ── Overview section ─────────────────────────────── -->
+  <section class="db-section reveal" id="db-sec-overview">
+    <!-- Phase 7.2: Country note -->
+    <div id="sm-country-note" hidden></div>
+    <div class="db-welcome-card">
+      <div id="db-welcome">
+        <!-- JS rendered -->
+        <div class="db-empty" style="min-height:180px">
+          <div class="db-empty-sub">Loading your dashboard…</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GPA & CGPA history ───────────────────────────── -->
+  <section class="db-section reveal" id="db-sec-gpa">
+    <div class="db-section-head">
+      <h2>GPA &amp; CGPA History</h2>
+    </div>
+    <div class="db-cols">
+
+      <!-- GPA -->
+      <div class="panel">
+        <div class="panel-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="width:18px;height:18px;vertical-align:-.2em;margin-right:6px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            GPA Calculator
+          </h2>
+          <a href="gpa.html" class="btn btn-ghost" style="font-size:var(--step-xs)">Open</a>
+        </div>
+        <div id="db-gpa-history">
+          <!-- JS rendered -->
+        </div>
+      </div>
+
+      <!-- CGPA -->
+      <div class="panel">
+        <div class="panel-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="width:18px;height:18px;vertical-align:-.2em;margin-right:6px"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            CGPA Calculator
+          </h2>
+          <a href="cgpa.html" class="btn btn-ghost" style="font-size:var(--step-xs)">Open</a>
+        </div>
+        <div id="db-cgpa-history">
+          <!-- JS rendered -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Recent Calculations ───────────────────────────── -->
+  <section class="db-section reveal" id="db-sec-calcs">
+    <div class="db-section-head">
+      <h2>Recent Calculations</h2>
+      <a href="index.html#tools" class="db-section-link">
+        All tools
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="panel">
+      <div id="db-recent-calcs">
+        <!-- JS rendered -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Favorites ─────────────────────────────────────── -->
+  <section class="db-section reveal" id="db-sec-favorites">
+    <div class="db-section-head">
+      <h2>Favorite Tools</h2>
+      <span style="font-size:var(--step-xs);color:var(--ink-3)">
+        Star any tool in Quick Access to pin it here
+      </span>
+    </div>
+    <div class="panel">
+      <div id="db-favorites">
+        <!-- JS rendered -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Quick Access ──────────────────────────────────── -->
+  <section class="db-section reveal" id="db-sec-tools">
+    <div class="db-section-head">
+      <h2>Quick Access</h2>
+      <span style="font-size:var(--step-xs);color:var(--ink-3)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="width:13px;height:13px;vertical-align:-.1em"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Star to favorite
+      </span>
+    </div>
+    <div class="panel">
+      <div id="db-quick-access">
+        <!-- JS rendered -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Recently Visited ──────────────────────────────── -->
+  <section class="db-section reveal" id="db-sec-recent">
+    <div class="db-section-head">
+      <h2>Recently Visited</h2>
+    </div>
+    <div class="db-cols">
+
+      <div class="panel">
+        <div class="panel-head" style="margin-bottom:var(--s3)">
+          <h2 style="font-size:var(--step-base)">Tool History</h2>
+        </div>
+        <div id="db-recent-visits">
+          <!-- JS rendered -->
+        </div>
+      </div>
+
+      <!-- Info / tips panel -->
+      <div class="panel" style="background:var(--surface-2)">
+        <div class="panel-head" style="margin-bottom:var(--s4)">
+          <h2 style="font-size:var(--step-base)">How the Dashboard Works</h2>
+        </div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:var(--s4)">
+          <li style="display:flex;gap:var(--s3);align-items:flex-start">
+            <span style="width:28px;height:28px;border-radius:50%;background:var(--accent-dim);color:var(--accent-strong);display:grid;place-items:center;flex-shrink:0;font-size:.75rem;font-weight:700">1</span>
+            <div>
+              <div style="font-size:var(--step-sm);font-weight:600;color:var(--ink)">Data stays in your browser</div>
+              <div style="font-size:var(--step-xs);color:var(--ink-3);margin-top:2px">All calculations are stored in <code style="font-size:.75rem;background:var(--border-soft);padding:1px 5px;border-radius:4px">localStorage</code> — nothing is sent to any server.</div>
+            </div>
+          </li>
+          <li style="display:flex;gap:var(--s3);align-items:flex-start">
+            <span style="width:28px;height:28px;border-radius:50%;background:var(--accent-dim);color:var(--accent-strong);display:grid;place-items:center;flex-shrink:0;font-size:.75rem;font-weight:700">2</span>
+            <div>
+              <div style="font-size:var(--step-sm);font-weight:600;color:var(--ink)">Calculator data auto-saves</div>
+              <div style="font-size:var(--step-xs);color:var(--ink-3);margin-top:2px">Every calculator saves as you type. Return to any tool and your last inputs are still there.</div>
+            </div>
+          </li>
+          <li style="display:flex;gap:var(--s3);align-items:flex-start">
+            <span style="width:28px;height:28px;border-radius:50%;background:var(--accent-dim);color:var(--accent-strong);display:grid;place-items:center;flex-shrink:0;font-size:.75rem;font-weight:700">3</span>
+            <div>
+              <div style="font-size:var(--step-sm);font-weight:600;color:var(--ink)">Star tools to favorite them</div>
+              <div style="font-size:var(--step-xs);color:var(--ink-3);margin-top:2px">Tap ☆ on any card in Quick Access to pin it to your Favorites section for fast access.</div>
+            </div>
+          </li>
+          <li style="display:flex;gap:var(--s3);align-items:flex-start">
+            <span style="width:28px;height:28px;border-radius:50%;background:var(--accent-dim);color:var(--accent-strong);display:grid;place-items:center;flex-shrink:0;font-size:.75rem;font-weight:700">4</span>
+            <div>
+              <div style="font-size:var(--step-sm);font-weight:600;color:var(--ink)">Clearing browser data removes everything</div>
+              <div style="font-size:var(--step-xs);color:var(--ink-3);margin-top:2px">If you clear site data or use a different device, calculated values will not carry over.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Recommended (Phase 7.2) ──────────────────────── -->
+  <section class="db-section reveal" id="db-sec-recommended">
+    <div class="db-section-head">
+      <h2>Recommended for You</h2>
+      <span style="font-size:var(--step-xs);color:var(--ink-3)">Based on your usage patterns</span>
+    </div>
+    <div class="panel">
+      <div id="db-recommended">
+        <!-- JS rendered by personalization.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Settings strip ────────────────────────────────── -->
+  <div class="db-settings-strip reveal">
+    <p>Favorites, name, and visit history are stored locally and private to this browser.</p>
+    <button class="btn btn-danger" id="dbClearSettings">Reset dashboard</button>
+  </div>
+
+</div><!-- /db-body -->
+
+</main>
+
+<div id="backToTop">↑</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid" style="grid-template-columns:1.2fr 1fr 1fr 1fr 1fr">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
+        <p>Free academic tools and study guides for students. No accounts, no clutter.</p>
+      </div>
+      <div class="foot-col">
+        <h4>GPA &amp; Grades</h4>
+        <a href="gpa-converter.html">GPA Converter</a>
+        <a href="gpa.html">GPA Calculator</a>
+        <a href="semester-gpa.html">Semester GPA</a>
+        <a href="cgpa.html">CGPA Calculator</a>
+        <a href="gpa-improvement-planner.html">GPA Planner</a>
+        <a href="percentage-to-gpa.html">% to GPA</a>
+        <a href="gpa-to-percentage.html">GPA to %</a>
+      </div>
+      <div class="foot-col">
+        <h4>Grade Tools</h4>
+        <a href="grade-calculator.html">Grade Calculator</a>
+        <a href="final-exam-calculator.html">Final Exam</a>
+        <a href="required-marks.html">Required Marks</a>
+        <a href="grade-predictor.html">Grade Predictor</a>
+        <a href="assignment-weight.html">Assignment Weight</a>
+        <a href="class-average.html">Class Average</a>
+        <a href="percentage-calculator.html">Percentage</a>
+      </div>
+      <div class="foot-col">
+        <h4>Planning</h4>
+        <a href="attendance-calculator.html">Attendance</a>
+        <a href="study-time.html">Study Time</a>
+        <a href="pomodoro.html">Pomodoro Timer</a>
+        <a href="study-schedule.html">Study Schedule</a>
+        <a href="scientific-calculator.html">Scientific Calc</a>
+        <a href="basic-calculator.html">Basic Calc</a>
+        <a href="word-counter.html">Word Counter</a>
+      </div>
+      <div class="foot-col">
+        <h4>Guides &amp; Info</h4>
+        <a href="study-guides.html">Study Guides</a>
+        <a href="gpa-help-center.html">GPA Help Center</a>
+        <a href="academic-resources.html">Academic Resources</a>
+        <a href="grading-guide.html">Grading Guide</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms-and-conditions.html">Terms</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 Study Metrics. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/personalization.js"></script>
+<script src="js/premium.js"></script>
+<script src="js/content-platform.js"></script>
+</body>
+</html>

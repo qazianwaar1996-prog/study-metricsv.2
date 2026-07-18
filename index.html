@@ -28,6 +28,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/print.css" media="print">
 <link rel="stylesheet" href="css/premium.css">
+<link rel="stylesheet" href="css/personalization.css">
 <link rel="stylesheet" href="css/content-platform.css">
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Study Metrics","url":"https://studymetrics.app/","logo":"https://studymetrics.app/images/favicon.svg","sameAs":[]}</script>
@@ -44,6 +45,7 @@
       <a href="about.html">About</a>
       <a href="blog.html">Blog</a>
       <a href="grading-guide.html">Grading Guide</a>
+      <a href="dashboard.html">Dashboard</a>
     </nav>
     <div class="nav-cta">
       <a href="#tools" class="btn btn-ghost">Browse tools</a>
@@ -94,10 +96,24 @@
     </span>
     <h1>Every student tool<br>you need, <span class="em gradient-text-anim">in one place.</span></h1>
     <p>A focused toolkit for students — convert grades across 30+ countries, calculate your GPA, and plan your semester. No accounts, no paywalls, no noise.</p>
+    <!-- Phase 7.2: Smart search with suggestions -->
+    <div class="sm-search-wrap" style="max-width:480px;margin-bottom:var(--s5)">
+      <input
+        type="search"
+        class="input sm-search-input"
+        placeholder="Search calculators… (e.g. GPA, attendance)"
+        aria-label="Search tools"
+        autocomplete="off"
+        style="padding-right:42px"
+      />
+      <svg style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--ink-3);pointer-events:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
     <div class="hero-actions">
       <a href="#tools" class="btn btn-primary btn-lg">Explore the tools</a>
       <a href="#how" class="btn btn-ghost btn-lg">How it works</a>
     </div>
+    <!-- Phase 7.2: Smart quick links (personalized, JS-populated) -->
+    <div id="sm-quick-links" hidden></div>
     <div class="hero-stats">
       <div><div class="n">25+</div><div class="l">Tools &amp; counting</div></div>
       <div><div class="n">30+</div><div class="l">Grading scales</div></div>
@@ -107,6 +123,13 @@
 </section>
 
 <div class="ad-slot" aria-hidden="true"><div class="ad-inner"><span class="tag">Advertisement</span></div></div>
+
+<!-- Phase 7.2: Continue where you left off + personalized cards -->
+<div class="wrap" style="padding-top:var(--s5)">
+  <div id="sm-continue-slot" hidden></div>
+</div>
+
+<section class="section" id="sm-personalized-strip" hidden style="padding-top:0;padding-bottom:var(--s6)"></section>
 
 <section class="section" id="tools">
   <div class="wrap">
@@ -461,6 +484,7 @@
         <a href="gpa-help-center.html">GPA Help Center</a>
         <a href="academic-resources.html">Academic Resources</a>
         <a href="grading-guide.html">Grading Guide</a>
+        <a href="dashboard.html">Dashboard</a>
         <a href="about.html">About</a>
         <a href="blog.html">Blog</a>
         <a href="contact.html">Contact</a>
@@ -477,6 +501,7 @@
 <script src="js/script.js"></script>
 <script src="js/grading-systems.js"></script>
 <script src="js/country-selector.js"></script>
+<script src="js/personalization.js"></script>
 <script src="js/premium.js"></script>
 <script src="js/content-platform.js"></script>
 </body>
