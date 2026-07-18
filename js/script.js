@@ -71,7 +71,45 @@
       try { document.execCommand('copy'); SM.toast("Copied!", "success"); }
       catch (e) { SM.toast("Copy failed", "error"); }
       ta.remove();
+    },
+
+    /* ── Dashboard visit tracker (Phase 7.1) ───────────────────
+       Called automatically on every page load.
+       Writes to sm_dash_recent only — never touches calculator keys.
+    ─────────────────────────────────────────────────────────── */
+    trackVisit: function () {
+      try {
+        var url = location.pathname.split('/').pop() || 'index.html';
+        /* Skip dashboard itself, static/info pages, and 404 */
+        var skip = ['dashboard.html','index.html','404.html','about.html',
+                    'blog.html','contact.html','privacy-policy.html',
+                    'terms-and-conditions.html','disclaimer.html',
+                    'academic-resources.html','gpa-help-center.html',
+                    'study-guides.html','grading-guide.html',''];
+        if (skip.indexOf(url) !== -1) return;
+
+        var name = document.title
+          .replace(/\s*[—|\-]\s*Study Metrics\s*$/i, '')
+          .replace(/\s*\|\s*Study Metrics\s*$/i, '')
+          .trim() || url;
+
+        var recent = SM.store.get('sm_dash_recent', []);
+        /* Remove stale entry for this URL, then prepend fresh one */
+        recent = recent.filter(function (r) { return r.url !== url; });
+        recent.unshift({ url: url, name: name, ts: Date.now() });
+        if (recent.length > 12) recent = recent.slice(0, 12);
+        SM.store.set('sm_dash_recent', recent);
+        /* Phase 7.2: last-open for "continue where you left off" */
+        SM.store.set('sm_last_open', { url: url, name: name, ts: Date.now() });
+      } catch (e) {}
     }
   };
+
+  /* Auto-track on every page that loads script.js */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { SM.trackVisit(); });
+  } else {
+    SM.trackVisit();
+  }
 
 })();
