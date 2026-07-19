@@ -4,7 +4,7 @@
  *
  * ARCHITECTURE:
  *   - Reads live result values from the DOM (computed by the existing calculators)
- *   - Sends context to Anthropic Claude with an explanation-only prompt
+ *   - Sends context to Google Gemini with an explanation-only prompt
  *   - Injects an "Ask AI" button into every result-rail found on the page
  *   - Never duplicates or replaces any calculation logic
  *   - Depends on: script.js (SM), ai-service.js (SMAI)
@@ -522,7 +522,7 @@
       body.innerHTML =
         '<div class="calc-ai-error">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
-          '<span>No API key configured. Visit <a href="ai.html" style="color:var(--accent-strong);text-decoration:underline">StudyMetrics AI</a> to set up your Anthropic API key, then come back.</span>' +
+          '<span>No API key configured. Visit <a href="ai.html" style="color:var(--accent-strong);text-decoration:underline">StudyMetrics AI</a> to set up your Gemini API key, then come back.</span>' +
         '</div>';
       var dot = panel.querySelector('#calc-ai-dot');
       if (dot) { dot.className = 'calc-ai-dot'; }
@@ -530,7 +530,7 @@
       return;
     }
 
-    /* Call Anthropic Claude via SMAI service */
+    /* Call Google Gemini via SMAI service */
     var prompt = buildPrompt(ctx);
     window.SMAI.send(
       [{ role: 'user', content: prompt }],

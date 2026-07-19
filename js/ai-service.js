@@ -1,19 +1,24 @@
 /*
  * ai-service.js — StudyMetrics AI Service
- * Phase 8.3 — Academic Coach Edition
+ * Phase 8.4 — Google Gemini Backend
  *
- * Reusable Anthropic Claude wrapper. No API keys stored here.
- * Key is read from window.SMAI_KEY (set via in-page UI or env).
+ * Reusable Gemini API wrapper. No API keys stored here.
+ * Key is read from window.SMAI_KEY (set via in-page UI or Replit Secret).
+ *
+ * Public interface (unchanged from Phase 8.3):
+ *   window.SMAI.send(history, onSuccess, onError)
+ *   history: [{ role: 'user'|'assistant', content: string }]
  */
 (function () {
   'use strict';
 
-  var API_URL = 'https://api.anthropic.com/v1/messages';
-  var MODEL   = 'claude-sonnet-4-6';
+  var GEMINI_MODEL = 'gemini-2.0-flash';
+  var GEMINI_BASE  = 'https://generativelanguage.googleapis.com/v1beta/models/';
 
   /* ─────────────────────────────────────────────────────────────
      SYSTEM PROMPT — Academic Coach
-     Covers all Phase 8.3 coaching domains.
+     Identical coaching domains as Phase 8.3, now sent as
+     Gemini's system_instruction field.
   ───────────────────────────────────────────────────────────── */
   var SYSTEM_PROMPT = [
     'You are StudyMetrics AI, an expert academic coach and study strategist.',
@@ -92,19 +97,20 @@
   ].join('\n');
 
   /* ─────────────────────────────────────────────────────────────
-     Build Anthropic messages array from conversation history
+     Convert StudyMetrics history to Gemini contents array.
+     Gemini roles: 'user' | 'model'  (not 'assistant')
   ───────────────────────────────────────────────────────────── */
-  function buildMessages(history) {
+  function buildContents(history) {
     return history.map(function (msg) {
       return {
-        role: msg.role === 'assistant' ? 'assistant' : 'user',
-        content: msg.content
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: msg.content }]
       };
     });
   }
 
   /* ─────────────────────────────────────────────────────────────
-     Main public API
+     Public API — interface identical to Phase 8.3
   ───────────────────────────────────────────────────────────── */
   window.SMAI = {
 
@@ -116,26 +122,34 @@
       var key = window.SMAI_KEY;
 
       if (!key) {
-        onError('API key not configured. Paste your Anthropic API key in the field above to get started.');
+        onError('API key not configured. Paste your Gemini API key in the field above to get started.');
         return;
       }
 
+      var url = GEMINI_BASE + GEMINI_MODEL + ':generateContent?key=' + encodeURIComponent(key);
+
       var body = {
-        model: MODEL,
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages: buildMessages(history)
+        system_instruction: {
+          parts: [{ text: SYSTEM_PROMPT }]
+        },
+        contents: buildContents(history),
+        generationConfig: {
+          temperature:      0.7,
+          maxOutputTokens:  1024,
+          topP:             0.9
+        },
+        safetySettings: [
+          { category: 'HARM_CATEGORY_HARASSMENT',        threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+          { category: 'HARM_CATEGORY_HATE_SPEECH',       threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+          { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+          { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' }
+        ]
       };
 
-      fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type':         'application/json',
-          'x-api-key':            key,
-          'anthropic-version':    '2023-06-01',
-          'anthropic-dangerous-direct-browser-calls': 'true'
-        },
-        body: JSON.stringify(body)
+      fetch(url, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(body)
       })
       .then(function (res) {
         if (!res.ok) {
@@ -147,12 +161,12 @@
         return res.json();
       })
       .then(function (data) {
-        if (!data.content || !data.content.length) {
+        var candidate = data.candidates && data.candidates[0];
+        if (!candidate || !candidate.content || !candidate.content.parts) {
           throw new Error('No response received. Please try again.');
         }
-        var text = data.content
-          .filter(function (b) { return b.type === 'text'; })
-          .map(function (b) { return b.text; })
+        var text = candidate.content.parts
+          .map(function (p) { return p.text || ''; })
           .join('');
         onSuccess(text.trim());
       })
