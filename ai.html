@@ -19,24 +19,7 @@
 <meta name="twitter:title" content="StudyMetrics AI — Academic Coach">
 <meta name="twitter:description" content="Your personal academic coach for GPA improvement, exam prep, study planning, and more.">
 
-<!--
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  GEMINI API KEY — REPLIT SETUP                               ║
-  ║  1. Open Tools → Secrets in Replit                           ║
-  ║  2. Add a secret:  Key = GEMINI_API_KEY                      ║
-  ║                    Value = your key from aistudio.google.com  ║
-  ║  3. In replit.nix or your server, inject it at build time:   ║
-  ║     Replace REPLACE_WITH_SECRET below with the env variable. ║
-  ║  4. OR: the user can paste their key directly in the UI.     ║
-  ╚══════════════════════════════════════════════════════════════╝
 
-  For static hosting (no server), remove this meta tag and let
-  users enter their key via the in-page UI. The key is stored
-  only in sessionStorage — it is never sent to studymetrics.app.
-
-  Get your Gemini API key at https://aistudio.google.com/app/apikey
--->
-<meta name="smai-key" content="REPLACE_WITH_SECRET">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -106,42 +89,6 @@
 
     <!-- Main chat panel -->
     <div class="ai-main">
-
-      <!-- API Key setup UI -->
-      <div id="ai-key-banner" class="ai-key-banner" style="display:none">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <rect x="3" y="11" width="18" height="11" rx="2"/>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-        </svg>
-        <div class="warn-text">
-          <b>Gemini API key required.</b> Get a free key at
-          <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color:var(--accent-strong);text-decoration:underline">aistudio.google.com</a>,
-          then paste it below. The key is stored only in your browser session and never sent to our servers.
-          <br>
-          <em>For Replit deployment:</em> add it as a Secret named <code>GEMINI_API_KEY</code>.
-          <div class="ai-key-form">
-            <input
-              type="password"
-              id="ai-key-input"
-              class="input"
-              placeholder="AIza…"
-              autocomplete="off"
-              spellcheck="false"
-            >
-            <button id="ai-key-apply" class="btn btn-primary">Save key</button>
-          </div>
-          <span id="ai-key-dismiss" class="ai-key-dismiss">Dismiss (key will be asked again later)</span>
-        </div>
-      </div>
-
-      <!-- Key confirmed label -->
-      <div id="ai-key-set" class="ai-key-set-label" style="display:none">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-          <polyline points="22 4 12 14.01 9 11.01"/>
-        </svg>
-        API key configured — StudyMetrics AI Coach is ready.
-      </div>
 
       <!-- Chat window -->
       <div class="chat-window">
