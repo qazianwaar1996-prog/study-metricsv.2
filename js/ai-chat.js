@@ -1,133 +1,69 @@
 /*
  * ai-chat.js — StudyMetrics AI Chat Controller
- * Depends on: ai-service.js (window.SMAI)
+ * Phase 8.5 — No API key handling (backend manages auth)
+ * Depends on: ai-service.js (window.SMAI), script.js (SM)
  */
 (function () {
   'use strict';
 
   /* ── State ────────────────────────────────────────────────── */
-  var history   = [];   // { role: 'user'|'assistant', content: string }
+  var history   = [];
   var isLoading = false;
 
   /* ── DOM refs ─────────────────────────────────────────────── */
-  var messagesEl   = document.getElementById('chat-messages');
-  var textareaEl   = document.getElementById('chat-textarea');
-  var sendBtnEl    = document.getElementById('chat-send-btn');
-  var clearBtnEl   = document.getElementById('chat-clear-btn');
-  var statusDotEl  = document.getElementById('chat-status-dot');
-  var statusLblEl  = document.getElementById('chat-status-label');
-  var welcomeEl    = document.getElementById('chat-welcome');
-  var keyBannerEl  = document.getElementById('ai-key-banner');
-  var keyInputEl   = document.getElementById('ai-key-input');
-  var keySetLblEl  = document.getElementById('ai-key-set');
-  var keyApplyBtn  = document.getElementById('ai-key-apply');
-  var keyDismissEl = document.getElementById('ai-key-dismiss');
-
-  /* ── Key bootstrap ────────────────────────────────────────── */
-  function loadKey () {
-    /* Priority: meta tag (server-injected) > sessionStorage */
-    var meta = document.querySelector('meta[name="smai-key"]');
-    if (meta && meta.content && meta.content !== 'REPLACE_WITH_SECRET') {
-      window.SMAI_KEY = meta.content;
-    } else {
-      var stored = sessionStorage.getItem('smai_key');
-      if (stored) window.SMAI_KEY = stored;
-    }
-    renderKeyState();
-  }
-
-  function renderKeyState () {
-    if (window.SMAI_KEY) {
-      if (keyBannerEl)  keyBannerEl.style.display = 'none';
-      if (keySetLblEl)  keySetLblEl.style.display = 'flex';
-    } else {
-      if (keyBannerEl)  keyBannerEl.style.display = 'flex';
-      if (keySetLblEl)  keySetLblEl.style.display = 'none';
-    }
-  }
-
-  if (keyApplyBtn) {
-    keyApplyBtn.addEventListener('click', function () {
-      var val = (keyInputEl ? keyInputEl.value : '').trim();
-      if (!val) return;
-      window.SMAI_KEY = val;
-      sessionStorage.setItem('smai_key', val);
-      renderKeyState();
-      SM.toast('API key saved for this session', 'success');
-    });
-  }
-
-  if (keyDismissEl) {
-    keyDismissEl.addEventListener('click', function () {
-      if (keyBannerEl) keyBannerEl.style.display = 'none';
-    });
-  }
+  var messagesEl  = document.getElementById('chat-messages');
+  var textareaEl  = document.getElementById('chat-textarea');
+  var sendBtnEl   = document.getElementById('chat-send-btn');
+  var clearBtnEl  = document.getElementById('chat-clear-btn');
+  var statusDotEl = document.getElementById('chat-status-dot');
+  var statusLblEl = document.getElementById('chat-status-label');
+  var welcomeEl   = document.getElementById('chat-welcome');
 
   /* ── Markdown renderer (minimal, safe) ────────────────────── */
-  function renderMarkdown (text) {
-    /* Escape HTML first */
+  function renderMarkdown(text) {
     var s = text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
 
-    /* Code blocks (```…```) */
     s = s.replace(/```([^`]*?)```/gs, function (_, code) {
       return '<pre>' + code.trim() + '</pre>';
     });
-
-    /* Inline code */
     s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-    /* Bold **text** */
     s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-
-    /* Italic *text* */
     s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
-
-    /* Headings ### */
     s = s.replace(/^### (.+)$/gm, '<h3>$1</h3>');
     s = s.replace(/^## (.+)$/gm,  '<h2>$1</h2>');
     s = s.replace(/^# (.+)$/gm,   '<h1>$1</h1>');
 
-    /* Numbered list */
     s = s.replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>');
     s = s.replace(/(<li>.*<\/li>)/s, function (m) {
       return '<ol>' + m + '</ol>';
     });
-
-    /* Bullet list */
     s = s.replace(/^[*\-] (.+)$/gm, '<li>$1</li>');
-
-    /* Wrap consecutive <li> not inside ol */
     s = s.replace(/(<li>[^]*?<\/li>)(?!<\/[ou]l>)/g, function (m) {
       if (m.indexOf('<ol>') === -1) return '<ul>' + m + '</ul>';
       return m;
     });
 
-    /* Paragraphs — double newline → <p> */
     s = s.replace(/\n{2,}/g, '</p><p>');
     s = '<p>' + s + '</p>';
-
-    /* Single newlines within <p> → <br> (not inside pre) */
     s = s.replace(/(<p>[\s\S]*?<\/p>)/g, function (m) {
       return m.replace(/\n/g, '<br>');
     });
-
-    /* Clean up empty paragraphs */
     s = s.replace(/<p>\s*<\/p>/g, '');
 
     return s;
   }
 
   /* ── Append a chat message ────────────────────────────────── */
-  function appendMessage (role, content) {
+  function appendMessage(role, content) {
     if (welcomeEl) welcomeEl.style.display = 'none';
 
-    var msg = document.createElement('div');
+    var msg     = document.createElement('div');
     msg.className = 'msg ' + role;
+    var isUser  = role === 'user';
 
-    var isUser = role === 'user';
     var avatarHTML = isUser
       ? '<div class="msg-avatar">U</div>'
       : '<div class="msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/><path d="M12 8v4l3 3"/></svg></div>';
@@ -138,23 +74,20 @@
 
     var actionsHTML = '';
     if (!isUser) {
-      actionsHTML = '<div class="msg-actions">' +
-        '<button class="msg-copy-btn" title="Copy response">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
-          'Copy' +
-        '</button>' +
-      '</div>';
+      actionsHTML =
+        '<div class="msg-actions">' +
+          '<button class="msg-copy-btn" title="Copy response">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+            'Copy' +
+          '</button>' +
+        '</div>';
     }
 
-    msg.innerHTML = avatarHTML +
-      '<div class="msg-body">' + bubbleContent + actionsHTML + '</div>';
+    msg.innerHTML = avatarHTML + '<div class="msg-body">' + bubbleContent + actionsHTML + '</div>';
 
-    /* Copy button listener */
     var copyBtn = msg.querySelector('.msg-copy-btn');
     if (copyBtn) {
-      copyBtn.addEventListener('click', function () {
-        SM.copy(content);
-      });
+      copyBtn.addEventListener('click', function () { SM.copy(content); });
     }
 
     messagesEl.appendChild(msg);
@@ -164,7 +97,7 @@
 
   /* ── Typing indicator ─────────────────────────────────────── */
   var typingEl = null;
-  function showTyping () {
+  function showTyping() {
     typingEl = document.createElement('div');
     typingEl.className = 'msg assistant typing-indicator';
     typingEl.innerHTML =
@@ -177,7 +110,7 @@
     messagesEl.appendChild(typingEl);
     scrollToBottom();
   }
-  function hideTyping () {
+  function hideTyping() {
     if (typingEl && typingEl.parentNode) {
       typingEl.parentNode.removeChild(typingEl);
       typingEl = null;
@@ -185,29 +118,29 @@
   }
 
   /* ── Error message ────────────────────────────────────────── */
-  function showError (msg) {
+  function showError(msg) {
     var el = document.createElement('div');
     el.className = 'chat-error';
     el.innerHTML =
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' +
-      '<span>' + msg.replace(/</g,'&lt;') + '</span>';
+      '<span>' + msg.replace(/</g, '&lt;') + '</span>';
     messagesEl.appendChild(el);
     scrollToBottom();
   }
 
   /* ── Status bar ───────────────────────────────────────────── */
-  function setStatus (loading) {
+  function setStatus(loading) {
     if (statusDotEl) statusDotEl.className = 'chat-status-dot' + (loading ? ' loading' : '');
-    if (statusLblEl) statusLblEl.textContent = loading ? 'Thinking…' : 'StudyMetrics AI · Ready';
+    if (statusLblEl) statusLblEl.textContent = loading ? 'Thinking…' : 'StudyMetrics AI Coach · Ready';
   }
 
   /* ── Scroll ───────────────────────────────────────────────── */
-  function scrollToBottom () {
+  function scrollToBottom() {
     if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
   }
 
   /* ── Enable / disable input ───────────────────────────────── */
-  function setInputDisabled (disabled) {
+  function setInputDisabled(disabled) {
     if (textareaEl) textareaEl.disabled = disabled;
     if (sendBtnEl)  sendBtnEl.disabled  = disabled;
     if (sendBtnEl) {
@@ -218,9 +151,8 @@
   }
 
   /* ── Send a message ───────────────────────────────────────── */
-  function sendMessage (text) {
+  function sendMessage(text) {
     if (!text || isLoading) return;
-
     text = text.trim();
     if (!text) return;
 
@@ -228,17 +160,13 @@
     setInputDisabled(true);
     setStatus(true);
 
-    /* Add to history and UI */
     history.push({ role: 'user', content: text });
     appendMessage('user', text);
 
-    /* Clear textarea */
     if (textareaEl) { textareaEl.value = ''; autoResizeTextarea(); }
 
-    /* Show typing */
     showTyping();
 
-    /* Call AI service */
     window.SMAI.send(
       history,
       function (response) {
@@ -262,7 +190,7 @@
   }
 
   /* ── Auto-resize textarea ─────────────────────────────────── */
-  function autoResizeTextarea () {
+  function autoResizeTextarea() {
     if (!textareaEl) return;
     textareaEl.style.height = 'auto';
     textareaEl.style.height = Math.min(textareaEl.scrollHeight, 160) + 'px';
@@ -283,8 +211,10 @@
       if (!confirm('Clear the conversation? This cannot be undone.')) return;
       history = [];
       messagesEl.innerHTML = '';
-      if (welcomeEl) welcomeEl.style.display = 'flex';
-      messagesEl.appendChild(welcomeEl);
+      if (welcomeEl) {
+        welcomeEl.style.display = 'flex';
+        messagesEl.appendChild(welcomeEl);
+      }
       setStatus(false);
     });
   }
@@ -306,8 +236,5 @@
       if (textareaEl) sendMessage(textareaEl.value);
     });
   }
-
-  /* ── Init ─────────────────────────────────────────────────── */
-  loadKey();
 
 })();

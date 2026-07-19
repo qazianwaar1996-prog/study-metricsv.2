@@ -484,13 +484,6 @@
     /* Hide the trigger button while panel is open */
     if (triggerBtn) triggerBtn.style.display = 'none';
 
-    /* Check for API key */
-    var key = window.SMAI_KEY;
-    if (!key) {
-      var stored = sessionStorage.getItem('smai_key');
-      if (stored) { window.SMAI_KEY = stored; key = stored; }
-    }
-
     var panel = document.createElement('div');
     panel.className = 'calc-ai-panel';
 
@@ -516,21 +509,7 @@
       if (triggerBtn) triggerBtn.style.display = '';
     });
 
-    /* No API key — show setup message */
-    if (!key) {
-      var body = panel.querySelector('#calc-ai-body');
-      body.innerHTML =
-        '<div class="calc-ai-error">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
-          '<span>No API key configured. Visit <a href="ai.html" style="color:var(--accent-strong);text-decoration:underline">StudyMetrics AI</a> to set up your Gemini API key, then come back.</span>' +
-        '</div>';
-      var dot = panel.querySelector('#calc-ai-dot');
-      if (dot) { dot.className = 'calc-ai-dot'; }
-      setTitle(panel, 'StudyMetrics AI — Setup required');
-      return;
-    }
-
-    /* Call Google Gemini via SMAI service */
+    /* Call AI via secure backend */
     var prompt = buildPrompt(ctx);
     window.SMAI.send(
       [{ role: 'user', content: prompt }],
