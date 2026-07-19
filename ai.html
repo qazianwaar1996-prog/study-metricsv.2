@@ -21,10 +21,10 @@
 
 <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║  ANTHROPIC API KEY — REPLIT SETUP                            ║
+  ║  GEMINI API KEY — REPLIT SETUP                               ║
   ║  1. Open Tools → Secrets in Replit                           ║
-  ║  2. Add a secret:  Key = ANTHROPIC_API_KEY                   ║
-  ║                    Value = your key from console.anthropic.com║
+  ║  2. Add a secret:  Key = GEMINI_API_KEY                      ║
+  ║                    Value = your key from aistudio.google.com  ║
   ║  3. In replit.nix or your server, inject it at build time:   ║
   ║     Replace REPLACE_WITH_SECRET below with the env variable. ║
   ║  4. OR: the user can paste their key directly in the UI.     ║
@@ -34,7 +34,7 @@
   users enter their key via the in-page UI. The key is stored
   only in sessionStorage — it is never sent to studymetrics.app.
 
-  Get your Anthropic API key at https://console.anthropic.com
+  Get your Gemini API key at https://aistudio.google.com/app/apikey
 -->
 <meta name="smai-key" content="REPLACE_WITH_SECRET">
 
@@ -94,7 +94,7 @@
       </div>
       <div class="ai-hero-text">
         <h1>StudyMetrics AI <span class="ai-beta-pill">Coach</span></h1>
-        <p>Your personal academic coach. Get a GPA improvement plan, build a study schedule, prepare for exams, manage your time, and get subject-specific strategies — all powered by Claude AI.</p>
+        <p>Your personal academic coach. Get a GPA improvement plan, build a study schedule, prepare for exams, manage your time, and get subject-specific strategies — all powered by Google Gemini.</p>
       </div>
     </div>
   </div>
@@ -114,17 +114,17 @@
           <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
         </svg>
         <div class="warn-text">
-          <b>Anthropic API key required.</b> Get your key at
-          <a href="https://console.anthropic.com" target="_blank" rel="noopener" style="color:var(--accent-strong);text-decoration:underline">console.anthropic.com</a>,
+          <b>Gemini API key required.</b> Get a free key at
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color:var(--accent-strong);text-decoration:underline">aistudio.google.com</a>,
           then paste it below. The key is stored only in your browser session and never sent to our servers.
           <br>
-          <em>For Replit deployment:</em> add it as a Secret named <code>ANTHROPIC_API_KEY</code>.
+          <em>For Replit deployment:</em> add it as a Secret named <code>GEMINI_API_KEY</code>.
           <div class="ai-key-form">
             <input
               type="password"
               id="ai-key-input"
               class="input"
-              placeholder="sk-ant-…"
+              placeholder="AIza…"
               autocomplete="off"
               spellcheck="false"
             >
