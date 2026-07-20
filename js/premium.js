@@ -426,7 +426,7 @@
     });
   }
   function init () {
-    injectBackground();
+    /* injectBackground() disabled — legacy purple blob/noise skin removed (StudyMetrics v2 design system) */
     initScrollProgress();
     initNavbar();
     initSmoothScroll();
@@ -442,12 +442,10 @@
     if (!pRM) {
       initReveal();
       initCounters();
-      initCardTilt();
-      initMagneticButtons();
+      /* initCardTilt(), initMagneticButtons(), initCursor(), initMouseGlow(), initParticles()
+         disabled — heavy mousemove/rAF-driven decorations from the legacy purple skin,
+         removed for the flat StudyMetrics v2 design system and to cut runtime CPU cost. */
       initIconAnims();
-      initParticles();
-      initCursor();
-      initMouseGlow();
     } else {
       qsa('.reveal').forEach(function (el) { el.classList.add('active'); });
     }
