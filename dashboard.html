@@ -257,6 +257,8 @@
 </nav>
 
 <script>function sm2Theme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);try{localStorage.setItem('sm_theme',n);}catch(e){}if(window.SM&&SM.toast){SM.toast(n==='dark'?'🌙 Dark mode on':'☀️ Light mode on','info');}}
+document.body.classList.remove('premium');
+try{new MutationObserver(function(){if(document.body.classList.contains('premium'))document.body.classList.remove('premium');}).observe(document.body,{attributes:true,attributeFilter:['class']});}catch(e){}
 
 document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){
  [['db-recent-calcs','db-recent-fallback'],['db-favorites','db-fav-fallback']].forEach(function(p){var real=document.getElementById(p[0]);var fb=document.getElementById(p[1]);if(real&&real.children.length>0&&fb)fb.style.display='none';});
