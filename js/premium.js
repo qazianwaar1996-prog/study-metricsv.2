@@ -1,27 +1,11 @@
-/*!
- * Study Metrics — Premium Engine v2.0
- * All bugs fixed. Single source of truth for all UI interactions.
- * No conflicts with script.js (which is now utilities-only).
- */
 (function () {
   'use strict';
-
-  /* ── Utilities ─────────────────────────────────────────────── */
   var qs  = function (s, c) { return (c || document).querySelector(s); };
   var qsa = function (s, c) { return Array.from((c || document).querySelectorAll(s)); };
   var pRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isTouch = window.matchMedia('(pointer: coarse)').matches;
-
-  /* ── FIX #6/#20: Page fade-in via CSS, not JS opacity ───────── */
-  /* CSS class handles the fade — no JS opacity risk of blank page */
   document.documentElement.classList.add('js-loaded');
-
-  /* ── FIX #1: Apply premium class ONCE before anything runs ──── */
   document.body.classList.add('premium');
-
-  /* ============================================================
-     1. BACKGROUND — Aurora blobs, noise, glow (decorative only)
-     ============================================================ */
   function injectBackground () {
     var bg = document.createElement('div');
     bg.className = 'prem-bg';
@@ -31,16 +15,11 @@
       '<div class="blob blob-2"></div>' +
       '<div class="blob blob-3"></div>';
     document.body.insertBefore(bg, document.body.firstChild);
-
     var noise = document.createElement('div');
     noise.className = 'noise-overlay';
     noise.setAttribute('aria-hidden', 'true');
     document.body.appendChild(noise);
   }
-
-  /* ============================================================
-     2. SCROLL PROGRESS BAR
-     ============================================================ */
   function initScrollProgress () {
     var bar = document.createElement('div');
     bar.id = 'scroll-progress';
@@ -50,7 +29,6 @@
     bar.setAttribute('aria-valuemax', '100');
     bar.setAttribute('aria-valuenow', '0');
     document.body.appendChild(bar);
-
     window.addEventListener('scroll', function () {
       var scrolled = window.scrollY;
       var total = document.documentElement.scrollHeight - window.innerHeight;
@@ -59,29 +37,21 @@
       bar.setAttribute('aria-valuenow', pct);
     }, { passive: true });
   }
-
-  /* ============================================================
-     3. CUSTOM CURSOR — desktop only, no layout impact
-     ============================================================ */
   function initCursor () {
     if (pRM || isTouch) return;
-
     var dot  = document.createElement('div'); dot.id  = 'cursor-dot';
     var ring = document.createElement('div'); ring.id = 'cursor-ring';
     dot.setAttribute('aria-hidden', 'true');
     ring.setAttribute('aria-hidden', 'true');
     document.body.appendChild(dot);
     document.body.appendChild(ring);
-
     var mx = -200, my = -200, rx = -200, ry = -200;
     var rAF = null;
-
     document.addEventListener('mousemove', function (e) {
       mx = e.clientX; my = e.clientY;
       dot.style.left = mx + 'px';
       dot.style.top  = my + 'px';
     }, { passive: true });
-
     function animRing () {
       rx += (mx - rx) * 0.14;
       ry += (my - ry) * 0.14;
@@ -90,7 +60,6 @@
       rAF = requestAnimationFrame(animRing);
     }
     rAF = requestAnimationFrame(animRing);
-
     var hoverSel = 'a, button, [role="button"], input, select, textarea, label';
     document.addEventListener('mouseover', function (e) {
       if (e.target.closest(hoverSel)) document.body.classList.add('cursor-hover');
@@ -107,23 +76,16 @@
       dot.style.opacity = '1'; ring.style.opacity = '1';
     });
   }
-
-  /* ============================================================
-     4. MOUSE GLOW — subtle radial following glow
-     ============================================================ */
   function initMouseGlow () {
     if (pRM || isTouch) return;
-
     var glow = document.createElement('div');
     glow.id = 'mouse-glow';
     glow.setAttribute('aria-hidden', 'true');
     document.body.appendChild(glow);
-
     var tX = -600, tY = -600, cX = -600, cY = -600;
     document.addEventListener('mousemove', function (e) {
       tX = e.clientX; tY = e.clientY;
     }, { passive: true });
-
     function update () {
       cX += (tX - cX) * 0.07;
       cY += (tY - cY) * 0.07;
@@ -133,21 +95,12 @@
     }
     requestAnimationFrame(update);
   }
-
-  /* ============================================================
-     5. SCROLL REVEAL — FIX #1/#7/#14: Single observer, no conflicts
-     ============================================================ */
   function initReveal () {
-    /* FIX #14: Don't add stagger to grids whose children already have .reveal
-       — instead let the reveal observer handle them individually with delays */
     var targets = qsa('.reveal');
-
-    /* FIX #7: Elements already in viewport get instant activation (no 0.8s delay) */
     if (!('IntersectionObserver' in window)) {
       targets.forEach(function (el) { el.classList.add('active'); });
       return;
     }
-
     var seen = new WeakSet();
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -158,22 +111,15 @@
         }
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-
-    /* FIX #7: Check if element is already in viewport — activate immediately */
     targets.forEach(function (el) {
       var rect = el.getBoundingClientRect();
       if (rect.top < window.innerHeight && rect.bottom > 0) {
-        /* Already visible — activate with tiny delay so CSS transition runs */
         setTimeout(function () { el.classList.add('active'); }, 50);
       } else {
         io.observe(el);
       }
     });
   }
-
-  /* ============================================================
-     6. NUMBER COUNTERS — hero stats
-     ============================================================ */
   function animateNumber (el, from, to, duration) {
     if (pRM) { el.textContent = el.textContent; return; }
     var txt = el.textContent.trim();
@@ -181,7 +127,6 @@
     var start  = null;
     var isFloat = String(to).includes('.');
     var dec = isFloat ? String(to).split('.')[1].length : 0;
-
     function step (ts) {
       if (!start) start = ts;
       var progress = Math.min((ts - start) / duration, 1);
@@ -192,11 +137,9 @@
     }
     requestAnimationFrame(step);
   }
-
   function initCounters () {
     var statNums = qsa('.hero-stats .n, .stats-grid .n');
     if (!statNums.length) return;
-
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
@@ -207,33 +150,22 @@
         io.unobserve(el);
       });
     }, { threshold: 0.6 });
-
     statNums.forEach(function (el) { io.observe(el); });
   }
-
-  /* ============================================================
-     7. NAVBAR — FIX #2/#3: Single handler, no conflicts
-     ============================================================ */
   function initNavbar () {
     var header  = qs('.site-head');
     var toggle  = qs('#menuToggle');
     var navLinks = qs('.nav-links');
     var btt     = qs('#backToTop');
-
-    /* Scroll handler — single addEventListener, replaces window.onscroll */
     window.addEventListener('scroll', function () {
       if (header) header.classList.toggle('nav-scrolled', window.scrollY > 50);
       if (btt)    btt.classList.toggle('show', window.scrollY > 400);
     }, { passive: true });
-
-    /* FIX #4: Single back-to-top handler */
     if (btt) {
       btt.addEventListener('click', function () {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
-
-    /* FIX #2: Single mobile menu handler */
     if (toggle && navLinks) {
       toggle.addEventListener('click', function (e) {
         e.stopPropagation();
@@ -243,15 +175,12 @@
           ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>'
           : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
       });
-
       document.addEventListener('click', function (e) {
         if (!toggle.contains(e.target) && !navLinks.contains(e.target)) {
           navLinks.classList.remove('open');
           toggle.setAttribute('aria-expanded', 'false');
         }
       });
-
-      /* Close on Escape key */
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && navLinks.classList.contains('open')) {
           navLinks.classList.remove('open');
@@ -261,10 +190,6 @@
       });
     }
   }
-
-  /* ============================================================
-     8. SMOOTH ANCHOR SCROLL — FIX #5: deduplicated
-     ============================================================ */
   function initSmoothScroll () {
     document.addEventListener('click', function (e) {
       var link = e.target.closest('a[href^="#"]');
@@ -279,14 +204,8 @@
       window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
     });
   }
-
-  /* ============================================================
-     9. PAGE TRANSITION — FIX #6/#20: CSS-based, safe fallback
-     ============================================================ */
   function initPageTransition () {
     if (pRM) return;
-
-    /* FIX: Use CSS class instead of inline opacity — if JS fails, page is visible */
     document.addEventListener('click', function (e) {
       var link = e.target.closest('a');
       if (!link) return;
@@ -294,16 +213,11 @@
       if (!href || href.startsWith('#') || href.startsWith('http') ||
           href.startsWith('mailto') || href.startsWith('tel') ||
           link.target === '_blank' || link.hasAttribute('download')) return;
-
       e.preventDefault();
       document.body.classList.add('page-leaving');
       setTimeout(function () { window.location.href = href; }, 250);
     });
   }
-
-  /* ============================================================
-     10. RIPPLE EFFECT on buttons
-     ============================================================ */
   function initRipple () {
     if (pRM) return;
     document.addEventListener('click', function (e) {
@@ -320,19 +234,13 @@
       setTimeout(function () { if (rip.parentNode) rip.remove(); }, 700);
     });
   }
-
-  /* ============================================================
-     11. CARD TILT — FIX #12: No transform conflict, uses CSS var
-     ============================================================ */
   function initCardTilt () {
     if (pRM || isTouch) return;
-
     qsa('.tool.live').forEach(function (card) {
       card.addEventListener('mousemove', function (e) {
         var rect = card.getBoundingClientRect();
         var x = (e.clientX - rect.left) / rect.width;
         var y = (e.clientY - rect.top)  / rect.height;
-        /* FIX #12: Use CSS custom props instead of competing transform */
         card.style.setProperty('--tilt-x', ((y - 0.5) * -8) + 'deg');
         card.style.setProperty('--tilt-y', ((x - 0.5) *  8) + 'deg');
         card.style.setProperty('--mx', (x * 100) + '%');
@@ -346,10 +254,6 @@
       });
     });
   }
-
-  /* ============================================================
-     12. MAGNETIC BUTTONS — FIX #12: separate from btn:active transform
-     ============================================================ */
   function initMagneticButtons () {
     if (pRM || isTouch) return;
     qsa('.btn-primary.btn-lg').forEach(function (btn) {
@@ -368,10 +272,6 @@
       });
     });
   }
-
-  /* ============================================================
-     13. INPUT FOCUS EFFECTS
-     ============================================================ */
   function initInputEffects () {
     qsa('.field').forEach(function (field) {
       var input = qs('input, select, textarea', field);
@@ -380,8 +280,6 @@
       input.addEventListener('focus', function () { label.classList.add('field-focus'); });
       input.addEventListener('blur',  function () { label.classList.remove('field-focus'); });
     });
-
-    /* Animate result numbers when content changes */
     qsa('.gpa-big, .res-big, .grade-big, .gauge-num .n, .ring .pct').forEach(function (el) {
       var prev = el.textContent;
       new MutationObserver(function () {
@@ -395,33 +293,21 @@
       }).observe(el, { childList: true, characterData: true, subtree: true });
     });
   }
-
-  /* ============================================================
-     14. GPA RING ANIMATION — integrated, no separate file patch
-     ============================================================ */
   function initGpaRing () {
     var arc = qs('#gpaRingArc');
     var gpaBig = qs('.gpa-big');
     if (!arc || !gpaBig) return;
-
     function updateRing (gpa) {
       var pct = Math.min(Math.max(parseFloat(gpa) || 0, 0), 4) / 4;
       arc.style.strokeDashoffset = 314 - (314 * pct);
     }
-
     new MutationObserver(function () { updateRing(gpaBig.textContent); })
       .observe(gpaBig, { childList: true, characterData: true, subtree: true });
-
     setTimeout(function () { updateRing(gpaBig.textContent); }, 400);
   }
-
-  /* ============================================================
-     15. PDF DOWNLOAD
-     ============================================================ */
   function initPDFButton () {
     var btn = qs('#pdfBtn');
     if (!btn) return;
-
     btn.addEventListener('click', function () {
       var orig = btn.innerHTML;
       btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Printing…';
@@ -435,10 +321,6 @@
       }, 200);
     });
   }
-
-  /* ============================================================
-     16. SHARE/COPY BUTTON FEEDBACK
-     ============================================================ */
   function initShareButtons () {
     qsa('#shareBtn, #copyBtn').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -452,10 +334,6 @@
       });
     });
   }
-
-  /* ============================================================
-     17. ICON MICRO-ANIMATIONS
-     ============================================================ */
   function initIconAnims () {
     if (pRM) return;
     qsa('.hiw-num').forEach(function (el) {
@@ -470,10 +348,6 @@
       io.observe(el);
     });
   }
-
-  /* ============================================================
-     18. FAQ ANIMATIONS
-     ============================================================ */
   function initFAQ () {
     qsa('.faq details').forEach(function (detail) {
       detail.addEventListener('toggle', function () {
@@ -486,10 +360,6 @@
       });
     });
   }
-
-  /* ============================================================
-     19. KICKER BADGE ENTRANCE
-     ============================================================ */
   function initKickers () {
     if (pRM) return;
     qsa('.kicker').forEach(function (el) {
@@ -504,24 +374,17 @@
       io.observe(el);
     });
   }
-
-  /* ============================================================
-     20. LIGHTWEIGHT PARTICLES — FIX #15: z-index below inputs
-     ============================================================ */
   function initParticles () {
     if (pRM || isTouch) return;
-
     var container = document.createElement('div');
     container.className = 'particles';
     container.setAttribute('aria-hidden', 'true');
     document.body.appendChild(container);
-
     var colors = [
       'rgba(124,58,237,.5)', 'rgba(37,99,235,.45)',
       'rgba(6,182,212,.45)', 'rgba(139,92,246,.5)'
     ];
     var count = window.innerWidth > 1024 ? 16 : window.innerWidth > 768 ? 10 : 6;
-
     for (var i = 0; i < count; i++) {
       var p = document.createElement('div');
       p.className = 'particle';
@@ -542,10 +405,6 @@
       container.appendChild(p);
     }
   }
-
-  /* ============================================================
-     21. ROW ADD BUTTON FEEDBACK
-     ============================================================ */
   function initRowButtons () {
     if (pRM) return;
     qsa('#addRow, #addRow2').forEach(function (btn) {
@@ -555,13 +414,6 @@
       });
     });
   }
-
-  /* ============================================================
-     22. NEWSLETTER FORM (footer)
-     NOTE: front-end only — wire #newsletterForm up to a real
-     email provider (e.g. Mailchimp/ConvertKit/Buttondown) before
-     relying on this to actually collect addresses.
-     ============================================================ */
   function initNewsletter () {
     var form = qs('#newsletterForm');
     if (!form) return;
@@ -573,20 +425,11 @@
       form.reset();
     });
   }
-
-  /* ============================================================
-     INIT — ordered correctly, no race conditions
-     ============================================================ */
   function init () {
-    /* Inject decorative elements first */
     injectBackground();
     initScrollProgress();
-
-    /* Core navigation — single handlers */
     initNavbar();
     initSmoothScroll();
-
-    /* Interactions */
     initRipple();
     initFAQ();
     initKickers();
@@ -595,11 +438,7 @@
     initGpaRing();
     initPDFButton();
     initShareButtons();
-
-    /* Input effects */
     initInputEffects();
-
-    /* Heavy animations — only if motion is ok */
     if (!pRM) {
       initReveal();
       initCounters();
@@ -607,26 +446,16 @@
       initMagneticButtons();
       initIconAnims();
       initParticles();
-
-      /* FIX #8: Floating removed from hero-stats to prevent misalignment */
-      /* FIX #13: Animated underlines removed — broke text-wrap:balance */
-      /* Cursor and glow — last, lowest priority */
       initCursor();
       initMouseGlow();
     } else {
-      /* Reduced motion: instantly activate all reveals */
       qsa('.reveal').forEach(function (el) { el.classList.add('active'); });
     }
-
-    /* Page transition — last (must not interfere with clicks above) */
     initPageTransition();
   }
-
-  /* Run after DOM is ready */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
-
 })();

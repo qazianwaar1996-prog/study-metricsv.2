@@ -1,17 +1,8 @@
-/**
- * Required Marks Calculator
- * "What marks do I need in remaining subjects to reach my target total?"
- * Uses SM utilities from script.js.
- */
 (function () {
   "use strict";
-
   var $ = SM.$, $$ = SM.$$, round = SM.round, uid = SM.uid,
       esc = SM.esc, store = SM.store;
-
   var KEY = "sm_required_marks";
-
-  /* Default subjects */
   var subjects = store.get(KEY, []);
   if (!subjects.length) {
     subjects = [
@@ -22,7 +13,6 @@
       { id: uid(), name: "Computer Sci", obtained: "",  max: 100, done: false }
     ];
   }
-
   function verdict(required, maxPerSubject) {
     if (isNaN(required) || maxPerSubject === 0) return null;
     if (required <= 0)              return { cls: "ok",   title: "Already secured!", msg: "Your current marks are enough to hit your target — you're good to go." };
@@ -32,18 +22,15 @@
     if (required <= maxPerSubject)        return { cls: "warn", title: "Very demanding",     msg: "Near-perfect scores required. Prioritise every remaining subject." };
     return { cls: "bad", title: "Not reachable", msg: "Target is mathematically out of reach. Try lowering your target percentage." };
   }
-
   var VERDICT_ICONS = {
     ok:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
     info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
     warn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 22h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg>',
     bad:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>'
   };
-
   function render() {
     var container = $("#rmRows");
     if (!container) return;
-
     container.innerHTML = subjects.map(function (s) {
       return '<div class="crow" data-id="' + s.id + '">'
         + '<div class="c-name">'
@@ -74,11 +61,9 @@
         + '</div>'
         + '</div>';
     }).join("");
-
     attachEvents();
     compute();
   }
-
   function attachEvents() {
     $$(".crow").forEach(function (row) {
       var id = row.getAttribute("data-id");
@@ -93,7 +78,6 @@
         };
       });
     });
-
     $$(".rm-toggle").forEach(function (btn) {
       btn.onclick = function () {
         var id = btn.getAttribute("data-id");
@@ -104,7 +88,6 @@
         save(); render();
       };
     });
-
     $$("[data-del]").forEach(function (btn) {
       btn.onclick = function () {
         subjects = subjects.filter(function (s) { return s.id !== btn.getAttribute("data-del"); });
@@ -113,16 +96,11 @@
       };
     });
   }
-
   function compute() {
-    /* Read target percentage */
     var targetEl = $("#rmTarget");
     var targetPct = targetEl ? (parseFloat(targetEl.value) || 0) : 0;
-
-    /* Split into done and pending */
     var totalMax       = 0, obtainedSum = 0;
     var pendingSubjects = [];
-
     subjects.forEach(function (s) {
       var max = parseFloat(s.max) || 0;
       totalMax += max;
@@ -132,26 +110,21 @@
         pendingSubjects.push(s);
       }
     });
-
     var targetTotal    = (targetPct / 100) * totalMax;
     var stillNeeded    = targetTotal - obtainedSum;
     var pendingMax     = pendingSubjects.reduce(function (acc, s) { return acc + (parseFloat(s.max) || 0); }, 0);
     var avgRequired    = pendingMax > 0 ? round(stillNeeded / pendingSubjects.length, 1) : 0;
     var pctRequired    = pendingMax > 0 ? round((stillNeeded / pendingMax) * 100, 1) : 0;
     var currentPct     = totalMax > 0   ? round((obtainedSum / totalMax) * 100, 1) : 0;
-
-    /* Update result card */
     var reqOut    = $("#rmRequired");
     var pctOut    = $("#rmPctRequired");
     var curOut    = $("#rmCurrentPct");
     var pendOut   = $("#rmPending");
     var verdEl    = $("#rmVerdict");
-
     if (reqOut)  reqOut.textContent  = pendingSubjects.length > 0 ? avgRequired + " avg" : "—";
     if (pctOut)  pctOut.textContent  = pendingSubjects.length > 0 ? pctRequired + "%" : "—";
     if (curOut)  curOut.textContent  = currentPct + "%";
     if (pendOut) pendOut.textContent = pendingSubjects.length;
-
     if (verdEl && pendingSubjects.length > 0 && totalMax > 0 && targetPct > 0) {
       var maxPer  = pendingSubjects.length > 0 ? (pendingMax / pendingSubjects.length) : 100;
       var v       = verdict(avgRequired, maxPer);
@@ -166,15 +139,12 @@
         + '<div><b>How to use</b> Enter target %, add subjects with marks obtained. Pending subjects show required marks.</div>';
     }
   }
-
   function save() { store.set(KEY, subjects); }
-
   function addSubject() {
     subjects.push({ id: uid(), name: "", obtained: "", max: 100, done: false });
     save(); render();
     SM.toast("Subject added", "success");
   }
-
   document.addEventListener("DOMContentLoaded", function () {
     var add1  = $("#rmAddRow");
     var add2  = $("#rmAddRow2");
@@ -182,11 +152,9 @@
     var share = $("#rmShare");
     var reset = $("#rmReset");
     var targetEl = $("#rmTarget");
-
     if (targetEl) targetEl.addEventListener("input", compute);
     if (add1)     add1.onclick  = addSubject;
     if (add2)     add2.onclick  = addSubject;
-
     if (clear) {
       clear.onclick = function () {
         if (confirm("Clear all subjects?")) {
@@ -195,7 +163,6 @@
         }
       };
     }
-
     if (reset) {
       reset.onclick = function () {
         store.set(KEY, null);
@@ -210,7 +177,6 @@
         SM.toast("Reset to example", "info");
       };
     }
-
     if (share) {
       share.onclick = function () {
         var req = $("#rmRequired") ? $("#rmRequired").textContent : "—";
@@ -219,7 +185,6 @@
         SM.copy("I need " + req + " per subject to reach " + tgt + "% — calculated on Study Metrics (studymetrics.app)");
       };
     }
-
     render();
   });
 })();

@@ -1,26 +1,6 @@
-/*
- * ai-assistant.js — StudyMetrics AI Calculator Assistant
- * Phase 8.3
- *
- * ARCHITECTURE:
- *   - Reads live result values from the DOM (computed by the existing calculators)
- *   - Sends context to Google Gemini with an explanation-only prompt
- *   - Injects an "Ask AI" button into every result-rail found on the page
- *   - Never duplicates or replaces any calculation logic
- *   - Depends on: script.js (SM), ai-service.js (SMAI)
- */
 (function () {
   'use strict';
-
-  /* ──────────────────────────────────────────────────────────────
-     1. CALCULATOR REGISTRY
-     Maps each calculator page to a context-builder function.
-     Each function reads the DOM and returns { title, summary, details }
-     to build a focused coaching prompt.
-  ────────────────────────────────────────────────────────────── */
   var CALCULATORS = {
-
-    /* GPA Calculator */
     'gpa.html': function () {
       var gpa     = text('#gpaOut')  || text('.gpa-big');
       var letter  = text('#gpaLetter');
@@ -38,8 +18,6 @@
         ]
       };
     },
-
-    /* Semester GPA Calculator */
     'semester-gpa.html': function () {
       var gpa     = text('#sgOut') || text('#gpaOut') || text('.gpa-big');
       var letter  = text('#sgLetter') || text('#gpaLetter');
@@ -57,8 +35,6 @@
         ]
       };
     },
-
-    /* CGPA Calculator */
     'cgpa.html': function () {
       var cgpa    = text('#cgpaOut') || text('.gpa-big');
       var cls     = text('#cgpaClass') || text('.gpa-sub');
@@ -76,8 +52,6 @@
         ]
       };
     },
-
-    /* GPA Converter (country-aware) */
     'gpa-converter.html': function () {
       var gpa     = text('#gpaOut');
       var country = text('#refBadge') || attr('.country-select', 'value') || 'unknown country';
@@ -97,8 +71,6 @@
         ]
       };
     },
-
-    /* Target GPA Calculator */
     'target-gpa.html': function () {
       var need  = text('#need');
       var sub   = text('#needSub');
@@ -114,8 +86,6 @@
         ]
       };
     },
-
-    /* GPA Improvement Planner */
     'gpa-improvement-planner.html': function () {
       var req   = text('#giRequired');
       var sub   = text('#giSubOut');
@@ -133,8 +103,6 @@
         ]
       };
     },
-
-    /* Grade Calculator */
     'grade-calculator.html': function () {
       var grade  = text('#gradeOut');
       var letter = text('#gradeLetter');
@@ -150,8 +118,6 @@
         ]
       };
     },
-
-    /* Final Exam Calculator */
     'final-exam-calculator.html': function () {
       var need   = text('#feNeedOut');
       var letter = text('#feLetterOut');
@@ -167,8 +133,6 @@
         ]
       };
     },
-
-    /* Final Grade Calculator */
     'final-grade.html': function () {
       var need  = text('#need');
       var sub   = text('#needSub') || text('#verdictText');
@@ -182,8 +146,6 @@
         ]
       };
     },
-
-    /* Percentage → GPA Converter */
     'percentage-to-gpa.html': function () {
       var gpa    = text('#p2gOut');
       var letter = text('#p2gLetter');
@@ -203,8 +165,6 @@
         ]
       };
     },
-
-    /* GPA → Percentage */
     'gpa-to-percentage.html': function () {
       var pct    = text('#g2pOut');
       var letter = text('#g2pLetter') || text('#g2pGrade');
@@ -220,8 +180,6 @@
         ]
       };
     },
-
-    /* Attendance Calculator */
     'attendance-calculator.html': function () {
       var pct     = text('#pct');
       var status  = text('#status');
@@ -243,8 +201,6 @@
         ]
       };
     },
-
-    /* Attendance Percentage */
     'attendance-percentage.html': function () {
       var pct = text('#apOut') || text('#attendPct');
       if (!pct || pct === '—') return null;
@@ -254,8 +210,6 @@
         details: ['Attendance percentage: ' + pct]
       };
     },
-
-    /* Attendance Goal */
     'attendance-goal.html': function () {
       var out  = text('#agOut') || text('#goalOut');
       var sub  = text('#agSub') || text('#goalSub');
@@ -266,8 +220,6 @@
         details: ['Result: ' + out, 'Detail: ' + (sub || '')]
       };
     },
-
-    /* Required Marks */
     'required-marks.html': function () {
       var req  = text('#rmReqOut') || text('#rmRequired');
       var sub  = text('#rmSub') || text('#rmSubtext');
@@ -283,8 +235,6 @@
         ]
       };
     },
-
-    /* Assignment Weight */
     'assignment-weight.html': function () {
       var out   = text('#awOut') || text('#weightedOut');
       var grade = text('#awGrade') || text('#awLetter');
@@ -298,8 +248,6 @@
         ]
       };
     },
-
-    /* Class Average */
     'class-average.html': function () {
       var avg   = text('#caOut') || text('#avgOut');
       var high  = text('#caHigh') || text('#highest');
@@ -315,8 +263,6 @@
         ]
       };
     },
-
-    /* Grade Predictor */
     'grade-predictor.html': function () {
       var pred   = text('#gpPredOut') || text('#predOut');
       var letter = text('#gpPredLetter') || text('#predLetter');
@@ -330,8 +276,6 @@
         ]
       };
     },
-
-    /* Credit Hour Planner */
     'credit-hour-planner.html': function () {
       var total = text('#chTotal') || text('#creditTotal');
       var rem   = text('#chRemaining') || text('#creditRem');
@@ -345,8 +289,6 @@
         ]
       };
     },
-
-    /* Study Time */
     'study-time.html': function () {
       var out = text('#stOut') || text('#studyTimeOut');
       var sub = text('#stSub');
@@ -357,8 +299,6 @@
         details: ['Recommended hours: ' + out, 'Note: ' + (sub || '')]
       };
     },
-
-    /* Study Schedule */
     'study-schedule.html': function () {
       var subjects = SM.$$('.ss-subject-name, .sched-subject').map(function (el) { return el.textContent.trim(); }).filter(Boolean).slice(0, 6);
       if (!subjects.length) return null;
@@ -368,8 +308,6 @@
         details: ['Subjects: ' + subjects.join(', ')]
       };
     },
-
-    /* Percentage Calculator */
     'percentage-calculator.html': function () {
       var out = text('#pcOut') || text('#percentOut');
       if (!out || out === '—') return null;
@@ -379,12 +317,7 @@
         details: ['Calculated value: ' + out]
       };
     }
-
   };
-
-  /* ──────────────────────────────────────────────────────────────
-     2. DOM HELPERS
-  ────────────────────────────────────────────────────────────── */
   function text(sel) {
     var el = document.querySelector(sel);
     return el ? el.textContent.trim() : null;
@@ -397,10 +330,6 @@
     var el = document.querySelector(sel);
     return el ? el.getAttribute(a) : null;
   }
-
-  /* ──────────────────────────────────────────────────────────────
-     3. MARKDOWN RENDERER (minimal, safe — mirrors ai-chat.js)
-  ────────────────────────────────────────────────────────────── */
   function renderMD(text) {
     var s = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     s = s.replace(/```([^`]*?)```/gs, function(_, c){ return '<pre>' + c.trim() + '</pre>'; });
@@ -417,11 +346,6 @@
     s = s.replace(/<p>\s*<\/p>/g, '');
     return s;
   }
-
-  /* ──────────────────────────────────────────────────────────────
-     4. BUILD THE GEMINI PROMPT
-     Explanation-only: the prompt explicitly forbids recalculation.
-  ────────────────────────────────────────────────────────────── */
   function buildPrompt(ctx) {
     return [
       'A student has just used the StudyMetrics ' + ctx.title + ' and received these results:',
@@ -441,52 +365,32 @@
       'Format with short paragraphs or bullet points — no lengthy headers.'
     ].join('\n');
   }
-
-  /* ──────────────────────────────────────────────────────────────
-     5. INJECT BUTTON INTO A RESULT RAIL
-  ────────────────────────────────────────────────────────────── */
   function injectButton(rail, ctx) {
-    /* Don't inject twice */
     if (rail.querySelector('.ask-ai-btn')) return;
-
     var btn = document.createElement('button');
     btn.className = 'ask-ai-btn';
     btn.setAttribute('aria-label', 'Ask StudyMetrics AI to explain this result');
     btn.innerHTML =
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/><path d="M12 8v4l3 3"/></svg>' +
       '<span class="ask-ai-sparkle">✦</span> Ask AI to explain this result';
-
     btn.addEventListener('click', function () {
-      /* Re-read live values each time button is clicked */
       var page  = location.pathname.split('/').pop() || 'index.html';
       var builder = CALCULATORS[page];
       var liveCtx = builder ? builder() : null;
-
       if (!liveCtx) {
         SM.toast('Calculate a result first, then ask AI.', 'info');
         return;
       }
-
       openPanel(rail, liveCtx, btn);
     });
-
     rail.appendChild(btn);
   }
-
-  /* ──────────────────────────────────────────────────────────────
-     6. OPEN / REPLACE THE INLINE AI PANEL
-  ────────────────────────────────────────────────────────────── */
   function openPanel(rail, ctx, triggerBtn) {
-    /* Remove any existing panel */
     var existing = rail.querySelector('.calc-ai-panel');
     if (existing) existing.remove();
-
-    /* Hide the trigger button while panel is open */
     if (triggerBtn) triggerBtn.style.display = 'none';
-
     var panel = document.createElement('div');
     panel.className = 'calc-ai-panel';
-
     panel.innerHTML =
       '<div class="calc-ai-head">' +
         '<div class="calc-ai-head-left">' +
@@ -500,16 +404,11 @@
       '<div class="calc-ai-body" id="calc-ai-body">' +
         '<div class="calc-ai-typing"><span></span><span></span><span></span></div>' +
       '</div>';
-
     rail.appendChild(panel);
-
-    /* Close button */
     panel.querySelector('#calc-ai-close').addEventListener('click', function () {
       panel.remove();
       if (triggerBtn) triggerBtn.style.display = '';
     });
-
-    /* Call AI via secure backend */
     var prompt = buildPrompt(ctx);
     window.SMAI.send(
       [{ role: 'user', content: prompt }],
@@ -536,12 +435,10 @@
       }
     );
   }
-
   function setTitle(panel, t) {
     var el = panel.querySelector('.calc-ai-title');
     if (el) el.textContent = t;
   }
-
   function appendFooter(panel, responseText) {
     if (panel.querySelector('.calc-ai-foot')) return;
     var foot = document.createElement('div');
@@ -555,40 +452,23 @@
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' +
         ' Open full AI chat' +
       '</a>';
-
     foot.querySelector('.calc-ai-copy-btn').addEventListener('click', function () {
       SM.copy(responseText);
     });
-
     panel.appendChild(foot);
   }
-
-  /* ──────────────────────────────────────────────────────────────
-     7. PAGE DETECTION & INJECTION
-     Runs after DOM is ready. Finds result-rail(s) on the page,
-     identifies which calculator it is, and injects the button.
-  ────────────────────────────────────────────────────────────── */
   function init() {
     var page = location.pathname.split('/').pop() || 'index.html';
-
-    /* Only inject on pages we know about */
     if (!CALCULATORS[page]) return;
-
-    /* Find all result rails on this page */
     var rails = SM.$$('.result-rail');
     if (!rails.length) {
-      /* Fallback: some pages use .gpa-hero or .res-hero directly in the panel */
       rails = SM.$$('.gpa-hero, .res-hero, .grade-hero');
     }
     if (!rails.length) return;
-
-    /* Build a lazy context to check if there's anything to explain */
     rails.forEach(function (rail) {
-      injectButton(rail, null); /* ctx is null — will be resolved on click */
+      injectButton(rail, null);
     });
   }
-
-  /* Run after all other scripts have had a chance to compute */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       setTimeout(init, 120);
@@ -596,5 +476,4 @@
   } else {
     setTimeout(init, 120);
   }
-
 })();

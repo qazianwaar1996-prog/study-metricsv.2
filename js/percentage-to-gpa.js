@@ -1,7 +1,6 @@
 (function(){
 "use strict";
 var $=SM.$, round=SM.round, store=SM.store, KEY="sm_p2g";
-
 var SCALES={
   us4:{name:"US 4.0",max:4,fn:function(p){
     if(p>=97)return{gpa:4.0,letter:"A+",cls:"Excellent"};
@@ -57,7 +56,6 @@ var SCALES={
     return{gpa:0.0,letter:"Fail",cls:"Fail"};
   }}
 };
-
 function compute(){
   var pEl=$('#p2gPct'), sEl=$('#p2gScale');
   if(!pEl||!sEl) return;
@@ -74,7 +72,6 @@ function compute(){
   if(name) name.textContent=scale.name;
   if(cls) cls.textContent=res.cls;
 }
-
 document.addEventListener('DOMContentLoaded',function(){
   var saved=store.get(KEY,null);
   if(saved){var e=$('#p2gPct');if(e)e.value=saved.pct||'';var s=$('#p2gScale');if(s)s.value=saved.scale||'us4';}

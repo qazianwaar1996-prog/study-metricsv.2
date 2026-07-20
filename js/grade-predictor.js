@@ -1,7 +1,6 @@
 (function(){
 "use strict";
 var $=SM.$, $$=SM.$$, round=SM.round, uid=SM.uid, esc=SM.esc, store=SM.store, KEY="sm_gp";
-
 function letterGrade(p){
   if(p>=97)return'A+';if(p>=93)return'A';if(p>=90)return'A-';
   if(p>=87)return'B+';if(p>=83)return'B';if(p>=80)return'B-';
@@ -9,14 +8,12 @@ function letterGrade(p){
   if(p>=67)return'D+';if(p>=63)return'D';if(p>=60)return'D-';
   return'F';
 }
-
 var rows=store.get(KEY,[]);
 if(!rows.length) rows=[
   {id:uid(),name:'Midterm Exam',score:'78',weight:'30'},
   {id:uid(),name:'Assignments',score:'85',weight:'20'},
   {id:uid(),name:'Final Exam',score:'',weight:'50'}
 ];
-
 function render(){
   var c=$('#gpRows'); if(!c) return;
   c.innerHTML=rows.map(function(r){
@@ -29,7 +26,6 @@ function render(){
   }).join('');
   attach(); compute();
 }
-
 function attach(){
   $$('.crow').forEach(function(row){
     var id=row.getAttribute('data-id');
@@ -42,7 +38,6 @@ function attach(){
     btn.onclick=function(){rows=rows.filter(function(r){return r.id!==btn.getAttribute('data-del');});store.set(KEY,rows);render();};
   });
 }
-
 function compute(){
   var totalW=0,totalWS=0,covered=0,count=0;
   rows.forEach(function(r){
@@ -64,7 +59,6 @@ function compute(){
     wn.textContent='Weight total: '+sum+'% '+(Math.abs(sum-100)<0.5?'✓ Adds up to 100%':'— weights should sum to 100%');
   }
 }
-
 document.addEventListener('DOMContentLoaded',function(){
   var add=$('#gpAddRow'),rs=$('#gpReset'),sh=$('#gpShare');
   if(add) add.onclick=function(){rows.push({id:uid(),name:'',score:'',weight:''});store.set(KEY,rows);render();SM.toast('Component added','success');};

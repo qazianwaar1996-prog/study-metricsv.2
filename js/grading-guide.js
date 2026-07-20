@@ -1,21 +1,12 @@
-/**
- * grading-guide.js — Study Metrics Phase 5
- * Logic for grading-guide.html only.
- * Reads SM_GRADING and SM_COUNTRY; does not touch calc files.
- */
 (function () {
   "use strict";
-
   document.addEventListener("DOMContentLoaded", function () {
     if (typeof window.SM_GRADING === "undefined") return;
     var G = window.SM_GRADING;
     var round = SM.round;
-
-    /* ── All-countries grid ────────────────────────────────── */
     function renderAllCountries() {
       var container = document.getElementById("smAllCountries");
       if (!container) return;
-
       container.innerHTML = G.all.map(function (sys) {
         var topGrade = sys.grades[0];
         return '<a href="grading-guide.html?country=' + sys.id + '" class="rel-card" data-country="' + sys.id + '" style="text-decoration:none;cursor:pointer" role="button" aria-label="View ' + sys.name + ' grading system">'
@@ -24,14 +15,11 @@
           + '<span>' + sys.scale + '</span></div>'
           + '</a>';
       }).join("");
-
-      /* Click on a country card changes active system */
       container.querySelectorAll("[data-country]").forEach(function (card) {
         card.addEventListener("click", function (e) {
           e.preventDefault();
           var sys = G.get(card.getAttribute("data-country"));
           if (!sys) return;
-          /* Update the select dropdowns */
           document.querySelectorAll(".sm-country-select").forEach(function (sel) {
             sel.value = sys.id;
             sel.dispatchEvent(new Event("change"));
@@ -39,8 +27,6 @@
         });
       });
     }
-
-    /* ── Region list in sidebar ───────────────────────────── */
     function renderRegionList() {
       var el = document.getElementById("smRegionList");
       if (!el) return;
@@ -53,8 +39,6 @@
           + '</span></div>';
       }).join("");
     }
-
-    /* ── Quick converter ──────────────────────────────────── */
     function initConverter() {
       var inp   = document.getElementById("ggInput");
       var us4   = document.getElementById("ggUS4Out");
@@ -64,13 +48,10 @@
       var unit  = document.getElementById("ggUnit");
       var share = document.getElementById("ggShare");
       if (!inp) return;
-
       function convert() {
         var sys = window.SM_COUNTRY ? window.SM_COUNTRY.current() : G.get("us");
         if (!sys) return;
         var val = parseFloat(inp.value);
-
-        /* Update unit label */
         if (unit) {
           var unitMap = {
             numeric5inv: "grade (1–5)",
@@ -83,7 +64,6 @@
           };
           unit.textContent = unitMap[sys.scaleType] || "%";
         }
-
         if (isNaN(val)) {
           if (us4)  us4.textContent = "—";
           if (cls)  cls.textContent = "Enter a grade above";
@@ -91,32 +71,23 @@
           if (nat)  nat.textContent = "—";
           return;
         }
-
         var gpa4 = round(sys.toGPA4(val), 2);
-
-        /* Find matching grade row */
         var matchGrade = sys.grades.find(function (g) {
-          /* For inverse scales (German), min is lower number = harder */
           if (sys.scaleType === "numeric5inv") {
             return val >= g.min && val <= g.max;
           }
           return val >= g.min && val <= g.max;
         });
-
         if (us4)  us4.textContent  = gpa4.toFixed(2);
         if (cls)  cls.textContent  = matchGrade ? matchGrade.cls : "Unknown";
         if (lett) lett.textContent = matchGrade ? matchGrade.label : "—";
         if (nat)  nat.textContent  = gpa4.toFixed(2) + " / 4.0";
       }
-
       inp.addEventListener("input", convert);
-
-      /* Re-run when country changes */
       document.addEventListener("sm:country-change", function () {
         inp.value = "";
         convert();
       });
-
       if (share) {
         share.onclick = function () {
           var sys = window.SM_COUNTRY ? window.SM_COUNTRY.current() : G.get("us");
@@ -125,8 +96,6 @@
           SM.copy(sys.flag + " " + sys.name + " grade → US GPA " + val + " — Study Metrics (studymetrics.app/grading-guide.html)");
         };
       }
-
-      /* Handle ?country= query param on load */
       try {
         var params = new URLSearchParams(window.location.search);
         var qCountry = params.get("country");
@@ -140,11 +109,8 @@
         }
       } catch(e) {}
     }
-
-    /* ── Init ─────────────────────────────────────────────── */
     renderAllCountries();
     renderRegionList();
     initConverter();
   });
-
 })();

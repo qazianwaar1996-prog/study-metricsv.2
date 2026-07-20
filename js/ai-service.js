@@ -1,27 +1,8 @@
-/*
- * ai-service.js — StudyMetrics AI Service
- * Phase 8.5 — Secure Backend
- *
- * All Gemini calls now go through the backend at /api/ai.
- * No API key is stored or handled in the browser.
- *
- * Public interface (unchanged):
- *   window.SMAI.send(history, onSuccess, onError)
- *   history: [{ role: 'user'|'assistant', content: string }]
- */
 (function () {
   'use strict';
-
   var API_ENDPOINT = '/api/ai';
-
   window.SMAI = {
-
-    /*
-     * send(history, onSuccess, onError)
-     * history: [{ role: 'user'|'assistant', content: string }]
-     */
     send: function (history, onSuccess, onError) {
-
       fetch(API_ENDPOINT, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -48,7 +29,5 @@
         onError(err.message || 'Something went wrong. Please try again.');
       });
     }
-
   };
-
 })();

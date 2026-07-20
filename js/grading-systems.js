@@ -1,37 +1,7 @@
-/**
- * grading-systems.js — Study Metrics Phase 5
- * Single source of truth for all country grading data.
- * Consumed by: country-selector.js, grading-guide.html
- * Existing calc files (gpa.js, gpa-converter.js, etc.) are NOT modified.
- *
- * Each country entry:
- *   id        {string}  — unique slug, used as localStorage key
- *   name      {string}  — display name
- *   flag      {string}  — emoji flag
- *   region    {string}  — continent / region grouping
- *   scale     {string}  — human label for grade scale
- *   scaleType {string}  — "letter4" | "percentage" | "gpa10" | "gpa5" | "honours" | "numeric7" | "numeric20" | "numeric10" | "numeric6" | "alphanumeric"
- *   scaleMax  {number}  — max value on native scale
- *   passMark  {number}  — minimum passing grade on native scale
- *   creditUnit {string} — "Credit Hours" | "ECTS Credits" | "Unit Points" etc.
- *   termName  {string}  — "Semester" | "Term" | "Trimester"
- *   gpaScale  {string}  — native GPA description shown to user
- *   grades    {Array}   — [{label, min, max, gpa4, class}] sorted high→low
- *   tip       {string}  — one-sentence local context
- *   toGPA4    {function} — converts native grade value → US 4.0 GPA
- *   toNative  {function} — converts US 4.0 GPA → native percentage (approx)
- */
-
 window.SM_GRADING = (function () {
   "use strict";
-
-  /* ── helpers ─────────────────────────────────────────────── */
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
-
-  /* ── GRADE SYSTEMS ────────────────────────────────────────── */
   var SYSTEMS = [
-
-    /* ═══ AMERICAS ═══════════════════════════════════════════ */
     {
       id: "us", name: "United States", flag: "🇺🇸", region: "Americas",
       scale: "4.0 Letter Grade", scaleType: "letter4", scaleMax: 4.0, passMark: 1.0,
@@ -62,7 +32,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(60 + (g4/4)*40, 0, 100)); }
     },
-
     {
       id: "ca", name: "Canada", flag: "🇨🇦", region: "Americas",
       scale: "Percentage (Letter Variant)", scaleType: "percentage", scaleMax: 100, passMark: 50,
@@ -90,8 +59,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(50 + (g4/4)*50, 0, 100)); }
     },
-
-    /* ═══ EUROPE ══════════════════════════════════════════════ */
     {
       id: "uk", name: "United Kingdom", flag: "🇬🇧", region: "Europe",
       scale: "Honours Classification", scaleType: "percentage", scaleMax: 100, passMark: 40,
@@ -114,7 +81,6 @@ window.SM_GRADING = (function () {
         if(g4>=2.0)return 43; return 35;
       }
     },
-
     {
       id: "ie", name: "Ireland", flag: "🇮🇪", region: "Europe",
       scale: "Percentage + Honour Class", scaleType: "percentage", scaleMax: 100, passMark: 40,
@@ -134,7 +100,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(40+(g4/4)*60,0,100)); }
     },
-
     {
       id: "de", name: "Germany", flag: "🇩🇪", region: "Europe",
       scale: "1–5 Numeric Scale", scaleType: "numeric5inv", scaleMax: 1, passMark: 4,
@@ -155,7 +120,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return +(1 + ((4-g4)/4)*3).toFixed(1); }
     },
-
     {
       id: "fr", name: "France", flag: "🇫🇷", region: "Europe",
       scale: "0–20 Numeric Scale", scaleType: "numeric20", scaleMax: 20, passMark: 10,
@@ -175,7 +139,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return +(g4/4*20).toFixed(1); }
     },
-
     {
       id: "it", name: "Italy", flag: "🇮🇹", region: "Europe",
       scale: "18–30 Numeric Scale", scaleType: "numeric30", scaleMax: 30, passMark: 18,
@@ -196,7 +159,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(18+(g4/4)*12); }
     },
-
     {
       id: "es", name: "Spain", flag: "🇪🇸", region: "Europe",
       scale: "0–10 Numeric Scale", scaleType: "numeric10", scaleMax: 10, passMark: 5,
@@ -214,7 +176,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return +(g4/4*10).toFixed(1); }
     },
-
     {
       id: "nl", name: "Netherlands", flag: "🇳🇱", region: "Europe",
       scale: "1–10 Numeric Scale", scaleType: "numeric10", scaleMax: 10, passMark: 5.5,
@@ -235,7 +196,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return +(1+(g4/4)*9).toFixed(1); }
     },
-
     {
       id: "se", name: "Sweden", flag: "🇸🇪", region: "Europe",
       scale: "A–F / VG–IG", scaleType: "alphanumeric", scaleMax: 5, passMark: 2,
@@ -257,7 +217,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(g4/4*100,0,100)); }
     },
-
     {
       id: "no", name: "Norway", flag: "🇳🇴", region: "Europe",
       scale: "A–F Scale", scaleType: "alphanumeric", scaleMax: 5, passMark: 2,
@@ -278,7 +237,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(g4/4*100,0,100)); }
     },
-
     {
       id: "dk", name: "Denmark", flag: "🇩🇰", region: "Europe",
       scale: "7-Point Scale", scaleType: "numeric7", scaleMax: 12, passMark: 2,
@@ -303,7 +261,6 @@ window.SM_GRADING = (function () {
         if(g4>=2.0)return 4;  if(g4>=1.0)return 2;  return 0;
       }
     },
-
     {
       id: "fi", name: "Finland", flag: "🇫🇮", region: "Europe",
       scale: "0–5 Numeric Scale", scaleType: "numeric5", scaleMax: 5, passMark: 1,
@@ -324,8 +281,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(g4/4*5); }
     },
-
-    /* ═══ SOUTH ASIA ══════════════════════════════════════════ */
     {
       id: "pk", name: "Pakistan", flag: "🇵🇰", region: "South Asia",
       scale: "4.0 GPA (Percentage base)", scaleType: "percentage", scaleMax: 100, passMark: 50,
@@ -353,7 +308,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(50+(g4/4)*50,0,100)); }
     },
-
     {
       id: "in", name: "India", flag: "🇮🇳", region: "South Asia",
       scale: "10-point CGPA (CBSE/UGC)", scaleType: "gpa10", scaleMax: 10, passMark: 4,
@@ -375,7 +329,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return +(g4/4*10).toFixed(2); }
     },
-
     {
       id: "bd", name: "Bangladesh", flag: "🇧🇩", region: "South Asia",
       scale: "4.0 GPA Scale", scaleType: "percentage", scaleMax: 100, passMark: 40,
@@ -402,7 +355,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(40+(g4/4)*60,0,100)); }
     },
-
     {
       id: "lk", name: "Sri Lanka", flag: "🇱🇰", region: "South Asia",
       scale: "Percentage + Class", scaleType: "percentage", scaleMax: 100, passMark: 40,
@@ -423,8 +375,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(40+(g4/4)*60,0,100)); }
     },
-
-    /* ═══ MIDDLE EAST ═════════════════════════════════════════ */
     {
       id: "ae", name: "UAE", flag: "🇦🇪", region: "Middle East",
       scale: "4.0 GPA (US-style)", scaleType: "percentage", scaleMax: 100, passMark: 60,
@@ -447,7 +397,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(60+(g4/4)*40,0,100)); }
     },
-
     {
       id: "sa", name: "Saudi Arabia", flag: "🇸🇦", region: "Middle East",
       scale: "5.0 GPA Scale", scaleType: "percentage", scaleMax: 100, passMark: 60,
@@ -465,14 +414,12 @@ window.SM_GRADING = (function () {
       tip: "Saudi universities use a 5.0 GPA scale; the pass mark is typically 60%.",
       toGPA4: function(p) {
         p=clamp(+p,0,100);
-        // map 5.0→4.0
         if(p>=90)return 4.0; if(p>=85)return 3.7; if(p>=80)return 3.3;
         if(p>=75)return 3.0; if(p>=70)return 2.5; if(p>=65)return 2.0;
         if(p>=60)return 1.3; return 0.0;
       },
       toNative: function(g4) { return Math.round(clamp(60+(g4/4)*40,0,100)); }
     },
-
     {
       id: "qa", name: "Qatar", flag: "🇶🇦", region: "Middle East",
       scale: "4.0 GPA (US-style)", scaleType: "percentage", scaleMax: 100, passMark: 60,
@@ -497,7 +444,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(60+(g4/4)*40,0,100)); }
     },
-
     {
       id: "om", name: "Oman", flag: "🇴🇲", region: "Middle East",
       scale: "4.0 GPA Scale", scaleType: "percentage", scaleMax: 100, passMark: 50,
@@ -518,7 +464,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(50+(g4/4)*50,0,100)); }
     },
-
     {
       id: "kw", name: "Kuwait", flag: "🇰🇼", region: "Middle East",
       scale: "4.0 GPA Scale", scaleType: "percentage", scaleMax: 100, passMark: 60,
@@ -539,8 +484,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(60+(g4/4)*40,0,100)); }
     },
-
-    /* ═══ SOUTHEAST ASIA ══════════════════════════════════════ */
     {
       id: "sg", name: "Singapore", flag: "🇸🇬", region: "Southeast Asia",
       scale: "4.0 GPA (NUS/NTU)", scaleType: "letter4", scaleMax: 4, passMark: 1.0,
@@ -568,7 +511,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(45+(g4/4)*55,0,100)); }
     },
-
     {
       id: "my", name: "Malaysia", flag: "🇲🇾", region: "Southeast Asia",
       scale: "4.0 GPA Scale", scaleType: "percentage", scaleMax: 100, passMark: 40,
@@ -596,8 +538,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(40+(g4/4)*60,0,100)); }
     },
-
-    /* ═══ EAST ASIA ═══════════════════════════════════════════ */
     {
       id: "jp", name: "Japan", flag: "🇯🇵", region: "East Asia",
       scale: "100-point with ABCDF", scaleType: "percentage", scaleMax: 100, passMark: 60,
@@ -617,7 +557,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(60+(g4/4)*40,0,100)); }
     },
-
     {
       id: "kr", name: "South Korea", flag: "🇰🇷", region: "East Asia",
       scale: "4.5 GPA Scale", scaleType: "percentage", scaleMax: 100, passMark: 60,
@@ -642,7 +581,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(60+(g4/4)*40,0,100)); }
     },
-
     {
       id: "cn", name: "China", flag: "🇨🇳", region: "East Asia",
       scale: "Percentage / 百分制", scaleType: "percentage", scaleMax: 100, passMark: 60,
@@ -662,8 +600,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(60+(g4/4)*40,0,100)); }
     },
-
-    /* ═══ OCEANIA ═════════════════════════════════════════════ */
     {
       id: "au", name: "Australia", flag: "🇦🇺", region: "Oceania",
       scale: "High Distinction – Fail", scaleType: "percentage", scaleMax: 100, passMark: 50,
@@ -683,7 +619,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(50+(g4/4)*50,0,100)); }
     },
-
     {
       id: "nz", name: "New Zealand", flag: "🇳🇿", region: "Oceania",
       scale: "Percentage + Grade", scaleType: "percentage", scaleMax: 100, passMark: 50,
@@ -709,8 +644,6 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(50+(g4/4)*50,0,100)); }
     },
-
-    /* ═══ AFRICA ══════════════════════════════════════════════ */
     {
       id: "za", name: "South Africa", flag: "🇿🇦", region: "Africa",
       scale: "Percentage + Symbol", scaleType: "percentage", scaleMax: 100, passMark: 50,
@@ -730,38 +663,24 @@ window.SM_GRADING = (function () {
       },
       toNative: function(g4) { return Math.round(clamp(50+(g4/4)*50,0,100)); }
     }
-
-  ]; /* end SYSTEMS */
-
-  /* ── Index by id for fast lookup ──────────────────────────── */
+  ];
   var BY_ID = {};
   SYSTEMS.forEach(function(s) { BY_ID[s.id] = s; });
-
-  /* ── Grouped by region ────────────────────────────────────── */
   var REGIONS = {};
   SYSTEMS.forEach(function(s) {
     if (!REGIONS[s.region]) REGIONS[s.region] = [];
     REGIONS[s.region].push(s);
   });
-
-  /* ── Persistence key ─────────────────────────────────────── */
   var PREF_KEY = "sm_country";
-
   return {
-    /** All systems array */
     all: SYSTEMS,
-    /** Fast lookup by id */
     get: function(id) { return BY_ID[id] || null; },
-    /** Systems grouped by region */
     regions: REGIONS,
-    /** Persist selected country id */
     save: function(id) {
       try { localStorage.setItem(PREF_KEY, id); } catch(e) {}
     },
-    /** Retrieve persisted country id (default: "us") */
     load: function() {
       try { return localStorage.getItem(PREF_KEY) || "us"; } catch(e) { return "us"; }
     }
   };
-
 })();

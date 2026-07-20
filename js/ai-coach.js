@@ -1,28 +1,7 @@
-/*
- * ai-coach.js — StudyMetrics Academic Coach Enhancements
- * Phase 8.3
- *
- * Responsibilities:
- *   - Inject "Coach Mode" topic selector into ai.html
- *   - Provide rich context-aware prompt prefixes
- *   - Detect user country via language/timezone hints
- *   - Suggest contextually relevant StudyMetrics tools
- *   - Surface quick-start coaching prompts by topic
- *
- * Depends on: ai-service.js (window.SMAI), script.js (SM)
- * Only activates on ai.html.
- */
 (function () {
   'use strict';
-
-  /* Only run on ai.html */
   var page = location.pathname.split('/').pop() || '';
   if (page !== 'ai.html' && page !== '') return;
-
-  /* ─────────────────────────────────────────────────────────────
-     1. COACH TOPICS — each has a label, icon, prompt prefix,
-        and contextual tool recommendations
-  ───────────────────────────────────────────────────────────── */
   var COACH_TOPICS = [
     {
       id:    'gpa',
@@ -130,22 +109,12 @@
       ]
     }
   ];
-
-  /* ─────────────────────────────────────────────────────────────
-     2. STATE
-  ───────────────────────────────────────────────────────────── */
   var activeTopic = null;
-
-  /* ─────────────────────────────────────────────────────────────
-     3. BUILD & INJECT THE COACH TOPIC SELECTOR
-     Inserts above the chat-welcome area
-  ───────────────────────────────────────────────────────────── */
   function buildTopicSelector() {
     var wrap = document.createElement('div');
     wrap.className = 'coach-topics';
     wrap.setAttribute('role', 'tablist');
     wrap.setAttribute('aria-label', 'Academic coaching topics');
-
     COACH_TOPICS.forEach(function (topic) {
       var btn = document.createElement('button');
       btn.className = 'coach-topic-btn';
@@ -160,32 +129,21 @@
       });
       wrap.appendChild(btn);
     });
-
     return wrap;
   }
-
   function selectTopic(id, clickedBtn) {
     activeTopic = id;
     var topic = COACH_TOPICS.find(function (t) { return t.id === id; });
     if (!topic) return;
-
-    /* Update button states */
     document.querySelectorAll('.coach-topic-btn').forEach(function (b) {
       var active = b.getAttribute('data-topic') === id;
       b.classList.toggle('active', active);
       b.setAttribute('aria-selected', active ? 'true' : 'false');
     });
-
-    /* Update suggestion chips */
     updateSuggestions(topic.suggestions);
-
-    /* Update sidebar tool links */
     updateSidebarTools(topic.tools);
-
-    /* Update coach context card */
     updateCoachCard(topic);
   }
-
   function updateSuggestions(suggestions) {
     var container = document.querySelector('.chat-suggestions');
     if (!container) return;
@@ -197,24 +155,18 @@
       btn.setAttribute('data-q', q);
       btn.textContent = q;
       btn.addEventListener('click', function () {
-        /* Dispatch to ai-chat.js via custom event */
         document.dispatchEvent(new CustomEvent('smai:send', { detail: { text: q } }));
       });
       container.appendChild(btn);
     });
   }
-
   function updateSidebarTools(tools) {
     var rail = document.querySelector('.ai-tool-links');
     if (!rail) return;
     var links = rail.querySelectorAll('a.ai-tool-link');
-    /* Hide all, then show matched ones */
     links.forEach(function (a) { a.style.display = 'none'; });
-
-    /* Inject fresh links */
     var existing = rail.querySelector('.coach-tool-links');
     if (existing) existing.remove();
-
     var frag = document.createDocumentFragment();
     var ul = document.createElement('div');
     ul.className = 'coach-tool-links';
@@ -228,15 +180,11 @@
       ul.appendChild(a);
     });
     frag.appendChild(ul);
-
-    /* Also show original links again if no tools */
     if (!tools.length) {
       links.forEach(function (a) { a.style.display = ''; });
     }
-
     rail.appendChild(frag);
   }
-
   function updateCoachCard(topic) {
     var card = document.getElementById('coach-context-card');
     if (!card) return;
@@ -248,10 +196,6 @@
       '</div>';
     card.style.display = 'flex';
   }
-
-  /* ─────────────────────────────────────────────────────────────
-     4. INJECT COACH CARD into sidebar (above pro-tip)
-  ───────────────────────────────────────────────────────────── */
   function buildCoachCard() {
     var card = document.createElement('div');
     card.id = 'coach-context-card';
@@ -259,10 +203,6 @@
     card.style.display = 'none';
     return card;
   }
-
-  /* ─────────────────────────────────────────────────────────────
-     5. RESTORE sidebar original links when no topic is selected
-  ───────────────────────────────────────────────────────────── */
   function restoreSidebarLinks() {
     var rail = document.querySelector('.ai-tool-links');
     if (!rail) return;
@@ -272,11 +212,6 @@
       a.style.display = '';
     });
   }
-
-  /* ─────────────────────────────────────────────────────────────
-     6. LISTEN for smai:send events from suggestions
-     Passes message to ai-chat.js via shared textarea + click
-  ───────────────────────────────────────────────────────────── */
   document.addEventListener('smai:send', function (e) {
     var text = e.detail && e.detail.text;
     if (!text) return;
@@ -284,24 +219,16 @@
     var btn = document.getElementById('chat-send-btn');
     if (ta && btn) {
       ta.value = text;
-      /* Trigger auto-resize if ai-chat.js set one up */
       ta.dispatchEvent(new Event('input', { bubbles: true }));
       btn.click();
     }
   });
-
-  /* ─────────────────────────────────────────────────────────────
-     7. INIT — inject after DOM ready
-  ───────────────────────────────────────────────────────────── */
   function init() {
-    /* Inject topic selector before the chat window */
     var chatWindow = document.querySelector('.chat-window');
     if (chatWindow) {
       var topicBar = buildTopicSelector();
       chatWindow.parentNode.insertBefore(topicBar, chatWindow);
     }
-
-    /* Inject coach context card in sidebar */
     var rail = document.querySelector('.ai-rail');
     if (rail) {
       var proTip = rail.querySelector('.ai-info-card:last-child');
@@ -313,11 +240,9 @@
       }
     }
   }
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
-
 })();

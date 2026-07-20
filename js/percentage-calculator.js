@@ -1,13 +1,9 @@
 (function () {
   "use strict";
-
   var $ = SM.$, $$ = SM.$$, round = SM.round;
-
   document.addEventListener("DOMContentLoaded", function () {
     var tabs = $$(".tabs button");
     var panels = $$(".panel-lg");
-
-    // --- 1. Tab Navigation ---
     if (tabs.length) {
       tabs.forEach(function (btn) {
         btn.onclick = function () {
@@ -19,17 +15,12 @@
         };
       });
     }
-
-    // --- 2. Calculation Logic ---
-
-    // Marks to Percentage
     function marks() {
       var g = parseFloat($("#m_got").value) || 0;
       var m = parseFloat($("#m_max").value) || 0;
       var p = m !== 0 ? round((g / m) * 100, 2) : 0;
       var out = $("#m_out");
       var note = $("#m_note");
-
       if (out) out.textContent = p + "%";
       if (note) {
         if (m === 0) note.textContent = "Enter total possible marks";
@@ -39,8 +30,6 @@
         else note.textContent = "Needs improvement.";
       }
     }
-
-    // X is what % of Y
     function xofy() {
       var a = parseFloat($("#x_a").value) || 0;
       var b = parseFloat($("#x_b").value) || 0;
@@ -48,8 +37,6 @@
       var out = $("#x_out");
       if (out) out.textContent = res + "%";
     }
-
-    // X% of Y
     function pctOf() {
       var p = parseFloat($("#p_pct").value) || 0;
       var n = parseFloat($("#p_num").value) || 0;
@@ -57,8 +44,6 @@
       var out = $("#p_out");
       if (out) out.textContent = res;
     }
-
-    // Percentage Change
     function change() {
       var f = parseFloat($("#c_from").value) || 0;
       var t = parseFloat($("#c_to").value) || 0;
@@ -66,7 +51,6 @@
       var pct = f !== 0 ? round((diff / Math.abs(f)) * 100, 2) : 0;
       var out = $("#c_out");
       var note = $("#c_note");
-
       if (out) out.textContent = (pct > 0 ? "+" : "") + pct + "%";
       if (note) {
         if (f === 0) {
@@ -78,21 +62,18 @@
         }
       }
     }
-
-    // --- 3. Event Binding ---
     var config = [
       { ids: ["m_got", "m_max"], fn: marks },
       { ids: ["x_a", "x_b"], fn: xofy },
       { ids: ["p_pct", "p_num"], fn: pctOf },
       { ids: ["c_from", "c_to"], fn: change }
     ];
-
     config.forEach(function (group) {
       group.ids.forEach(function (id) {
         var el = $("#" + id);
         if (el) el.oninput = group.fn;
       });
-      group.fn(); // Initial run
+      group.fn();
     });
   });
 })();

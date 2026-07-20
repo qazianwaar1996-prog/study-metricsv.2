@@ -1,11 +1,5 @@
-/* ============================================================
-   script.js — Core SM utilities only
-   Navigation, scroll, reveal, toast are handled by premium.js
-   ============================================================ */
 (function () {
   "use strict";
-
-  /* ── Shared utility namespace ── */
   window.SM = {
     $:  function (s, r) { return (r || document).querySelector(s); },
     $$: function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); },
@@ -30,10 +24,8 @@
       }
     },
     toast: function (msg, type) {
-      /* Remove any existing toast first */
       var existing = document.querySelector('.toast');
       if (existing) { existing.remove(); }
-
       var toast = document.createElement("div");
       toast.className = "toast";
       if (type) toast.classList.add(type);
@@ -41,11 +33,8 @@
       toast.setAttribute('aria-live', 'polite');
       toast.textContent = msg;
       document.body.appendChild(toast);
-
-      /* Force reflow before adding .show */
       void toast.offsetWidth;
       toast.classList.add("show");
-
       setTimeout(function () {
         toast.classList.remove("show");
         setTimeout(function () { if (toast.parentNode) toast.remove(); }, 400);
@@ -72,44 +61,31 @@
       catch (e) { SM.toast("Copy failed", "error"); }
       ta.remove();
     },
-
-    /* ── Dashboard visit tracker (Phase 7.1) ───────────────────
-       Called automatically on every page load.
-       Writes to sm_dash_recent only — never touches calculator keys.
-    ─────────────────────────────────────────────────────────── */
     trackVisit: function () {
       try {
         var url = location.pathname.split('/').pop() || 'index.html';
-        /* Skip dashboard itself, static/info pages, and 404 */
         var skip = ['dashboard.html','index.html','404.html','about.html',
                     'blog.html','contact.html','privacy-policy.html',
                     'terms-and-conditions.html','disclaimer.html',
                     'academic-resources.html','gpa-help-center.html',
                     'study-guides.html','grading-guide.html',''];
         if (skip.indexOf(url) !== -1) return;
-
         var name = document.title
           .replace(/\s*[—|\-]\s*Study Metrics\s*$/i, '')
           .replace(/\s*\|\s*Study Metrics\s*$/i, '')
           .trim() || url;
-
         var recent = SM.store.get('sm_dash_recent', []);
-        /* Remove stale entry for this URL, then prepend fresh one */
         recent = recent.filter(function (r) { return r.url !== url; });
         recent.unshift({ url: url, name: name, ts: Date.now() });
         if (recent.length > 12) recent = recent.slice(0, 12);
         SM.store.set('sm_dash_recent', recent);
-        /* Phase 7.2: last-open for "continue where you left off" */
         SM.store.set('sm_last_open', { url: url, name: name, ts: Date.now() });
       } catch (e) {}
     }
   };
-
-  /* Auto-track on every page that loads script.js */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () { SM.trackVisit(); });
   } else {
     SM.trackVisit();
   }
-
 })();

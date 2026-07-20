@@ -1,7 +1,6 @@
 (function(){
 "use strict";
 var $=SM.$, store=SM.store, KEY="sm_g2p";
-
 var SCALES={
   us4:{name:"US 4.0",max:4,fn:function(g){
     if(g>=4.0)return{pct:97,cls:"A / Excellent"};
@@ -18,13 +17,11 @@ var SCALES={
     return{pct:0,cls:"F / Failing"};
   }},
   pak4:{name:"Pakistan 4.0",max:4,fn:function(g){
-    // linear interpolation: GPA 0-4 → 50-100%
     var pct=Math.round(50 + (g/4)*50);
     var cls=g>=3.7?'Excellent':g>=3.0?'Good':g>=2.0?'Average':g>=1.0?'Pass':'Failing';
     return{pct:Math.min(100,pct),cls:cls};
   }},
   india10:{name:"India 10-point",max:10,fn:function(g){
-    // CBSE formula: percentage = CGPA × 9.5
     var pct=Math.round(g*9.5);
     var cls=g>=9?'Outstanding':g>=8?'Excellent':g>=7?'Very Good':g>=6?'Good':g>=5?'Average':g>=4?'Pass':'Failing';
     return{pct:Math.min(100,pct),cls:cls};
@@ -35,7 +32,6 @@ var SCALES={
     return{pct:Math.min(100,pct),cls:cls};
   }}
 };
-
 function compute(){
   var gEl=$('#g2pGpa'), sEl=$('#g2pScale');
   if(!gEl||!sEl) return;
@@ -50,7 +46,6 @@ function compute(){
   if(out) out.textContent=res.pct+'%';
   if(cls) cls.textContent=res.cls;
 }
-
 document.addEventListener('DOMContentLoaded',function(){
   var saved=store.get(KEY,null);
   if(saved){var g=$('#g2pGpa');if(g)g.value=saved.gpa||'';var s=$('#g2pScale');if(s)s.value=saved.scale||'us4';}

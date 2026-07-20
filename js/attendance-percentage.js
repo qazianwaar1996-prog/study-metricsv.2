@@ -1,7 +1,6 @@
 (function(){
 "use strict";
 var $=SM.$, round=SM.round, store=SM.store, KEY="sm_ap";
-
 function compute(){
   var att=parseFloat($('#apAttended').value), tot=parseFloat($('#apTotal').value), min=parseFloat($('#apMinRequired').value)||75;
   store.set(KEY,{att:$('#apAttended').value,tot:$('#apTotal').value,min:$('#apMinRequired').value});
@@ -9,15 +8,12 @@ function compute(){
   if(isNaN(att)||isNaN(tot)||tot===0){if(pctEl) pctEl.textContent='—';return;}
   var pct=round((att/tot)*100,1);
   var absent=Math.round(tot-att);
-  // max absent allowed while staying above min%
   var canMiss=Math.max(0,Math.floor(tot-(min/100)*tot));
   var alreadyMissed=absent;
   var stillCanMiss=Math.max(0,canMiss-alreadyMissed);
-
   if(pctEl) pctEl.textContent=pct+'%';
   if(absentEl) absentEl.textContent=absent;
   if(canMissEl) canMissEl.textContent=stillCanMiss;
-
   var meetsMin=pct>=min;
   if(statusEl) statusEl.textContent=meetsMin?'Meeting '+min+'% requirement ✓':'Below '+min+'% minimum ✗';
   if(vEl){
@@ -28,7 +24,6 @@ function compute(){
     vEl.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><div><b>'+t+'</b> '+m+'</div>';
   }
 }
-
 document.addEventListener('DOMContentLoaded',function(){
   var saved=store.get(KEY,null);
   if(saved){var a=$('#apAttended');if(a)a.value=saved.att||'';var t=$('#apTotal');if(t)t.value=saved.tot||'';var m=$('#apMinRequired');if(m)m.value=saved.min||'75';}

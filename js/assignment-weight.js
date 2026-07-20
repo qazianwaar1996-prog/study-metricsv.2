@@ -1,14 +1,12 @@
 (function(){
 "use strict";
 var $=SM.$, $$=SM.$$, round=SM.round, uid=SM.uid, esc=SM.esc, store=SM.store, KEY="sm_aw";
-
 var rows=store.get(KEY,[]);
 if(!rows.length) rows=[
   {id:uid(),name:'Homework 1',score:'18',max:'20'},
   {id:uid(),name:'Homework 2',score:'15',max:'20'},
   {id:uid(),name:'Quiz 1',score:'9',max:'10'}
 ];
-
 function render(){
   var c=$('#awRows'); if(!c) return;
   c.innerHTML=rows.map(function(r){
@@ -21,7 +19,6 @@ function render(){
   }).join('');
   attach(); compute();
 }
-
 function attach(){
   $$('.crow').forEach(function(row){
     var id=row.getAttribute('data-id');
@@ -34,7 +31,6 @@ function attach(){
     btn.onclick=function(){rows=rows.filter(function(r){return r.id!==btn.getAttribute('data-del');});store.set(KEY,rows);render();};
   });
 }
-
 function compute(){
   var totalScore=0,totalMax=0,count=0;
   rows.forEach(function(r){
@@ -44,14 +40,12 @@ function compute(){
   var avg=totalMax>0?round((totalScore/totalMax)*100,1):0;
   var catW=parseFloat($('#awTotalWeight').value)||0;
   var contrib=catW>0?round((avg/100)*catW,2):null;
-
   var ao=$('#awAvgOut'),sub=$('#awSubOut'),cc=$('#awCourseContrib'),cnt=$('#awCount');
   if(ao) ao.textContent=totalMax>0?avg+'%':'—';
   if(sub) sub.textContent=totalMax>0?(count+' assignment'+(count!==1?'s':'')+' · '+totalScore+' of '+totalMax+' points'):'Enter assignments above';
   if(cc) cc.textContent=contrib!==null?contrib+' pts':'—';
   if(cnt) cnt.textContent=count;
 }
-
 document.addEventListener('DOMContentLoaded',function(){
   var add=$('#awAddRow'),rs=$('#awReset'),sh=$('#awShare'),tw=$('#awTotalWeight');
   if(add) add.onclick=function(){rows.push({id:uid(),name:'',score:'',max:'100'});store.set(KEY,rows);render();SM.toast('Added','success');};

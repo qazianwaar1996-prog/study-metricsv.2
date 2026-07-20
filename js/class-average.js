@@ -1,15 +1,12 @@
 (function(){
 "use strict";
 var $=SM.$, round=SM.round;
-
 function letterGrade(p){
   if(p>=90)return'A';if(p>=80)return'B';if(p>=70)return'C';if(p>=60)return'D';return'F';
 }
-
 function parse(raw){
   return raw.split(/[\n,]+/).map(function(s){return parseFloat(s.trim());}).filter(function(n){return!isNaN(n)&&n>=0&&n<=100;});
 }
-
 function compute(){
   var raw=($('#caScores')||{}).value||'';
   var scores=parse(raw);
@@ -24,7 +21,6 @@ function compute(){
   var variance=scores.reduce(function(acc,s){return acc+Math.pow(s-avg,2);},0)/n;
   var stdDev=round(Math.sqrt(variance),2);
   var highest=sorted[n-1], lowest=sorted[0];
-
   if(mean) mean.textContent=avg+'%';
   if(lett) lett.textContent=letterGrade(avg)+' average';
   if(med) med.textContent=round(median,1)+'%';
@@ -34,7 +30,6 @@ function compute(){
   if(rng) rng.textContent=round(highest-lowest,1);
   if(stu) stu.textContent=n;
 }
-
 document.addEventListener('DOMContentLoaded',function(){
   var sc=$('#caScores'),btn=$('#caCalculate'),rs=$('#caReset'),sh=$('#caShare');
   if(sc) sc.addEventListener('input',compute);

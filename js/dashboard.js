@@ -1,19 +1,8 @@
-/*!
- * Study Metrics — Student Dashboard
- * js/dashboard.js  |  Phase 7.1
- *
- * Reads existing calculator localStorage data — never writes to
- * calculator keys. Dashboard-own keys: sm_dash_favorites,
- * sm_dash_recent, sm_dash_name.
- */
 (function () {
   'use strict';
-
   var store = SM.store;
   var esc   = SM.esc;
   var round = SM.round;
-
-  /* ── Tool catalog ─────────────────────────────────────────── */
   var TOOLS = [
     { slug:'gpa',                   name:'GPA Calculator',         url:'gpa.html',                   cat:'GPA & Grades' },
     { slug:'cgpa',                  name:'CGPA Calculator',        url:'cgpa.html',                  cat:'GPA & Grades' },
@@ -42,8 +31,6 @@
     { slug:'basic-calculator',      name:'Basic Calculator',       url:'basic-calculator.html',      cat:'Utilities'   },
     { slug:'word-counter',          name:'Word Counter',           url:'word-counter.html',          cat:'Utilities'   },
   ];
-
-  /* ── localStorage keys ────────────────────────────────────── */
   var K = {
     GPA_ROWS     : 'sm_gpa_rows',
     GPA_SCALE    : 'sm_gpa_scale',
@@ -67,22 +54,15 @@
     STUDY_SCHED  : 'sm_ss',
     P2G          : 'sm_p2g',
     G2P          : 'sm_g2p',
-    // Dashboard-own keys
     FAVORITES    : 'sm_dash_favorites',
     RECENT       : 'sm_dash_recent',
     USERNAME     : 'sm_dash_name',
   };
-
-  /* ── State ────────────────────────────────────────────────── */
   var favorites    = store.get(K.FAVORITES, []);
   var recentVisits = store.get(K.RECENT, []);
   var username     = store.get(K.USERNAME, '');
-
-  /* ── DOM helpers ──────────────────────────────────────────── */
   function $  (s, c) { return (c || document).querySelector(s); }
   function $$ (s, c) { return Array.from((c || document).querySelectorAll(s)); }
-
-  /* ── SVG icon strings ─────────────────────────────────────── */
   var ICO = {
     star  : '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
     starO : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
@@ -90,10 +70,7 @@
     clock : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
     edit  : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
   };
-
-  /* ── Colour / label helpers ───────────────────────────────── */
   var L2P = {'A+':4.0,'A':4.0,'A-':3.7,'B+':3.3,'B':3.0,'B-':2.7,'C+':2.3,'C':2.0,'C-':1.7,'D+':1.3,'D':1.0,'D-':0.7,'F':0};
-
   function letterToGpa(l) {
     return L2P.hasOwnProperty(l) ? L2P[l] : (parseFloat(l) || 0);
   }
@@ -130,8 +107,6 @@
     });
     return cr > 0 ? pts / cr : null;
   }
-
-  /* ── GPA ring SVG ─────────────────────────────────────────── */
   function ring(gpa, color, size) {
     var s = size || 90;
     var r = s / 2 - 7;
@@ -149,8 +124,6 @@
       '/></svg>',
     ].join('');
   }
-
-  /* ── Empty state ──────────────────────────────────────────── */
   function empty(title, sub, url, cta) {
     return [
       '<div class="db-empty">',
@@ -160,8 +133,6 @@
       '</div>',
     ].join('');
   }
-
-  /* ── Data: GPA ─────────────────────────────────────────────── */
   function gpaData() {
     var rows = store.get(K.GPA_ROWS, []);
     if (!rows.length) return null;
@@ -177,7 +148,6 @@
     });
     return { gpa: cr > 0 ? pts / cr : 0, courses: rows.length, credits: cr, rows: rows, scale: scale };
   }
-
   function cgpaData() {
     var rows = store.get(K.CGPA_ROWS, []);
     if (!rows.length) return null;
@@ -185,12 +155,10 @@
     var cr = rows.reduce(function (s, r) { return s + (parseFloat(r.credits) || 0); }, 0);
     return { cgpa: g || 0, semesters: rows.length, credits: cr, rows: rows };
   }
-
   function semGpaData() {
     var rows = store.get(K.SEM_GPA, []);
     if (!rows.length) return null;
     var g = weightedGpa(rows, 'grade', 'credits');
-    // semester-gpa stores letter grades — convert
     var pts2 = 0, cr2 = 0;
     rows.forEach(function (r) {
       var gv = letterToGpa(r.grade);
@@ -200,12 +168,9 @@
     var gpa = cr2 > 0 ? pts2 / cr2 : 0;
     return { gpa: gpa, courses: rows.length, rows: rows };
   }
-
-  /* ── Render: welcome ──────────────────────────────────────── */
   function renderWelcome() {
     var el = $('#db-welcome');
     if (!el) return;
-
     var gd = gpaData();
     var cd = cgpaData();
     var name = username || 'Student';
@@ -220,7 +185,6 @@
       'Every calculation puts you closer to your goal. 🏆',
     ];
     var motto = mottos[new Date().getDate() % mottos.length];
-
     function statCard(gpaVal, label, sub, color) {
       return [
         '<div class="db-stat-card">',
@@ -236,7 +200,6 @@
         '</div>',
       ].join('');
     }
-
     var statsHtml = '';
     if (gd) {
       statsHtml += statCard(gd.gpa, 'Current GPA',
@@ -252,7 +215,6 @@
     } else {
       statsHtml += '<div class="db-stat-empty"><a href="cgpa.html" class="btn btn-ghost">Set up CGPA</a></div>';
     }
-
     el.innerHTML = [
       '<div class="db-welcome-inner">',
       '  <div class="db-welcome-text">',
@@ -265,7 +227,6 @@
       '  <div class="db-stats-bar">' + statsHtml + '</div>',
       '</div>',
     ].join('');
-
     var btn = $('#editName');
     if (btn) {
       btn.addEventListener('click', function () {
@@ -278,18 +239,14 @@
       });
     }
   }
-
-  /* ── Render: GPA history panel ────────────────────────────── */
   function renderGpaHistory() {
     var el = $('#db-gpa-history');
     if (!el) return;
     var d = gpaData();
-
     if (!d) {
       el.innerHTML = empty('No GPA data', 'Open the GPA Calculator and enter your courses — data saves automatically.', 'gpa.html', 'Open GPA Calculator');
       return;
     }
-
     var rows = d.rows.slice(0, 8);
     var courseRows = rows.map(function (r) {
       var pts;
@@ -306,9 +263,7 @@
         '</div>',
       ].join('');
     }).join('');
-
     var more = d.rows.length > 8 ? '<div class="db-course-more">+' + (d.rows.length - 8) + ' more courses — open calculator to see all</div>' : '';
-
     el.innerHTML = [
       '<div class="db-gpa-summary">',
       '  <div class="db-gpa-ring-wrap">' + ring(d.gpa, gpaColor(d.gpa), 100) + '<div class="db-gpa-ring-center"><span class="db-gpa-big">' + round(d.gpa, 2).toFixed(2) + '</span><span class="db-gpa-sub">/ 4.0</span></div></div>',
@@ -320,18 +275,14 @@
       '<a href="gpa.html" class="db-panel-link">Open GPA Calculator ' + ICO.arr + '</a>',
     ].join('');
   }
-
-  /* ── Render: CGPA history panel ───────────────────────────── */
   function renderCgpaHistory() {
     var el = $('#db-cgpa-history');
     if (!el) return;
     var d = cgpaData();
-
     if (!d) {
       el.innerHTML = empty('No CGPA data', 'Open the CGPA Calculator and add your semesters — data saves automatically.', 'cgpa.html', 'Open CGPA Calculator');
       return;
     }
-
     var semRows = d.rows.map(function (r) {
       var g = parseFloat(r.gpa) || 0;
       var barW = ((g / 4) * 100).toFixed(1);
@@ -344,7 +295,6 @@
         '</div>',
       ].join('');
     }).join('');
-
     el.innerHTML = [
       '<div class="db-gpa-summary">',
       '  <div class="db-gpa-ring-wrap">' + ring(d.cgpa, gpaColor(d.cgpa), 100) + '<div class="db-gpa-ring-center"><span class="db-gpa-big">' + round(d.cgpa, 2).toFixed(2) + '</span><span class="db-gpa-sub">/ 4.0</span></div></div>',
@@ -356,12 +306,8 @@
       '<a href="cgpa.html" class="db-panel-link">Open CGPA Calculator ' + ICO.arr + '</a>',
     ].join('');
   }
-
-  /* ── Render: recent calculations (derived, read-only) ─────── */
   function buildCalcs() {
     var list = [];
-
-    // GPA
     var gd = gpaData();
     if (gd && gd.courses) {
       list.push({ tool:'GPA Calculator', url:'gpa.html',
@@ -369,8 +315,6 @@
         sub: gd.courses + ' courses tracked',
         color: gpaColor(gd.gpa) });
     }
-
-    // CGPA
     var cd = cgpaData();
     if (cd) {
       list.push({ tool:'CGPA Calculator', url:'cgpa.html',
@@ -378,8 +322,6 @@
         sub: cd.semesters + ' semesters',
         color: gpaColor(cd.cgpa) });
     }
-
-    // Semester GPA
     var sd = semGpaData();
     if (sd) {
       list.push({ tool:'Semester GPA', url:'semester-gpa.html',
@@ -387,8 +329,6 @@
         sub: sd.courses + ' courses this term',
         color: gpaColor(sd.gpa) });
     }
-
-    // Target GPA
     var tgt = store.get(K.TARGET, null);
     if (tgt && tgt.goal) {
       list.push({ tool:'Target GPA', url:'target-gpa.html',
@@ -396,8 +336,6 @@
         sub: 'Current: ' + parseFloat(tgt.cur || 0).toFixed(2),
         color: 'var(--info)' });
     }
-
-    // Final exam
     var fe = store.get(K.FINAL_EXAM, null);
     if (fe && fe.goal) {
       list.push({ tool:'Final Exam Calc', url:'final-exam-calculator.html',
@@ -405,8 +343,6 @@
         sub: 'Current: ' + parseFloat(fe.cur || 0).toFixed(1) + '% · Weight: ' + parseFloat(fe.weight || 0) + '%',
         color: 'var(--warn)' });
     }
-
-    // Attendance
     var att = store.get(K.ATTEND, null);
     if (att && (att.a !== undefined)) {
       var pct = att.h > 0 ? (att.a / att.h) * 100 : 0;
@@ -415,8 +351,6 @@
         sub: att.a + ' attended of ' + att.h + ' classes',
         color: pct >= 75 ? 'var(--ok)' : 'var(--danger)' });
     }
-
-    // GPA Improvement Planner
     var gip = store.get(K.GIP, null);
     if (gip && gip.cur) {
       list.push({ tool:'GPA Planner', url:'gpa-improvement-planner.html',
@@ -424,8 +358,6 @@
         sub: (gip.left || '?') + ' credits remaining',
         color: 'var(--ok)' });
     }
-
-    // Grade Predictor
     var gp = store.get(K.GRADE_PRED, []);
     if (gp.length) {
       list.push({ tool:'Grade Predictor', url:'grade-predictor.html',
@@ -433,8 +365,6 @@
         sub: 'Open to see predicted grade',
         color: 'var(--info)' });
     }
-
-    // Assignment Weight
     var aw = store.get(K.ASSIGN_WT, []);
     if (aw.length) {
       list.push({ tool:'Assignment Weight', url:'assignment-weight.html',
@@ -442,8 +372,6 @@
         sub: 'Open to calculate weight',
         color: 'var(--accent-strong)' });
     }
-
-    // Study schedule
     var ss = store.get(K.STUDY_SCHED, []);
     if (ss.length) {
       var totalHrs = ss.reduce(function (s, r) { return s + (parseFloat(r.hrs) || 0); }, 0);
@@ -452,8 +380,6 @@
         sub: ss.length + ' subject' + (ss.length !== 1 ? 's' : ''),
         color: 'var(--info)' });
     }
-
-    // Required Marks
     var rm = store.get(K.REQUIRED, []);
     if (rm.length) {
       list.push({ tool:'Required Marks', url:'required-marks.html',
@@ -461,15 +387,12 @@
         sub: 'Target marks saved',
         color: 'var(--warn)' });
     }
-
     return list.slice(0, 9);
   }
-
   function renderRecentCalcs() {
     var el = $('#db-recent-calcs');
     if (!el) return;
     var list = buildCalcs();
-
     if (!list.length) {
       el.innerHTML = empty(
         'No calculations yet',
@@ -478,7 +401,6 @@
       );
       return;
     }
-
     var html = '<div class="db-calcs-grid">';
     list.forEach(function (c) {
       html += [
@@ -496,12 +418,9 @@
     html += '</div>';
     el.innerHTML = html;
   }
-
-  /* ── Render: recently visited ─────────────────────────────── */
   function renderRecentVisits() {
     var el = $('#db-recent-visits');
     if (!el) return;
-
     if (!recentVisits.length) {
       el.innerHTML = empty(
         'No recent activity',
@@ -510,7 +429,6 @@
       );
       return;
     }
-
     var html = '<div class="db-visits-list">';
     recentVisits.forEach(function (v) {
       html += [
@@ -525,10 +443,7 @@
     html += '</div>';
     el.innerHTML = html;
   }
-
-  /* ── Favorites helpers ────────────────────────────────────── */
   function isFav(slug) { return favorites.indexOf(slug) !== -1; }
-
   function toggleFav(slug) {
     if (isFav(slug)) {
       favorites = favorites.filter(function (f) { return f !== slug; });
@@ -545,14 +460,10 @@
     renderFavorites();
     renderQuickAccess();
   }
-
-  /* ── Render: favorites ────────────────────────────────────── */
   function renderFavorites() {
     var el = $('#db-favorites');
     if (!el) return;
-
     var favTools = TOOLS.filter(function (t) { return isFav(t.slug); });
-
     if (!favTools.length) {
       el.innerHTML = [
         '<div class="db-empty">',
@@ -563,7 +474,6 @@
       ].join('');
       return;
     }
-
     var html = '<div class="db-fav-grid">';
     favTools.forEach(function (t) {
       html += [
@@ -580,25 +490,19 @@
     });
     html += '</div>';
     el.innerHTML = html;
-
     $$('.db-fav-star', el).forEach(function (btn) {
       btn.addEventListener('click', function () { toggleFav(btn.getAttribute('data-slug')); });
     });
   }
-
-  /* ── Render: quick access grid ────────────────────────────── */
   function renderQuickAccess() {
     var el = $('#db-quick-access');
     if (!el) return;
-
-    // Group by category
     var groups = {};
     var order  = [];
     TOOLS.forEach(function (t) {
       if (!groups[t.cat]) { groups[t.cat] = []; order.push(t.cat); }
       groups[t.cat].push(t);
     });
-
     var html = '';
     order.forEach(function (cat) {
       html += '<div class="db-qa-group">';
@@ -616,19 +520,14 @@
       });
       html += '</div></div>';
     });
-
     el.innerHTML = html;
-
     $$('.db-qa-star', el).forEach(function (btn) {
       btn.addEventListener('click', function () { toggleFav(btn.getAttribute('data-slug')); });
     });
   }
-
-  /* ── Section nav scroll highlight ────────────────────────── */
   function initSectionNav() {
     var btns     = $$('.db-nav-btn');
     var sections = $$('[id^="db-sec-"]');
-
     btns.forEach(function (btn) {
       btn.addEventListener('click', function () {
         var id = btn.getAttribute('data-section');
@@ -636,24 +535,20 @@
         if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
-
     function updateActiveNav() {
       var y = window.scrollY + 130;
       var active = '';
       sections.forEach(function (s) {
         if (s.offsetTop <= y) active = s.id.replace('db-sec-', '');
       });
-      /* When at the very top (no section in range), default to first section */
       if (!active && sections.length) active = sections[0].id.replace('db-sec-', '');
       btns.forEach(function (b) {
         b.classList.toggle('active', b.getAttribute('data-section') === active);
       });
     }
     window.addEventListener('scroll', updateActiveNav, { passive: true });
-    updateActiveNav(); /* Set correct state on load without waiting for first scroll */
+    updateActiveNav();
   }
-
-  /* ── Clear dashboard settings ─────────────────────────────── */
   function initClearSettings() {
     var btn = $('#dbClearSettings');
     if (!btn) return;
@@ -662,7 +557,6 @@
       store.set(K.FAVORITES, []);
       store.set(K.RECENT, []);
       store.set(K.USERNAME, '');
-      /* Phase 7.2 personalization keys */
       try {
         localStorage.removeItem('sm_freq');
         localStorage.removeItem('sm_last_open');
@@ -670,7 +564,6 @@
       } catch(e) {}
       favorites = []; recentVisits = []; username = '';
       renderAll();
-      /* Re-render personalization sections if present */
       if (window.SM_PERSONALIZATION) {
         SM_PERSONALIZATION.renderDashboardRecommended();
         SM_PERSONALIZATION.renderCountryNote();
@@ -678,8 +571,6 @@
       SM.toast('Dashboard reset', 'info');
     });
   }
-
-  /* ── Render all ───────────────────────────────────────────── */
   function renderAll() {
     renderWelcome();
     renderGpaHistory();
@@ -689,18 +580,14 @@
     renderQuickAccess();
     renderRecentVisits();
   }
-
-  /* ── Bootstrap ────────────────────────────────────────────── */
   function init() {
     renderAll();
     initSectionNav();
     initClearSettings();
   }
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
-
 })();

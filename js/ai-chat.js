@@ -1,16 +1,7 @@
-/*
- * ai-chat.js — StudyMetrics AI Chat Controller
- * Phase 8.5 — No API key handling (backend manages auth)
- * Depends on: ai-service.js (window.SMAI), script.js (SM)
- */
 (function () {
   'use strict';
-
-  /* ── State ────────────────────────────────────────────────── */
   var history   = [];
   var isLoading = false;
-
-  /* ── DOM refs ─────────────────────────────────────────────── */
   var messagesEl  = document.getElementById('chat-messages');
   var textareaEl  = document.getElementById('chat-textarea');
   var sendBtnEl   = document.getElementById('chat-send-btn');
@@ -18,14 +9,11 @@
   var statusDotEl = document.getElementById('chat-status-dot');
   var statusLblEl = document.getElementById('chat-status-label');
   var welcomeEl   = document.getElementById('chat-welcome');
-
-  /* ── Markdown renderer (minimal, safe) ────────────────────── */
   function renderMarkdown(text) {
     var s = text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
-
     s = s.replace(/```([^`]*?)```/gs, function (_, code) {
       return '<pre>' + code.trim() + '</pre>';
     });
@@ -35,7 +23,6 @@
     s = s.replace(/^### (.+)$/gm, '<h3>$1</h3>');
     s = s.replace(/^## (.+)$/gm,  '<h2>$1</h2>');
     s = s.replace(/^# (.+)$/gm,   '<h1>$1</h1>');
-
     s = s.replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>');
     s = s.replace(/(<li>.*<\/li>)/s, function (m) {
       return '<ol>' + m + '</ol>';
@@ -45,33 +32,25 @@
       if (m.indexOf('<ol>') === -1) return '<ul>' + m + '</ul>';
       return m;
     });
-
     s = s.replace(/\n{2,}/g, '</p><p>');
     s = '<p>' + s + '</p>';
     s = s.replace(/(<p>[\s\S]*?<\/p>)/g, function (m) {
       return m.replace(/\n/g, '<br>');
     });
     s = s.replace(/<p>\s*<\/p>/g, '');
-
     return s;
   }
-
-  /* ── Append a chat message ────────────────────────────────── */
   function appendMessage(role, content) {
     if (welcomeEl) welcomeEl.style.display = 'none';
-
     var msg     = document.createElement('div');
     msg.className = 'msg ' + role;
     var isUser  = role === 'user';
-
     var avatarHTML = isUser
       ? '<div class="msg-avatar">U</div>'
       : '<div class="msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/><path d="M12 8v4l3 3"/></svg></div>';
-
     var bubbleContent = isUser
       ? '<div class="msg-bubble">' + content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>'
       : '<div class="msg-bubble">' + renderMarkdown(content) + '</div>';
-
     var actionsHTML = '';
     if (!isUser) {
       actionsHTML =
@@ -82,20 +61,15 @@
           '</button>' +
         '</div>';
     }
-
     msg.innerHTML = avatarHTML + '<div class="msg-body">' + bubbleContent + actionsHTML + '</div>';
-
     var copyBtn = msg.querySelector('.msg-copy-btn');
     if (copyBtn) {
       copyBtn.addEventListener('click', function () { SM.copy(content); });
     }
-
     messagesEl.appendChild(msg);
     scrollToBottom();
     return msg;
   }
-
-  /* ── Typing indicator ─────────────────────────────────────── */
   var typingEl = null;
   function showTyping() {
     typingEl = document.createElement('div');
@@ -116,8 +90,6 @@
       typingEl = null;
     }
   }
-
-  /* ── Error message ────────────────────────────────────────── */
   function showError(msg) {
     var el = document.createElement('div');
     el.className = 'chat-error';
@@ -127,19 +99,13 @@
     messagesEl.appendChild(el);
     scrollToBottom();
   }
-
-  /* ── Status bar ───────────────────────────────────────────── */
   function setStatus(loading) {
     if (statusDotEl) statusDotEl.className = 'chat-status-dot' + (loading ? ' loading' : '');
     if (statusLblEl) statusLblEl.textContent = loading ? 'Thinking…' : 'StudyMetrics AI Coach · Ready';
   }
-
-  /* ── Scroll ───────────────────────────────────────────────── */
   function scrollToBottom() {
     if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
   }
-
-  /* ── Enable / disable input ───────────────────────────────── */
   function setInputDisabled(disabled) {
     if (textareaEl) textareaEl.disabled = disabled;
     if (sendBtnEl)  sendBtnEl.disabled  = disabled;
@@ -149,24 +115,17 @@
         : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>';
     }
   }
-
-  /* ── Send a message ───────────────────────────────────────── */
   function sendMessage(text) {
     if (!text || isLoading) return;
     text = text.trim();
     if (!text) return;
-
     isLoading = true;
     setInputDisabled(true);
     setStatus(true);
-
     history.push({ role: 'user', content: text });
     appendMessage('user', text);
-
     if (textareaEl) { textareaEl.value = ''; autoResizeTextarea(); }
-
     showTyping();
-
     window.SMAI.send(
       history,
       function (response) {
@@ -188,23 +147,17 @@
       }
     );
   }
-
-  /* ── Auto-resize textarea ─────────────────────────────────── */
   function autoResizeTextarea() {
     if (!textareaEl) return;
     textareaEl.style.height = 'auto';
     textareaEl.style.height = Math.min(textareaEl.scrollHeight, 160) + 'px';
   }
-
-  /* ── Suggestion chips ─────────────────────────────────────── */
   document.querySelectorAll('.chat-suggestion').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var q = btn.getAttribute('data-q') || btn.textContent.trim();
       sendMessage(q);
     });
   });
-
-  /* ── Clear conversation ───────────────────────────────────── */
   if (clearBtnEl) {
     clearBtnEl.addEventListener('click', function () {
       if (!history.length) return;
@@ -218,8 +171,6 @@
       setStatus(false);
     });
   }
-
-  /* ── Keyboard: Enter to send, Shift+Enter newline ─────────── */
   if (textareaEl) {
     textareaEl.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -229,12 +180,9 @@
     });
     textareaEl.addEventListener('input', autoResizeTextarea);
   }
-
-  /* ── Send button click ────────────────────────────────────── */
   if (sendBtnEl) {
     sendBtnEl.addEventListener('click', function () {
       if (textareaEl) sendMessage(textareaEl.value);
     });
   }
-
 })();

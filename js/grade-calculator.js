@@ -1,11 +1,6 @@
-/**
- * GRADE CALCULATOR LOGIC - Fixed & Optimized
- */
 (function () {
   "use strict";
-
   var $ = SM.$, $$ = SM.$$, round = SM.round, uid = SM.uid, esc = SM.esc, store = SM.store;
-
   function letter(p) {
     if (p >= 93) return "A";
     if (p >= 90) return "A-";
@@ -20,10 +15,8 @@
     if (p >= 60) return "D-";
     return "F";
   }
-
   var KEY = "sm_grade_rows";
   var rows = store.get(KEY, []);
-
   if (!rows.length) {
     rows = [
       { id: uid(), name: "Assignments", score: 90, weight: 20 },
@@ -31,11 +24,9 @@
       { id: uid(), name: "Final Exam", score: 88, weight: 50 }
     ];
   }
-
   function render() {
     var container = $("#rows");
     if (!container) return;
-
     container.innerHTML = rows.map(function (r) {
       return `
         <div class="crow" data-id="${r.id}">
@@ -55,20 +46,16 @@
           </div>
         </div>`;
     }).join("");
-
     attachEvents();
     compute();
   }
-
   function attachEvents() {
     $$(".crow").forEach(function (row) {
       var id = row.getAttribute("data-id");
       var inputs = $$("input", row);
-      
       inputs.forEach(function (inp) {
         var field = inp.getAttribute("data-f");
         if (!field) return;
-
         inp.oninput = function () {
           var r = rows.find(function(x) { return x.id === id; });
           if (r) {
@@ -79,7 +66,6 @@
         };
       });
     });
-
     $$("[data-del]").forEach(function (btn) {
       btn.onclick = function () {
         var id = btn.getAttribute("data-del");
@@ -90,7 +76,6 @@
       };
     });
   }
-
   function compute() {
     var totalWeight = 0, weightedSum = 0;
     rows.forEach(function (r) {
@@ -101,16 +86,12 @@
         weightedSum += (s * w);
       }
     });
-
     var grade = totalWeight > 0 ? round(weightedSum / totalWeight, 2) : 0;
-    
     var out = $("#gradeOut");
     var letBox = $("#gradeLetter");
     var note = $("#weightNote");
-
     if (out) out.textContent = totalWeight > 0 ? grade.toFixed(2) + "%" : "—";
     if (letBox) letBox.textContent = totalWeight > 0 ? letter(grade) : "—";
-    
     if (note) {
       if (!totalWeight) {
         note.className = "weight-note ok";
@@ -130,25 +111,20 @@
       }
     }
   }
-
   function save() { store.set(KEY, rows); }
-
   function addItem() {
     rows.push({ id: uid(), name: "", score: "", weight: "" });
     save();
     render();
     SM.toast("Item added", "success");
   }
-
   document.addEventListener("DOMContentLoaded", function () {
     var add1 = $("#addRow");
     var add2 = $("#addRow2");
     var clear = $("#clearAll");
     var share = $("#shareBtn");
-
     if (add1) add1.onclick = addItem;
     if (add2) add2.onclick = addItem;
-
     if (clear) {
       clear.onclick = function () {
         if (confirm("Clear all items?")) {
@@ -159,7 +135,6 @@
         }
       };
     }
-
     if (share) {
       share.onclick = function() {
         var g = $("#gradeOut") ? $("#gradeOut").textContent : "—";
@@ -167,7 +142,6 @@
         SM.copy("My current course grade is " + g + "! Calculated on Study Metrics.");
       };
     }
-
     render();
   });
 })();

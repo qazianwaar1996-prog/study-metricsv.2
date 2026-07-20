@@ -1,8 +1,4 @@
-// Study Metrics — content platform behaviors (Phase 6.2)
-// Reused across guide/article/hub pages. No dependencies.
-
 (function () {
-  // ---- Reading progress bar ----
   var bar = document.getElementById('readProgress');
   if (bar) {
     var onScroll = function () {
@@ -15,8 +11,6 @@
     document.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
-
-  // ---- Copy link button(s) ----
   document.querySelectorAll('.copy-link-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var url = btn.getAttribute('data-url') || window.location.href;
@@ -36,7 +30,6 @@
       }
     });
   });
-
   function fallbackCopy(text, done) {
     var ta = document.createElement('textarea');
     ta.value = text;
@@ -44,18 +37,13 @@
     ta.style.opacity = '0';
     document.body.appendChild(ta);
     ta.select();
-    try { document.execCommand('copy'); } catch (e) { /* no-op */ }
+    try { document.execCommand('copy'); } catch (e) {  }
     document.body.removeChild(ta);
     done();
   }
-
-  // ---- Print button(s) ----
   document.querySelectorAll('.print-page-btn').forEach(function (btn) {
     btn.addEventListener('click', function () { window.print(); });
   });
-
-  // ---- Generic search/filter for card grids ----
-  // Usage: <input class="input" data-search-target="#someGrid" data-search-item=".tool">
   document.querySelectorAll('[data-search-target]').forEach(function (input) {
     var grid = document.querySelector(input.getAttribute('data-search-target'));
     var itemSel = input.getAttribute('data-search-item') || '.tool';
