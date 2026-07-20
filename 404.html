@@ -2,10 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="google-site-verification" content="YOUR_GSC_VERIFICATION_CODE">
+<meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE">
+<meta name="theme-color" content="#0a0a0a">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Page not found (404) — Study Metrics</title>
 <meta name="description" content="That page doesn't exist. Head back to Study Metrics and pick a free student tool.">
 <meta name="robots" content="noindex">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Study Metrics">
+<meta property="og:title" content="Page Not Found — Study Metrics">
+<meta property="og:url" content="https://studymetrics.app/404.html">
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="apple-touch-icon" href="images/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,8 +31,10 @@
 .e404 .actions{position:relative;display:flex;gap:var(--s3);flex-wrap:wrap;justify-content:center}
 .e404-tools{padding:0 0 var(--s8)}
 </style>
+<link rel="stylesheet" href="css/consent.css">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <header class="site-head">
   <div class="wrap nav">
     <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
@@ -33,11 +43,13 @@
   </div>
 </header>
 
+<main id="main-content">
 <section class="e404 reveal">
   <div class="grid-bg"></div>
   <div class="big">404</div>
   <h1>This page took an unexcused absence</h1>
   <p>We couldn't find what you were looking for. It may have moved, or the link might be off. Let's get you back to something useful.</p>
+  <p id="404-hint" style="display:none;margin-top:-.5rem;margin-bottom:var(--s6);font-size:var(--step-sm);color:var(--accent-strong)"></p>
   <div class="actions">
     <a href="index.html" class="btn btn-primary btn-lg">Back to home</a>
     <a href="gpa-converter.html" class="btn btn-ghost btn-lg">Open GPA Converter</a>
@@ -54,8 +66,9 @@
     </div>
   </div>
 </section>
+</main>
 
-<div id="backToTop">↑</div>
+<div id="backToTop" role="button" aria-label="Back to top" tabindex="0">↑</div>
 
 <footer class="foot">
   <div class="wrap">
@@ -68,8 +81,52 @@
     <div class="foot-bottom"><span>© 2026 Study Metrics. All rights reserved.</span></div>
   </div>
 </footer>
-<script src="js/script.js"></script>
-<script src="js/personalization.js"></script>
-<script src="js/premium.js"></script>
+
+<script>
+(function(){
+  /* Smart 404: try to match the requested URL to a known page */
+  var path = window.location.pathname.toLowerCase();
+  var redirectMap = {
+    '/gpa': 'gpa.html',
+    '/calculator': 'gpa.html',
+    '/cgpa': 'cgpa.html',
+    '/semester': 'semester-gpa.html',
+    '/grade': 'grade-calculator.html',
+    '/attendance': 'attendance-calculator.html',
+    '/pomodoro': 'pomodoro.html',
+    '/dashboard': 'dashboard.html',
+    '/ai': 'ai.html',
+    '/study': 'study-guides.html',
+    '/blog': 'blog.html',
+    '/privacy': 'privacy-policy.html',
+    '/terms': 'terms-and-conditions.html',
+    '/about': 'about.html',
+    '/contact': 'contact.html'
+  };
+  for (var key in redirectMap) {
+    if (path.indexOf(key) !== -1) {
+      var hint = document.getElementById('404-hint');
+      if (hint) {
+        hint.innerHTML = 'Looking for <a href="' + redirectMap[key] + '">' + redirectMap[key].replace('.html','').replace(/-/g,' ') + '</a>?';
+        hint.style.display = 'block';
+      }
+      break;
+    }
+  }
+  /* Track 404 in GA4 */
+  if (window.gtag) {
+    gtag('event', 'page_not_found', {
+      'page_path': window.location.pathname,
+      'page_referrer': document.referrer
+    });
+  }
+})();
+</script>
+<script defer src="js/script.js"></script>
+<script defer src="js/personalization.js"></script>
+<script defer src="js/premium.js"></script>
+
+<script defer src="js/analytics.js"></script>
+<script defer src="js/consent.js"></script>
 </body>
 </html>

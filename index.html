@@ -2,18 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="google-site-verification" content="YOUR_GSC_VERIFICATION_CODE">
+<meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE">
+<meta name="theme-color" content="#0a0a0a">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Study Metrics — Free Tools & Calculators for Students</title>
 <meta name="description" content="25+ free student academic tools: GPA calculator, CGPA, grade predictor, Pomodoro timer, attendance tracker, study planner, and more. No signup required.">
 <link rel="canonical" href="https://studymetrics.app/">
+<link rel="preload" href="css/style.css" as="style">
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:locale" content="en_US">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Study Metrics">
 <meta property="og:title" content="Study Metrics — Free Tools for Students">
 <meta property="og:description" content="GPA converter, calculators, and study tools. No signup, no limits.">
 <meta property="og:url" content="https://studymetrics.app/">
 <meta property="og:image" content="https://studymetrics.app/images/og-image.svg">
+<meta name="twitter:site" content="@studymetrics">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Study Metrics — Free Tools for Students">
 <meta name="twitter:description" content="GPA converter, calculators, and study tools. No signup, no limits.">
@@ -30,490 +36,237 @@
 <link rel="stylesheet" href="css/premium.css">
 <link rel="stylesheet" href="css/personalization.css">
 <link rel="stylesheet" href="css/content-platform.css">
-
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Study Metrics","url":"https://studymetrics.app/","logo":"https://studymetrics.app/images/favicon.svg","sameAs":[]}</script>
+<link rel="stylesheet" href="css/consent.css">
+<link rel="stylesheet" href="css/studymetrics-v2.css">
+<script>(function(){try{var t=localStorage.getItem('sm_theme');if(!t){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
-<body>
+<body class="sm2">
 <a href="#main-content" class="skip-link">Skip to main content</a>
+<div class="sm2-scrim" onclick="document.body.classList.remove('nav-open')"></div>
 
-<header class="site-head">
-  <div class="wrap nav">
-    <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
-    <nav class="nav-links"><a href="study-guides.html">Guides</a>
-      <a href="#tools">Tools</a>
-      <a href="#how">How it works</a>
-      <a href="about.html">About</a>
-      <a href="blog.html">Blog</a>
-      <a href="grading-guide.html">Grading Guide</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="ai.html" style="color:var(--accent-strong);font-weight:600">AI ✦</a>
+<div class="sm2-app">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sm2-side">
+    <a href="index.html" class="sm2-brand">
+      <span class="sm2-logo">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.6 4 6.4v5.4c0 4.6 3.3 8.2 8 9.6 4.7-1.4 8-5 8-9.6V6.4L12 2.6Z" stroke="#e6bd63" stroke-width="1.5" stroke-linejoin="round"/><path d="m8.4 12.2 2.6 2.6 4.6-5.2" stroke="#e6bd63" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>StudyMetrics
+    </a>
+    <nav class="sm2-nav" aria-label="Primary">
+      <a href="index.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg> Home</a>
+      <a href="index.html#tools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg> All Calculators</a>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="10" rx="2"/><rect x="3" y="16" width="8" height="5" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="11" width="7" height="10" rx="2"/></svg> Dashboard</a>
+      <a href="ai.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M4.9 7l2.1 1.2M17 15.8 19.1 17M4.9 17 7 15.8M17 8.2 19.1 7"/><circle cx="12" cy="12" r="3.4"/></svg> AI Tutor <span class="sm2-badge">NEW</span></a>
+      <a href="study-schedule.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M3.5 9h17M8 3v3M16 3v3M8 13h4M8 16.5h6"/></svg> Study Planner</a>
+      <a href="academic-resources.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h9l5 5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M14 3.5V9h5M8 13h8M8 16.5h5"/></svg> Notes</a>
+      <a href="grade-predictor.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="12" rx="2.5"/><path d="M7 3.5h11a2.5 2.5 0 0 1 2.5 2.5v9"/></svg> Flashcards</a>
+      <a href="grading-guide.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg> Countries &amp; Grades</a>
+      <a href="study-guides.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2 2 0 0 1 6 3.5h13v14H6a2 2 0 0 0-2 2V5.5Z"/><path d="M4 19.5a2 2 0 0 1 2-2h13v3H6a2 2 0 0 1-2-1Z"/></svg> Resources</a>
+      <a href="gpa-improvement-planner.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg> Goals</a>
+      <div class="sm2-nav-sep"></div>
+      <a href="dashboard.html#favorites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 14.6 9l6 .8-4.4 4.2 1.1 6L12 17.2 6.7 20l1.1-6L3.4 9.8 9.4 9 12 3.5Z"/></svg> Favorites</a>
+      <a href="dashboard.html#recent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg> Recent</a>
     </nav>
-    <div class="nav-cta">
-      <a href="#tools" class="btn btn-ghost">Browse tools</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
+    <div class="sm2-side-ai">
+      <h4>AI Tutor <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:14px;height:14px;display:inline;color:var(--gold-strong)"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/></svg></h4>
+      <p>Ask anything about academics. Get instant answers.</p>
+      <a href="ai.html" class="sm2-btn sm2-btn-primary">Ask AI</a>
     </div>
-  </div>
-</header>
-<main id="main-content">
+    <div class="sm2-side-foot">
+      <img src="images/avatar.svg" alt="Profile">
+      <span class="nm">Profile</span>
+      <button class="sm2-icon-btn sm-theme-toggle" onclick="sm2Theme()" aria-label="Toggle theme" title="Toggle theme"><svg class="sm-theme-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg></button>
+      <a href="dashboard.html" class="sm2-icon-btn" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.7l-.1-.1A2 2 0 1 1 6.9 3.6l.1.1a1.6 1.6 0 0 0 2.7-1.1V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8Z"/></svg></a>
+    </div>
+  </aside>
 
-<section class="hero reveal">
-  <div class="hero-grid"></div>
-  <div class="hero-shapes" aria-hidden="true">
-    <div class="hs hs-1"></div>
-    <div class="hs hs-2"></div>
-    <div class="hs hs-3"></div>
-    <div class="hs hs-4"></div>
-  </div>
-  <div class="hero-float" aria-hidden="true">
-    <div class="hf-mock float-1">
-      <div class="hf-mock-head">
-        <span class="hf-dot hf-dot-r"></span><span class="hf-dot hf-dot-y"></span><span class="hf-dot hf-dot-g"></span>
-        <span class="hf-mock-title">GPA Converter</span>
+  <!-- ============ MAIN ============ -->
+  <div class="sm2-main">
+    <!-- topbar -->
+    <header class="sm2-top">
+      <button class="sm2-icon-btn sm2-hamburger" onclick="document.body.classList.toggle('nav-open')" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <div class="sm2-search">
+        <svg class="s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+        <input type="search" id="sm2Search" placeholder="Search calculators or tools…" aria-label="Search">
+        <span class="sm2-kbd">⌘K</span>
       </div>
-      <div class="hf-ring">
-        <svg viewBox="0 0 100 100">
-          <circle class="hf-ring-track" cx="50" cy="50" r="42"></circle>
-          <circle class="hf-ring-val" cx="50" cy="50" r="42"></circle>
-        </svg>
-        <div class="hf-ring-mid"><span class="hf-ring-num">3.8</span><span class="hf-ring-lbl">US&nbsp;GPA</span></div>
-      </div>
-      <div class="hf-mock-foot">Converted from 87% · India</div>
-    </div>
-    <div class="hf-chip hf-chip-1 float-2">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      <span>30+ countries</span>
-    </div>
-    <div class="hf-chip hf-chip-2 float-3">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      <span>Private by default</span>
-    </div>
-  </div>
-  <div class="wrap hero-inner">
-    <span class="pill" aria-label="Free forever, no signup required">
-      <span class="dot"></span>Free forever &middot; <b>No signup required</b>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-    </span>
-    <h1>Every student tool<br>you need, <span class="em gradient-text-anim">in one place.</span></h1>
-    <p>A focused toolkit for students — convert grades across 30+ countries, calculate your GPA, and plan your semester. No accounts, no paywalls, no noise.</p>
-    <!-- Phase 7.2: Smart search with suggestions -->
-    <div class="sm-search-wrap" style="max-width:480px;margin-bottom:var(--s5)">
-      <input
-        type="search"
-        class="input sm-search-input"
-        placeholder="Search calculators… (e.g. GPA, attendance)"
-        aria-label="Search tools"
-        autocomplete="off"
-        style="padding-right:42px"
-      />
-      <svg style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--ink-3);pointer-events:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    </div>
-    <div class="hero-actions">
-      <a href="#tools" class="btn btn-primary btn-lg">Explore the tools</a>
-      <a href="#how" class="btn btn-ghost btn-lg">How it works</a>
-    </div>
-    <!-- Phase 7.2: Smart quick links (personalized, JS-populated) -->
-    <div id="sm-quick-links" hidden></div>
-    <div class="hero-stats">
-      <div><div class="n">25+</div><div class="l">Tools &amp; counting</div></div>
-      <div><div class="n">30+</div><div class="l">Grading scales</div></div>
-      <div><div class="n">100%</div><div class="l">Free to use</div></div>
-    </div>
-  </div>
-</section>
-
-<div class="ad-slot" aria-hidden="true"><div class="ad-inner"><span class="tag">Advertisement</span></div></div>
-
-<!-- Phase 7.2: Continue where you left off + personalized cards -->
-<div class="wrap" style="padding-top:var(--s5)">
-  <div id="sm-continue-slot" hidden></div>
-</div>
-
-<section class="section" id="sm-personalized-strip" hidden style="padding-top:0;padding-bottom:var(--s6)"></section>
-
-<section class="section" id="tools">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">The toolkit</span>
-      <h2>Pick a tool, get an answer</h2>
-      <p>Focused utilities built for speed. No noise, just the answers you need to stay on track.</p>
-    </div>
-    <div class="tools-grid">
-      <div class="sec-head" style="grid-column:1/-1;margin-top:0;margin-bottom:0"><span class="kicker">AI-Powered</span></div>
-      <a href="ai.html" class="tool live reveal" style="border-color:var(--accent);background:linear-gradient(135deg,var(--accent-dim),var(--surface))">
-        <span class="soon-badge" style="background:var(--accent-dim);color:var(--accent-strong)">New</span>
-        <div class="tool-ico" style="background:var(--accent-dim);color:var(--accent-strong)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/><path d="M12 8v4l3 3"/></svg>
-        </div>
-        <h3>StudyMetrics AI</h3>
-        <p>Your personal academic assistant. Ask about GPA, study strategies, exam prep, and more — powered by Gemini.</p>
-        <div class="tool-foot" style="color:var(--accent-strong)">Chat now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></div>
-      </a>
-      <div class="sec-head" style="grid-column:1/-1;margin-top:var(--s6);margin-bottom:0"><span class="kicker">GPA Tools</span></div>
-      <a href="gpa-converter.html" class="tool live reveal">
-        <span class="soon-badge">Flagship</span>
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-        <h3>Global GPA Converter</h3>
-        <p>Convert grades from 30+ countries to US 4.0 or reverse. Export PDF.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="gpa.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></div>
-        <h3>GPA Calculator</h3>
-        <p>Calculate semester GPA from letter grades, percentages, or points.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="semester-gpa.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-        <h3>Semester GPA</h3>
-        <p>Pick letter grades from a dropdown — your semester GPA updates live.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="cgpa.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg></div>
-        <h3>CGPA Calculator</h3>
-        <p>Average every semester into cumulative GPA and track degree standing.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="target-gpa.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
-        <h3>Target GPA</h3>
-        <p>Find the GPA needed in remaining credits to hit your degree goal.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="gpa-improvement-planner.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-        <h3>GPA Improvement Planner</h3>
-        <p>See the exact average needed per remaining credit to reach your CGPA target.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="gpa-to-percentage.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
-        <h3>GPA to Percentage</h3>
-        <p>Convert any GPA scale (4.0 / 5.0 / 10.0) to equivalent percentage marks.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="percentage-to-gpa.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
-        <h3>Percentage to GPA</h3>
-        <p>Convert percentage marks to US, India, Pakistan, Nigeria, and UK GPA scales.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <div class="sec-head" style="grid-column:1/-1;margin-top:var(--s6);margin-bottom:0"><span class="kicker">Grade Tools</span></div>
-      <a href="grade-calculator.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></div>
-        <h3>Grade Calculator</h3>
-        <p>Weight assignments, quizzes and exams to see your current course average.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="final-grade.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></div>
-        <h3>Final Grade</h3>
-        <p>Calculate the score needed on the final to reach your target course grade.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="final-exam-calculator.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></div>
-        <h3>Final Exam Calculator</h3>
-        <p>What exam score do you need? Enter current grade, target, and exam weight.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="required-marks.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-        <h3>Required Marks</h3>
-        <p>Marks needed per pending subject to hit your target total percentage.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="grade-predictor.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-        <h3>Grade Predictor</h3>
-        <p>Predict your final course grade from completed assignments and their weights.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="assignment-weight.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-        <h3>Assignment Weight</h3>
-        <p>See exactly how much each assignment contributes to your final grade.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="class-average.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <h3>Class Average</h3>
-        <p>Mean, median, highest, lowest, and std dev for a full set of student scores.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="percentage-calculator.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
-        <h3>Percentage Calc</h3>
-        <p>Marks to percentage, portion finder, and percentage change — all in one.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <div class="sec-head" style="grid-column:1/-1;margin-top:var(--s6);margin-bottom:0"><span class="kicker">Attendance Tools</span></div>
-      <a href="attendance-calculator.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-        <h3>Attendance Calculator</h3>
-        <p>Track attendance and see exactly how many classes you can safely miss.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="attendance-goal.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-        <h3>Attendance Goal</h3>
-        <p>How many more classes must you attend to hit your required percentage?</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="attendance-percentage.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
-        <h3>Attendance Percentage</h3>
-        <p>Quick attendance % calculator with compliance check and absence counter.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <div class="sec-head" style="grid-column:1/-1;margin-top:var(--s6);margin-bottom:0"><span class="kicker">Planning Tools</span></div>
-      <a href="credit-hour-planner.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
-        <h3>Credit Hour Planner</h3>
-        <p>Track earned credits, plan your pace, and see your graduation timeline.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="study-time.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
-        <h3>Study Time Calculator</h3>
-        <p>How many hours should you study per week? Based on the 2-hour credit rule.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="pomodoro.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg></div>
-        <h3>Pomodoro Timer</h3>
-        <p>Focus-break cycles with custom intervals, session tracking, and notifications.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="study-schedule.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
-        <h3>Study Schedule</h3>
-        <p>Generate a personalised weekly timetable from subjects and priorities.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <div class="sec-head" style="grid-column:1/-1;margin-top:var(--s6);margin-bottom:0"><span class="kicker">Utility Tools</span></div>
-      <a href="scientific-calculator.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 16s4-4 8-4 8 4 8 4"/><path d="m5 19 4-8"/><path d="M15 5 19 13"/></svg></div>
-        <h3>Scientific Calculator</h3>
-        <p>Trig, logs, powers, and expression history — fully in your browser.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="basic-calculator.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></div>
-        <h3>Basic Calculator</h3>
-        <p>Clean, keyboard-friendly arithmetic. Fast and distraction-free.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a href="word-counter.html" class="tool live reveal">
-        <div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></div>
-        <h3>Word Counter</h3>
-        <p>Live word, character, and reading-time counts for essays and assignments.</p>
-        <span class="tool-foot">Open tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<div class="ad-slot" aria-hidden="true"><div class="ad-inner"><span class="tag">Advertisement</span></div></div>
-
-<section class="section" id="why">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">Why Study Metrics</span>
-      <h2>Built to actually help, not to harvest data</h2>
-      <p>Every decision here favors the student in front of the screen: speed, accuracy, and privacy over growth hacks.</p>
-    </div>
-    <div class="values">
-      <div class="value reveal">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-        <h3>Accurate calculations</h3>
-        <p>Every formula follows standard university weighting and scale-conversion methods, not rough estimates.</p>
-      </div>
-      <div class="value reveal">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-        <h3>Lightning fast</h3>
-        <p>Single-file pages with no bloat. Results update as you type, nothing to submit or wait on.</p>
-      </div>
-      <div class="value reveal">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-        <h3>30+ countries supported</h3>
-        <p>Grade scales from the US, UK, India, Europe, and more, all converting to and from a US 4.0 GPA.</p>
-      </div>
-      <div class="value reveal">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-        <h3>Privacy focused</h3>
-        <p>Your grades are calculated in your browser and never leave your device. Nothing is stored on a server.</p>
-      </div>
-      <div class="value reveal">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
-        <h3>Mobile friendly</h3>
-        <p>Every tool is built mobile-first, so it works exactly the same on a phone as it does on a laptop.</p>
-      </div>
-      <div class="value reveal">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/></svg></div>
-        <h3>Free forever</h3>
-        <p>No accounts, no subscriptions, no locked features. Ads keep the tools free, not paywalls.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section stats-sec">
-  <div class="wrap">
-    <div class="stats-grid">
-      <div class="stat reveal"><div class="n">1,000+</div><div class="l">Students helped</div></div>
-      <div class="stat reveal"><div class="n">5,000+</div><div class="l">Calculations performed</div></div>
-      <div class="stat reveal"><div class="n">25+</div><div class="l">Academic tools</div></div>
-      <div class="stat reveal"><div class="n">30+</div><div class="l">Countries supported</div></div>
-    </div>
-  </div>
-</section>
-
-<hr class="glow-divider" aria-hidden="true">
-<section class="section hiw" id="how">
-  <div class="wrap reveal">
-    <div class="sec-head">
-      <span class="kicker">Dead simple</span>
-      <h2>No accounts. No noise.</h2>
-    </div>
-    <div class="hiw-grid">
-      <div class="hiw-step"><div class="hiw-num" aria-hidden="true">1</div><h3>Pick a tool</h3><p>Browse the toolkit and open what you need. Every tool loads instantly in your browser.</p></div>
-      <div class="hiw-step"><div class="hiw-num" aria-hidden="true">2</div><h3>Enter your info</h3><p>Type in your grades or credits. Results update live as you go, nothing to submit.</p></div>
-      <div class="hiw-step"><div class="hiw-num" aria-hidden="true">3</div><h3>Get your answer</h3><p>Copy or export your results. Your data never leaves your device.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section reveal">
-  <div class="wrap">
-    <div class="prose">
-      <span class="kicker">About Study Metrics</span>
-      <h2>Built for students, by students</h2>
-      <p>We built Study Metrics because we were tired of cluttered websites, pop-ups, and forced signups. We wanted a single, calm home for the calculators students actually use every day.</p>
-      <p>Every tool is free, lightweight, and private. We don't collect your data because we don't need it. Study Metrics is supported by unobtrusive advertising to keep the lights on and the tools free for everyone.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="reviews">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">What students say</span>
-      <h2>Trusted by students juggling more than just grades</h2>
-    </div>
-    <div class="testi-grid">
-      <div class="testi reveal">
-        <div class="testi-stars" aria-hidden="true">★★★★★</div>
-        <p>"I transferred from a percentage-based system and had no idea what my GPA even was. The converter gave me a straight answer in ten seconds, no forms to fill out."</p>
-        <div class="testi-by"><span class="testi-avatar" aria-hidden="true">P</span><div><b>Priya S.</b><span>Computer Science, Class of 2027</span></div></div>
-      </div>
-      <div class="testi reveal">
-        <div class="testi-stars" aria-hidden="true">★★★★★</div>
-        <p>"Used the final grade calculator the night before my last exam to figure out the minimum score I needed. Took the panic out of finals week."</p>
-        <div class="testi-by"><span class="testi-avatar" aria-hidden="true">M</span><div><b>Marcus T.</b><span>Mechanical Engineering, Class of 2026</span></div></div>
-      </div>
-      <div class="testi reveal">
-        <div class="testi-stars" aria-hidden="true">★★★★★</div>
-        <p>"My university caps attendance at 75%. The tracker tells me exactly how many classes I can miss without doing the math myself every week."</p>
-        <div class="testi-by"><span class="testi-avatar" aria-hidden="true">E</span><div><b>Elena R.</b><span>Biology, Class of 2028</span></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="faq">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">FAQ</span>
-      <h2>Common questions</h2>
-    </div>
-    <div class="faq reveal">
-      <details open><summary>Is Study Metrics really free to use?</summary><p>Yes. Every calculator on Study Metrics is completely free, with no signup, subscription, or usage limits. The site is supported by unobtrusive advertising, not by charging students.</p></details>
-      <details><summary>Do I need to create an account?</summary><p>No. None of our tools require an account or login. Open any calculator and start entering your grades — your results appear instantly.</p></details>
-      <details><summary>Which countries' grading scales are supported?</summary><p>The Global GPA Converter supports 30+ national and university grading scales, including percentage, letter-grade, and 4.0/5.0/10.0-point systems, converting in both directions.</p></details>
-      <details><summary>Is my data stored or shared with anyone?</summary><p>No. Your grades and calculations are processed entirely in your browser and are never sent to a server or stored by us.</p></details>
-      <details><summary>How accurate are the calculators?</summary><p>Each tool follows the standard weighting and conversion formulas most universities use, though it's worth double-checking anything official against your own institution's grading policy.</p></details>
-      <details><summary>Can I use these tools on my phone?</summary><p>Yes. Every calculator is built mobile-first and works the same on phones, tablets, and desktops.</p></details>
-    </div>
-  </div>
-</section>
-
-<hr class="glow-divider" aria-hidden="true">
-<div class="cta-band reveal">
-  <div class="cta-inner">
-    <h2>Ready to crush your goals?</h2>
-    <p>Jump into the toolkit and get the answers you need to stay ahead.</p>
-    <a href="#tools" class="btn btn-primary btn-lg">Browse all tools</a>
-  </div>
-</div>
-
-</main>
-<div id="backToTop">↑</div>
-
-<footer class="foot">
-  <div class="wrap">
-    <div class="foot-grid" style="grid-template-columns:1.2fr 1fr 1fr 1fr 1fr">
-      <div class="foot-brand">
-        <a href="index.html" class="logo"><span class="logo-mark"><span class="logo-dot"></span></span>Study&nbsp;Metrics</a>
-        <p>Free academic tools and study guides for students. No accounts, no clutter.</p>
-      </div>
-      <div class="foot-col">
-        <h4>GPA &amp; Grades</h4>
-        <a href="gpa-converter.html">GPA Converter</a>
-        <a href="gpa.html">GPA Calculator</a>
-        <a href="semester-gpa.html">Semester GPA</a>
-        <a href="cgpa.html">CGPA Calculator</a>
-        <a href="gpa-improvement-planner.html">GPA Planner</a>
-        <a href="percentage-to-gpa.html">% to GPA</a>
-        <a href="gpa-to-percentage.html">GPA to %</a>
-      </div>
-      <div class="foot-col">
-        <h4>Grade Tools</h4>
-        <a href="grade-calculator.html">Grade Calculator</a>
-        <a href="final-exam-calculator.html">Final Exam</a>
-        <a href="required-marks.html">Required Marks</a>
-        <a href="grade-predictor.html">Grade Predictor</a>
-        <a href="assignment-weight.html">Assignment Weight</a>
-        <a href="class-average.html">Class Average</a>
-        <a href="percentage-calculator.html">Percentage</a>
-      </div>
-      <div class="foot-col">
-        <h4>Planning</h4>
-        <a href="attendance-calculator.html">Attendance</a>
-        <a href="study-time.html">Study Time</a>
-        <a href="pomodoro.html">Pomodoro Timer</a>
-        <a href="study-schedule.html">Study Schedule</a>
-        <a href="scientific-calculator.html">Scientific Calc</a>
-        <a href="basic-calculator.html">Basic Calc</a>
-        <a href="word-counter.html">Word Counter</a>
-      </div>
-      <div class="foot-col">
-        <h4>Guides &amp; Company</h4>
-        <a href="study-guides.html">Study Guides</a>
-        <a href="gpa-help-center.html">GPA Help Center</a>
-        <a href="academic-resources.html">Academic Resources</a>
-        <a href="grading-guide.html">Grading Guide</a>
+      <nav class="sm2-top-nav" aria-label="Secondary">
+        <a href="index.html#tools">Calculators</a>
         <a href="dashboard.html">Dashboard</a>
-        <a href="about.html">About</a>
-        <a href="blog.html">Blog</a>
-        <a href="contact.html">Contact</a>
-        <a href="privacy-policy.html">Privacy</a>
-        <a href="terms-and-conditions.html">Terms</a>
+        <a href="ai.html">AI Tutor</a>
+        <a href="academic-resources.html">Resources</a>
+      </nav>
+      <div class="sm2-top-tools">
+        <button class="sm2-icon-btn" style="position:relative" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8.5a6 6 0 1 0-12 0c0 6-2.5 7.5-2.5 7.5h17S18 14.5 18 8.5Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span class="sm2-dot"></span></button>
+        <button class="sm2-icon-btn sm-theme-toggle" onclick="sm2Theme()" aria-label="Toggle theme"><svg class="sm-theme-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg></button>
+        <img class="sm2-avatar" src="images/avatar.svg" alt="Profile">
       </div>
-    </div>
-    <div class="foot-bottom">
-      <span>&copy; 2026 Study Metrics. All rights reserved.</span>
-    </div>
-  </div>
-</footer>
+    </header>
 
-<script src="js/script.js"></script>
-<script src="js/grading-systems.js"></script>
-<script src="js/country-selector.js"></script>
-<script src="js/personalization.js"></script>
-<script src="js/premium.js"></script>
-<script src="js/content-platform.js"></script>
+    <main id="main-content" class="sm2-content">
+      <!-- ============ HERO ============ -->
+      <section class="sm2-hero sm2-rev d1">
+        <div class="sm2-hero-l">
+          <h1>Excellence is<br><span class="g">Calculated.</span></h1>
+          <p>Smart academic calculators &amp; AI tools to help you learn better, achieve more, and reach your goals.</p>
+          <div class="sm2-hero-cta">
+            <a href="index.html#tools" class="sm2-btn sm2-btn-primary">Explore Calculators <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+            <a href="ai.html" class="sm2-btn sm2-btn-ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5 16 12l-6 3.5v-7Z" fill="currentColor" stroke="none"/></svg> Watch Demo</a>
+          </div>
+          <div class="sm2-pop">
+            <div class="sm2-pop-lbl">Popular Searches:</div>
+            <div class="sm2-chips">
+              <a href="gpa.html" class="sm2-chip">GPA Calculator</a>
+              <a href="cgpa.html" class="sm2-chip">CGPA Calculator</a>
+              <a href="target-gpa.html" class="sm2-chip">Target GPA</a>
+              <a href="grade-calculator.html" class="sm2-chip">Grade Calculator</a>
+            </div>
+          </div>
+        </div>
+        <div class="sm2-hero-r">
+          <div class="sm2-statcards">
+            <img class="sm2-hero-illu" src="images/hero-illustration.png" alt="" aria-hidden="true">
+            <div class="sm2-statcard big">
+              <div class="sm2-sc-top"><span>GPA</span> <svg viewBox="0 0 130 44" fill="none" aria-hidden="true" style="width:120px;height:38px"><polyline points="2,38 18,30 32,34 48,22 64,26 80,14 96,18 112,6 128,10" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none" style="stroke:var(--spark-gold)"/><circle cx="128" cy="10" r="2.6" fill="var(--gold)"/></svg></div>
+              <div class="sm2-sc-val">3.75</div>
+              <div class="sm2-sc-label">Excellent</div>
+              <div class="sm2-sc-delta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg> 0.15</div>
+            </div>
+            <div class="sm2-statcard mid">
+              <div class="sm2-sc-top"><span>CGPA</span> <svg viewBox="0 0 60 26" fill="none" aria-hidden="true" style="width:56px;height:22px"><polyline points="2,22 12,16 22,18 32,10 42,13 58,4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none" style="stroke:var(--spark-up)"/></svg></div>
+              <div class="sm2-sc-val">3.62</div>
+              <div class="sm2-sc-label">Very Good</div>
+              <div class="sm2-sc-delta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg> 0.12</div>
+            </div>
+            <div class="sm2-statcard mid2">
+              <div class="sm2-sc-top"><span>Target GPA</span> <svg viewBox="0 0 60 26" fill="none" aria-hidden="true" style="width:56px;height:22px"><polyline points="2,22 12,16 22,18 32,10 42,13 58,4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none" style="stroke:var(--spark-up)"/></svg></div>
+              <div class="sm2-sc-val">3.80</div>
+              <div class="sm2-sc-label">On Track</div>
+              <div class="sm2-sc-delta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg> 0.20</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ EXPLORE TOOLS ============ -->
+      <div class="sm2-sec-head" id="tools">
+        <h2>Explore Our Tools</h2>
+        <a href="index.html#tools" class="sm2-link">View all tools <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="sm2-tools">
+        <a href="gpa.html" class="sm2-tool sm2-rev d1">
+          <span class="sm2-tool-ico ico-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 14.5h.01M12 14.5h.01M16 14.5v3M8 17.5h4"/></svg></span>
+          <h3>GPA Calculator</h3><p>Calculate your semester GPA instantly</p>
+        </a>
+        <a href="cgpa.html" class="sm2-tool sm2-rev d2">
+          <span class="sm2-tool-ico ico-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 14.5h.01M12 14.5h.01M16 14.5v3M8 17.5h4"/></svg></span>
+          <h3>CGPA Calculator</h3><p>Cumulative GPA across semesters</p>
+        </a>
+        <a href="target-gpa.html" class="sm2-tool sm2-rev d3">
+          <span class="sm2-tool-ico ico-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></span>
+          <h3>Target GPA</h3><p>Find the grades you need to reach your goal</p>
+        </a>
+        <a href="grade-calculator.html" class="sm2-tool sm2-rev d4">
+          <span class="sm2-tool-ico ico-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4.5" width="12" height="16" rx="2.5"/><path d="M9 4.5a3 3 0 0 1 6 0"/><path d="M9 11h6M9 14.5h4"/></svg></span>
+          <h3>Grade Calculator</h3><p>Calculate grades from marks or percentage</p>
+        </a>
+        <a href="index.html#tools" class="sm2-tool sm2-rev d5">
+          <span class="sm2-tool-ico ico-ink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg></span>
+          <h3>All Tools</h3><p>Explore 15+ academic tools</p>
+        </a>
+      </div>
+
+      <!-- ============ STATS ============ -->
+      <div class="sm2-stats sm2-rev d2">
+        <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19h16M7 16V9M12 16V5M17 16v-4"/></svg> 1M+</div><div class="l">Calculations Performed</div></div>
+        <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16 5.2a3.2 3.2 0 0 1 0 6M17.5 19a5.5 5.5 0 0 0-2-4.3"/></svg> 200K+</div><div class="l">Students Helped</div></div>
+        <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>2 50+</div><div class="l">Academic Tools</div></div>
+        <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 0 1 4.6 1.2c0 1.7-2.6 2-2.6 3.3"/><path d="M12 17h.01"/></svg> 100%</div><div class="l">Free Forever</div></div>
+        <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg> Global</div><div class="l">Trusted by students worldwide</div></div>
+      </div>
+
+      <!-- ============ PANELS ============ -->
+      <div class="sm2-panels">
+        <!-- Recently Used -->
+        <section class="sm2-card sm2-panel sm2-rev d1">
+          <div class="sm2-panel-head"><h3>Recently Used</h3></div>
+          <div class="sm2-rec">
+            <a href="gpa.html"><span class="sm2-rec-ico ico-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 14.5h.01M12 14.5h.01M16 14.5v3M8 17.5h4"/></svg></span><span class="nm">GPA Calculator</span><span class="tm">2 min ago</span></a>
+            <a href="target-gpa.html"><span class="sm2-rec-ico ico-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></span><span class="nm">Target GPA</span><span class="tm">1 hour ago</span></a>
+            <a href="cgpa.html"><span class="sm2-rec-ico ico-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 14.5h.01M12 14.5h.01M16 14.5v3M8 17.5h4"/></svg></span><span class="nm">CGPA Calculator</span><span class="tm">3 hours ago</span></a>
+            <a href="grade-calculator.html"><span class="sm2-rec-ico ico-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4.5" width="12" height="16" rx="2.5"/><path d="M9 4.5a3 3 0 0 1 6 0"/><path d="M9 11h6M9 14.5h4"/></svg></span><span class="nm">Grade Calculator</span><span class="tm">Yesterday</span></a>
+          </div>
+          <a href="dashboard.html#recent" class="sm2-rec-foot">View all recent <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        </section>
+
+        <!-- Study Streak -->
+        <section class="sm2-card sm2-panel sm2-rev d2">
+          <div class="sm2-panel-head"><h3>Your Study Streak</h3></div>
+          <div class="sm2-streak-num">
+            <span class="d">12</span><span class="u">Days</span>
+            <svg class="sm2-flame" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 3c1 4-2 6-2 9 0 2 1 3 1 3s-3-1-3-4c0 0-4 3-4 8a8 8 0 0 0 16 0c0-5-4-8-4-11 0-2-1-4-1-4-1 3-3 4-3 6 0 0-1-3 3-7Z" fill="#f0902e"/><path d="M16 12c1 2 3 3 3 6a3 3 0 0 1-6 0c0-2 2-3 3-6Z" fill="#ffd23f"/></svg>
+          </div>
+          <p class="sm2-streak-copy">Keep it up! Consistency builds success.</p>
+          <div class="sm2-week">
+            <div class="sm2-day on"><div class="dl">M</div><div class="dc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7"/></svg></div></div>
+            <div class="sm2-day on"><div class="dl">T</div><div class="dc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7"/></svg></div></div>
+            <div class="sm2-day on"><div class="dl">W</div><div class="dc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7"/></svg></div></div>
+            <div class="sm2-day on"><div class="dl">T</div><div class="dc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7"/></svg></div></div>
+            <div class="sm2-day on"><div class="dl">F</div><div class="dc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7"/></svg></div></div>
+            <div class="sm2-day off"><div class="dl">S</div><div class="dc"></div></div>
+            <div class="sm2-day off"><div class="dl">S</div><div class="dc"></div></div>
+          </div>
+        </section>
+
+        <!-- AI Tutor -->
+        <section class="sm2-card sm2-panel sm2-rev d3">
+          <div class="sm2-panel-head"><h3>AI Tutor</h3><span class="sm2-pill-badge">BETA</span></div>
+          <p class="sm2-ai-copy">Get instant help with concepts, problems, and study advice.</p>
+          <form class="sm2-ai-input" action="ai.html" method="get">
+            <input type="text" name="q" placeholder="Ask me anything…" aria-label="Ask AI">
+            <button class="sm2-ai-send" type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12 20 5l-4 15-4-6-7-2Z"/></svg></button>
+          </form>
+          <div class="sm2-ai-pop">Popular: <a href="gpa-improvement-planner.html">How to improve GPA?</a> · <a href="study-guides.html">Study tips</a></div>
+        </section>
+      </div>
+
+      <!-- ============ PREMIUM ============ -->
+      <section class="sm2-premium sm2-rev d2">
+        <span class="sm2-premium-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l3 5-9 13L3 8l3-5Z"/><path d="M3 8h18M9 3 7 8l5 13 5-13-2-5M8 8l4 13 4-13"/></svg></span>
+        <div class="sm2-premium-txt">
+          <h3>Premium Experience</h3>
+          <p>Unlock advanced features, ad-free experience &amp; priority AI support.</p>
+        </div>
+        <a href="dashboard.html" class="sm2-btn sm2-btn-gold">Go Premium <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- ============ MOBILE BOTTOM NAV ============ -->
+<nav class="sm2-bottomnav" aria-label="Mobile">
+  <a href="index.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg><span>Home</span></a>
+  <a href="index.html#tools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg><span>Calculators</span></a>
+  <a href="ai.html" class="ai"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M4.9 7l2.1 1.2M17 15.8 19.1 17M4.9 17 7 15.8M17 8.2 19.1 7"/><circle cx="12" cy="12" r="3.4"/></svg>W</span><span>AI</span></a>
+  <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="10" rx="2"/><rect x="3" y="16" width="8" height="5" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="11" width="7" height="10" rx="2"/></svg><span>Dashboard</span></a>
+  <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg><span>Profile</span></a>
+</nav>
+
+<script>
+function sm2Theme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);try{localStorage.setItem('sm_theme',n);}catch(e){}if(window.SM&&SM.toast){SM.toast(n==='dark'?'🌙 Dark mode on':'☀️ Light mode on','info');}}
+// reveal on scroll for below-fold cards
+document.addEventListener('DOMContentLoaded',function(){
+  if(!('IntersectionObserver' in window))return;
+});
+</script>
+<script defer src="js/script.js"></script>
+<script defer src="js/grading-systems.js"></script>
+<script defer src="js/country-selector.js"></script>
+<script defer src="js/personalization.js"></script>
+<script defer src="js/premium.js"></script>
+<script defer src="js/content-platform.js"></script>
+<script defer src="js/analytics.js"></script>
+<script defer src="js/consent.js"></script>
 </body>
 </html>

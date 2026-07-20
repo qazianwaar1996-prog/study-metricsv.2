@@ -2,18 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="google-site-verification" content="YOUR_GSC_VERIFICATION_CODE">
+<meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE">
+<meta name="theme-color" content="#0a0a0a">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact Study Metrics | Get in Touch</title>
 <meta name="description" content="Get in touch with the Study Metrics team. Report a bug, suggest a new student tool, or ask a question.">
 <link rel="canonical" href="https://studymetrics.app/contact.html">
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:locale" content="en_US">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Study Metrics">
 <meta property="og:title" content="Contact — Study Metrics">
 <meta property="og:description" content="Report a bug, suggest a tool, or ask a question.">
 <meta property="og:url" content="https://studymetrics.app/contact.html">
 <meta property="og:image" content="https://studymetrics.app/images/og-image.svg">
+<meta name="twitter:site" content="@studymetrics">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://studymetrics.app/images/og-image.svg">
 <meta name="twitter:title" content="Contact — Study Metrics">
@@ -29,6 +34,7 @@
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Study Metrics","url":"https://studymetrics.app/","logo":"https://studymetrics.app/images/favicon.svg","sameAs":[]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://studymetrics.app/"},{"@type":"ListItem","position":2,"name":"Contact","item":"https://studymetrics.app/contact.html"}]}</script>
+<link rel="stylesheet" href="css/consent.css">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -63,7 +69,10 @@
 <div class="wrap reveal">
   <div class="contact-layout">
     <div class="panel">
-      <form class="form-grid" id="contactForm" novalidate>
+      <form class="form-grid" id="contactForm" action="https://formspree.io/f/REPLACE_WITH_FORM_ID" data-deploy-note="replace-formspree-id" method="POST" novalidate>
+        <!-- Honeypot spam field — do not remove -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <input type="hidden" name="_subject" value="New message — Study Metrics Contact Form">
         <div class="pair">
           <div class="field"><label for="name">Your name</label><input class="input lg" id="name" type="text" placeholder="Alex Student" required></div>
           <div class="field"><label for="email">Email</label><input class="input lg" id="email" type="email" placeholder="you@example.com" required></div>
@@ -82,7 +91,7 @@
           <button type="submit" class="btn btn-primary" style="width:100%">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>Send message
           </button>
-          <p class="form-note">To receive these messages, connect this form to a service like Formspree.</p>
+          <p class="form-note">Your message is sent securely. We typically reply within 2–3 business days.</p>
         </div>
         <div class="success" id="success">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
@@ -101,12 +110,32 @@
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
         <span><b>Response time</b><span>Usually within 2–3 business days</span></span>
       </div>
+
+      <!-- Quick Feedback Widget -->
+      <div style="margin-top:var(--s6);padding:var(--s5);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg)">
+        <h3 style="font-size:var(--step-base);margin-bottom:var(--s3)">Quick feedback</h3>
+        <p style="font-size:var(--step-sm);color:var(--ink-2);margin-bottom:var(--s4)">How useful do you find our tools?</p>
+        <div style="display:flex;gap:var(--s2);margin-bottom:var(--s4)" id="feedbackStars">
+          <button class="feedback-star" data-v="1" aria-label="1 star" style="font-size:1.5rem;background:none;border:none;cursor:pointer;opacity:.4;transition:opacity .15s,transform .15s">★</button>
+          <button class="feedback-star" data-v="2" aria-label="2 stars" style="font-size:1.5rem;background:none;border:none;cursor:pointer;opacity:.4;transition:opacity .15s,transform .15s">★</button>
+          <button class="feedback-star" data-v="3" aria-label="3 stars" style="font-size:1.5rem;background:none;border:none;cursor:pointer;opacity:.4;transition:opacity .15s,transform .15s">★</button>
+          <button class="feedback-star" data-v="4" aria-label="4 stars" style="font-size:1.5rem;background:none;border:none;cursor:pointer;opacity:.4;transition:opacity .15s,transform .15s">★</button>
+          <button class="feedback-star" data-v="5" aria-label="5 stars" style="font-size:1.5rem;background:none;border:none;cursor:pointer;opacity:.4;transition:opacity .15s,transform .15s">★</button>
+        </div>
+        <div id="feedbackComment" style="display:none">
+          <textarea id="feedbackText" class="input" placeholder="Any specific feedback? (optional)" style="min-height:72px;resize:vertical;margin-bottom:var(--s3)"></textarea>
+          <button id="feedbackSubmit" class="btn btn-primary" style="width:100%;font-size:var(--step-sm)">Send feedback</button>
+        </div>
+        <p id="feedbackThanks" style="display:none;font-size:var(--step-sm);color:var(--ok);font-weight:500">
+          ✓ Thanks for the feedback!
+        </p>
+      </div>
     </div>
   </div>
 </div>
 
 </main>
-<div id="backToTop">↑</div>
+<div id="backToTop" role="button" aria-label="Back to top" tabindex="0">↑</div>
 
 <footer class="foot">
   <div class="wrap">
@@ -165,26 +194,106 @@
   </div>
 </footer>
 
-<script src="js/script.js"></script>
-<script src="js/personalization.js"></script>
+<script defer src="js/script.js"></script>
+<script defer src="js/personalization.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded",function(){
-  var f=document.getElementById("contactForm");
-  if(f)f.addEventListener("submit",function(e){
+document.addEventListener("DOMContentLoaded", function () {
+  var form    = document.getElementById("contactForm");
+  var success = document.getElementById("success");
+  var submitBtn = form ? form.querySelector('[type="submit"]') : null;
+  if (!form) return;
+
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var n=document.getElementById("name").value.trim(),
-        em=document.getElementById("email").value.trim(),
-        m=document.getElementById("message").value.trim();
-    if(!n||!em||!m){
-      SM.toast("Please fill in all required fields.","error");
+
+    var name    = document.getElementById("name").value.trim();
+    var email   = document.getElementById("email").value.trim();
+    var message = document.getElementById("message").value.trim();
+
+    if (!name || !email || !message) {
+      SM.toast("Please fill in your name, email, and message.", "error");
       return;
     }
-    document.getElementById("success").classList.add("show");
-    f.reset();
+
+    /* Basic email format check */
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      SM.toast("Please enter a valid email address.", "error");
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+    }
+
+    fetch(form.action, {
+      method: "POST",
+      body: new FormData(form),
+      headers: { "Accept": "application/json" }
+    })
+    .then(function (res) {
+      if (res.ok) {
+        if (success) success.classList.add("show");
+        form.reset();
+      } else {
+        res.json().then(function (data) {
+          var msg = (data && data.errors && data.errors.map(function(e){return e.message;}).join(", ")) || "Send failed.";
+          SM.toast(msg, "error");
+        });
+      }
+    })
+    .catch(function () {
+      SM.toast("Could not send — please email hello@studymetrics.app directly.", "error");
+    })
+    .finally(function () {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>Send message';
+      }
+    });
   });
 });
 </script>
-<script src="js/premium.js"></script>
-<script src="js/content-platform.js"></script>
+<script defer src="js/premium.js"></script>
+<script defer src="js/content-platform.js"></script>
+
+<script defer src="js/analytics.js"></script>
+<script defer src="js/consent.js"></script>
+
+<script>
+(function(){
+  var stars = document.querySelectorAll('.feedback-star');
+  var chosen = 0;
+  stars.forEach(function(btn){
+    btn.addEventListener('mouseenter', function(){
+      var v = +this.getAttribute('data-v');
+      stars.forEach(function(s){ s.style.opacity = +s.getAttribute('data-v') <= v ? '1' : '.3'; });
+    });
+    btn.addEventListener('mouseleave', function(){
+      stars.forEach(function(s){ s.style.opacity = +s.getAttribute('data-v') <= chosen ? '1' : '.4'; });
+    });
+    btn.addEventListener('click', function(){
+      chosen = +this.getAttribute('data-v');
+      stars.forEach(function(s){ s.style.opacity = +s.getAttribute('data-v') <= chosen ? '1' : '.3'; });
+      document.getElementById('feedbackComment').style.display = 'block';
+    });
+  });
+  var submitBtn = document.getElementById('feedbackSubmit');
+  if(submitBtn){
+    submitBtn.addEventListener('click', function(){
+      var text = document.getElementById('feedbackText').value.trim();
+      /* Send to same Formspree endpoint as the main form */
+      fetch('https://formspree.io/f/REPLACE_WITH_FORM_ID', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+        body: JSON.stringify({rating: chosen + '/5', feedback: text || '(no comment)', _subject: 'Quick feedback — Study Metrics'})
+      }).catch(function(){});
+      document.getElementById('feedbackComment').style.display = 'none';
+      document.getElementById('feedbackStars').style.display = 'none';
+      document.getElementById('feedbackThanks').style.display = 'block';
+    });
+  }
+})();
+</script>
 </body>
 </html>

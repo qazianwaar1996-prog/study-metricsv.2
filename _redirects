@@ -1,0 +1,3 @@
+# Netlify redirects
+/index  /  301
+/*      /:splat.html  200

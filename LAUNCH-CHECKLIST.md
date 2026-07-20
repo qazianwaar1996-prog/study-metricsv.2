@@ -1,74 +1,129 @@
 # Study Metrics — Launch Checklist
-
-Work top to bottom. Each phase depends on the one before it.
-
----
-
-## Phase 0 — Prep the files (before anything goes live)
-
-- [ ] Put all files in ONE folder. Rename the landing page to **`index.html`** (this is the homepage).
-- [ ] Convert **favicon.svg → favicon.png** (any free SVG-to-PNG converter). Keep both in the root.
-- [ ] Convert **og-image.svg → og-image.png** at 1200×630. Keep in the root.
-- [ ] Find-and-replace **`studymetrics.app`** with your real domain across ALL files (HTML, sitemap.xml, robots.txt).
-- [ ] Replace **`hello@studymetrics.app`** with your real email (about, contact, privacy, terms).
-- [ ] Confirm the folder has every file:
-  - **HTML Pages:** index, gpa, cgpa, target-gpa, final-grade, grade-calculator, percentage-calculator, attendance-calculator, word-counter, about, contact, privacy-policy, terms-and-conditions, disclaimer, 404, blog.
-  - **CSS:** style.css, gpa-converter.css.
-  - **JS:** script.js, gpa.js, cgpa.js, target-gpa.js, final-grade.js, grade-calculator.js, percentage-calculator.js, attendance-calculator.js, word-counter.js, gpa-converter.js.
-  - **Assets:** favicon.svg, favicon.png, og-image.png, sitemap.xml, robots.txt, manifest.json, service-worker.js.
-
-## Phase 1 — Test locally
-
-- [ ] Open `index.html` in a browser. Click every nav + footer link, confirm none 404.
-- [ ] Open each tool, enter numbers, confirm the math works and results update live.
-- [ ] Check the tab shows your favicon.
-- [ ] Resize to phone width, confirm the hamburger menu and layouts work.
-
-## Phase 2 — GitHub + go live (free)
-
-- [ ] Create a free GitHub account.
-- [ ] New repository → name it (e.g. `study-metrics`) → set **Public** → Create.
-- [ ] **Add file → Upload files** → drag the whole folder in → Commit.
-- [ ] **Settings → Pages** → Source: *Deploy from a branch* → Branch: **main** → Folder: **/ (root)** → Save.
-- [ ] Wait ~1 min. Visit `https://YOURNAME.github.io/study-metrics/` and re-test everything.
-
-## Phase 3 — Domain
-
-- [ ] Buy the domain (Namecheap, Cloudflare, Porkbun are cheap and clean).
-- [ ] In GitHub **Settings → Pages → Custom domain**, enter your domain, Save.
-- [ ] At your registrar, add the DNS records GitHub shows (usually 4 A records + a CNAME).
-- [ ] Tick **Enforce HTTPS** once it's available (may take an hour or two).
-
-## Phase 4 — Search Console (do the day you're live)
-
-- [ ] Add your site at **search.google.com/search-console** and verify ownership.
-- [ ] Submit **sitemap.xml**.
-- [ ] Use "URL Inspection" to request indexing on your homepage + top 3 tools.
-- [ ] Test a tool page in the **Rich Results Test** to confirm the FAQ schema is detected.
-
-## Phase 5 — AdSense (only AFTER the site is live + has real content)
-
-- [ ] Sign up at **adsense.google.com** with your domain.
-- [ ] Paste the AdSense loader `<script>` into the `<head>` of every page.
-- [ ] Submit for review. **Don't panic if it takes days/weeks.**
-- [ ] Once approved: replace each `.ad-slot` placeholder block with your real `<ins class="adsbygoogle">` ad unit.
-
-> ⚠️ Do NOT apply to AdSense until the site is fully live with working tools and the legal pages filled in. 
-
-## Phase 6 — SEO growth (ongoing)
-
-- [ ] Write blog posts targeting long-tail searches: "how to convert CGPA to GPA", "how many classes can I skip at 75%", "what do I need on my final to get an A".
-- [ ] Add internal links from blog posts to the relevant tool.
-- [ ] Get a few backlinks (student subreddits, forums, your uni's resource pages).
-- [ ] Check Search Console monthly, see what queries you rank for, and expand those pages.
+**Version 1.0 | Production Release**
 
 ---
 
-## Your edge over Scholaro
-- Genuinely free, no daily limit, no login, no paywall.
-- Faster (single-file pages, instant load).
-- FAQ schema = your Q&As show directly in Google results.
-- Broader toolkit (GPA + attendance + percentage + word counter), not just GPA.
+## 🔑 BEFORE YOU DEPLOY — Replace All Placeholders
 
-## Current status: site is BUILT
-14 pages, 9 working tools, branded, SEO-loaded, AdSense-ready.
+| Placeholder | File(s) | How to get it |
+|---|---|---|
+| `YOUR_GSC_VERIFICATION_CODE` | All 52 HTML `<head>` | Google Search Console → Add property → HTML tag verification |
+| `YOUR_BING_VERIFICATION_CODE` | All 52 HTML `<head>` | Bing Webmaster Tools → Add site → Meta tag |
+| `G-XXXXXXXXXX` | `js/analytics.js` | GA4 → Admin → Data streams → Web → Measurement ID |
+| `ca-pub-XXXXXXXXXXXXXXXXX` | All HTML + `js/consent.js` | Google AdSense → Account → Publisher ID |
+| `REPLACE_WITH_FORM_ID` | `contact.html` (2 places) | formspree.io → New form → Copy form ID |
+
+**Find all placeholders at once:**
+```bash
+grep -rn "YOUR_GSC\|YOUR_BING\|G-XXXXXXXXXX\|ca-pub-XXXX\|REPLACE_WITH_FORM" .
+```
+
+---
+
+## ✅ Pre-Deploy Checklist
+
+### Domain & Hosting
+- [ ] Domain pointed to hosting (DNS propagated)
+- [ ] HTTPS/SSL certificate installed and working
+- [ ] www → non-www redirect confirmed
+- [ ] http → https redirect confirmed
+- [ ] Uncomment HSTS header in `.htaccess` after confirming HTTPS
+
+### All Placeholders Replaced
+- [ ] Google Analytics Measurement ID (`G-XXXXXXXXXX`)
+- [ ] Google Search Console verification code
+- [ ] Bing Webmaster verification code
+- [ ] AdSense Publisher ID (`ca-pub-XXXXXXXXXXXXXXXX`)
+- [ ] Formspree Form ID (contact.html — 2 occurrences)
+
+### Files Uploaded
+- [ ] All 52 HTML pages
+- [ ] `css/` directory (12 files)
+- [ ] `js/` directory (all .js files)
+- [ ] `images/` directory (favicon.svg, og-image.svg)
+- [ ] `sitemap.xml`
+- [ ] `robots.txt`
+- [ ] `.htaccess` (Apache) OR `_headers` + `_redirects` (Netlify/Cloudflare)
+
+### Third-Party Setup
+- [ ] Google Search Console: domain verified, sitemap submitted
+- [ ] Bing Webmaster Tools: domain verified, sitemap submitted
+- [ ] Google Analytics 4: property created, data flowing
+- [ ] Google AdSense: account approved, ads.txt uploaded
+- [ ] Formspree: form created, email notifications configured
+
+---
+
+## ✅ Post-Deploy Verification
+
+### Core Pages
+- [ ] https://studymetrics.app/ loads (homepage)
+- [ ] https://studymetrics.app/gpa.html (GPA calculator works)
+- [ ] https://studymetrics.app/cgpa.html (CGPA calculator works)
+- [ ] https://studymetrics.app/gpa-converter.html (country selector works)
+- [ ] https://studymetrics.app/dashboard.html (student dashboard works)
+- [ ] https://studymetrics.app/ai.html (AI assistant works)
+- [ ] https://studymetrics.app/contact.html (form submits successfully)
+- [ ] https://studymetrics.app/404 (custom 404 page shows)
+
+### Technical
+- [ ] robots.txt accessible: https://studymetrics.app/robots.txt
+- [ ] Sitemap accessible: https://studymetrics.app/sitemap.xml
+- [ ] No mixed content warnings (HTTP resources on HTTPS page)
+- [ ] Console shows no JavaScript errors on any page
+- [ ] Cookie consent banner appears on first visit
+- [ ] Cookie consent banner does NOT appear on return visit (accepted)
+- [ ] Back-to-top button works on all long pages
+
+### Performance (run after deploy)
+- [ ] Google PageSpeed Insights: https://pagespeed.web.dev/
+  - Mobile score ≥ 85
+  - Desktop score ≥ 95
+- [ ] GTmetrix Grade A or B
+- [ ] Core Web Vitals: LCP < 2.5s, CLS < 0.1, FID < 100ms
+
+### SEO
+- [ ] Google Search Console: no coverage errors
+- [ ] Validate structured data: https://search.google.com/test/rich-results
+  - GPA calculator → WebApplication schema ✓
+  - Grading guides → Article schema ✓
+  - Breadcrumbs on all inner pages ✓
+- [ ] Open Graph preview: https://opengraph.xyz/
+- [ ] Twitter Card preview: https://cards-dev.twitter.com/validator
+
+### Security (run after deploy)
+- [ ] Security headers: https://securityheaders.com
+  - X-Frame-Options: SAMEORIGIN ✓
+  - X-Content-Type-Options: nosniff ✓
+  - CSP header present ✓
+- [ ] SSL rating A or A+: https://www.ssllabs.com/ssltest/
+
+---
+
+## 🔧 Netlify / Cloudflare Pages Deploy
+
+```bash
+# Netlify CLI
+npm install -g netlify-cli
+netlify login
+netlify deploy --dir=. --prod
+
+# Or drag-and-drop the folder at app.netlify.com
+```
+
+For Cloudflare Pages: Connect GitHub repo → set build output to `/` → deploy.
+
+---
+
+## 🔧 Traditional Apache Hosting Deploy
+
+```bash
+# From project root
+rsync -avz --delete \
+  --exclude='.git' \
+  --exclude='*.md' \
+  ./ user@yourserver.com:/var/www/html/studymetrics/
+```
+
+Verify `.htaccess` is uploaded and Apache `mod_rewrite` is enabled.
+

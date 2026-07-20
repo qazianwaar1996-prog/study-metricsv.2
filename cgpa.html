@@ -2,18 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="google-site-verification" content="YOUR_GSC_VERIFICATION_CODE">
+<meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE">
+<meta name="theme-color" content="#0a0a0a">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CGPA Calculator — Study Metrics</title>
 <meta name="description" content="Free cumulative GPA calculator. Combine your semester GPAs and credit hours to calculate your overall CGPA instantly. No signup required.">
 <link rel="canonical" href="https://studymetrics.app/cgpa.html">
+<link rel="preload" href="css/style.css" as="style">
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="apple-touch-icon" href="images/favicon.svg">
+<meta property="og:locale" content="en_US">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Study Metrics">
 <meta property="og:title" content="CGPA Calculator — Study Metrics">
 <meta property="og:description" content="Calculate your cumulative GPA across multiple semesters.">
 <meta property="og:url" content="https://studymetrics.app/cgpa.html">
 <meta property="og:image" content="https://studymetrics.app/images/og-image.svg">
+<meta name="twitter:site" content="@studymetrics">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://studymetrics.app/images/og-image.svg">
 <meta name="twitter:title" content="CGPA Calculator — Study Metrics">
@@ -34,6 +40,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is CGPA different from GPA?","acceptedAnswer":{"@type":"Answer","text":"GPA usually refers to your performance in a single term, while CGPA represents your average across your entire degree or multiple terms."}},{"@type":"Question","name":"What if I don't know my credits?","acceptedAnswer":{"@type":"Answer","text":"If all your semesters have the same weight, you can enter \"1\" for the credits in every row."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"CGPA Calculator","url":"https://studymetrics.app/cgpa.html","description":"Free cumulative GPA calculator. Combine your semester GPAs and credit hours to calculate your overall CGPA instantly. No signup required.","applicationCategory":"EducationalApplication","isAccessibleForFree":true,"operatingSystem":"All"}</script>
 <link rel="stylesheet" href="css/ai-assistant.css">
+<link rel="stylesheet" href="css/consent.css">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -158,8 +165,33 @@
   </div>
 </div>
 
+
+<section class="related" aria-labelledby="relHeading">
+  <div class="wrap">
+    <h2 id="relHeading" style="font-size:var(--step-md);margin-bottom:var(--s3)">Related Tools</h2>
+    <div class="rel-grid">
+      <a href="gpa.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></div>
+        <div><b>GPA Calculator</b><span>Single-term GPA calculator</span></div>
+      </a>
+      <a href="semester-gpa.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <div><b>Semester GPA</b><span>Term-by-term tracking</span></div>
+      </a>
+      <a href="target-gpa.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <div><b>Target GPA</b><span>GPA needed to hit your goal</span></div>
+      </a>
+      <a href="gpa-converter.html" class="rel-card">
+        <div class="rel-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div><b>GPA Converter</b><span>Convert across countries</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
 </main>
-<div id="backToTop">↑</div>
+<div id="backToTop" role="button" aria-label="Back to top" tabindex="0">↑</div>
 
 <footer class="foot">
   <div class="wrap">
@@ -218,16 +250,30 @@
   </div>
 </footer>
 
-<script src="js/script.js"></script>
-<script src="js/personalization.js"></script>
-<script src="js/cgpa.js"></script>
-<script src="js/grading-systems.js"></script>
-<script src="js/country-selector.js"></script>
-<script src="js/premium.js"></script>
-<script src="js/calculators.js"></script>
-<script src="js/content-platform.js"></script>
+<script defer src="js/script.js"></script>
+<script defer src="js/personalization.js"></script>
+<script defer src="js/cgpa.js"></script>
+<script defer src="js/grading-systems.js"></script>
+<script defer src="js/country-selector.js"></script>
+<script defer src="js/premium.js"></script>
+<script defer src="js/calculators.js"></script>
+<script defer src="js/content-platform.js"></script>
 
-<script src="js/ai-service.js"></script>
-<script src="js/ai-assistant.js"></script>
+
+<!-- Ad: Rectangle -->
+<div class="ad-slot rect" aria-label="Advertisement">
+  <div class="ad-label">Advertisement</div>
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
+    data-ad-slot="RECT_SLOT_ID"
+    data-ad-format="rectangle"
+    data-full-width-responsive="false"></ins>
+</div>
+<script defer src="js/ai-service.js"></script>
+<script defer src="js/ai-assistant.js"></script>
+
+<script defer src="js/analytics.js"></script>
+<script defer src="js/consent.js"></script>
 </body>
 </html>
