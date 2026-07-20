@@ -37,6 +37,9 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my writing private?","acceptedAnswer":{"@type":"Answer","text":"Yes. Your text never leaves your computer. We use local browser storage to save your draft, meaning only you can see what you write."}},{"@type":"Question","name":"Does it count symbols?","acceptedAnswer":{"@type":"Answer","text":"Characters include every letter, space, and symbol. The \"No spaces\" metric ignores whitespace to give you the raw content count."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Word Counter","url":"https://studymetrics.app/word-counter.html","description":"Free word and character counter for students. Live word count, characters, sentences, paragraphs and reading time. Auto-saves your draft in your browser.","applicationCategory":"EducationalApplication","isAccessibleForFree":true,"operatingSystem":"All"}</script>
 <link rel="stylesheet" href="css/consent.css">
+
+<link rel="stylesheet" href="css/studymetrics-v2.css">
+<script>(function(){try{var t=localStorage.getItem('sm_theme');if(!t){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -231,6 +234,7 @@
 </footer>
 
 <script defer src="js/script.js"></script>
+<script defer src="js/sm-shell.js"></script>
 <script defer src="js/personalization.js"></script>
 <script defer src="js/word-counter.js"></script>
 <script defer src="js/grading-systems.js"></script>
