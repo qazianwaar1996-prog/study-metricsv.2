@@ -440,3 +440,119 @@ body.sm2 .sm2-app *,body.sm2 .sm2-bottomnav *{-webkit-text-fill-color:currentCol
   .sm2-statcard.big .sm2-sc-val{font-size:38px}
   .sm2-hero-illu{display:none}
 }
+
+
+/* =========================================================================
+   GLOBAL DESIGN SYSTEM ROLLOUT  (applies the homepage look to every page)
+   Overrides the site's shared CSS variables → one unified gold premium theme.
+   ========================================================================= */
+
+/* ---- LIGHT tokens (override style.css :root) ---- */
+:root{
+  --bg:#f6f5f2;
+  --surface:#ffffff;
+  --surface-2:#faf9f5;
+  --border:rgba(23,20,16,.10);
+  --border-soft:rgba(23,20,16,.06);
+  --ink:#1a1815;
+  --ink-2:#5d5952;
+  --ink-3:#8f8a80;
+  --accent:#a97c14;
+  --accent-strong:#8a6410;
+  --accent-dim:rgba(197,150,44,.13);
+  --accent-fg:#1a1509;
+  --gold:#c39324;
+  --ok:#2f9e5b;      --ok-dim:rgba(47,158,91,.12);
+  --info:#2f6fe0;    --info-dim:rgba(47,111,224,.12);
+  --warn:#c98a12;    --warn-dim:rgba(201,138,18,.14);
+  --danger:#d1503c;  --danger-dim:rgba(209,80,60,.12);
+  --r-sm:10px; --r-md:16px; --r-lg:20px; --r-xl:26px;
+  --shadow:0 2px 8px rgba(30,25,15,.05),0 14px 34px rgba(30,25,15,.08);
+}
+/* ---- DARK tokens (override personalization.css) ---- */
+:root[data-theme="dark"]{
+  --bg:#08080a;
+  --surface:#141419;
+  --surface-2:#17171d;
+  --border:rgba(255,255,255,.08);
+  --border-soft:rgba(255,255,255,.05);
+  --ink:#f4f3ef;
+  --ink-2:#a5a29b;
+  --ink-3:#6c6a64;
+  --accent:#e6bd63;
+  --accent-strong:#f0cd7d;
+  --accent-dim:rgba(230,189,99,.14);
+  --accent-fg:#1a1509;
+  --gold:#e6bd63;
+  --ok:#4bc07f;      --ok-dim:rgba(75,192,127,.14);
+  --info:#5b95f5;    --info-dim:rgba(91,149,245,.14);
+  --warn:#e6bd63;    --warn-dim:rgba(230,189,99,.16);
+  --danger:#f0776a;  --danger-dim:rgba(240,119,106,.16);
+  --shadow:0 2px 10px rgba(0,0,0,.5),0 18px 44px rgba(0,0,0,.5);
+}
+
+/* ---- NEUTRALIZE the old "premium" purple skin → gold, theme-aware ---- */
+body.premium{
+  --p-bg:#f6f5f2; --p-surface:#ffffff; --p-surface-2:#faf9f5;
+  --p-border:rgba(23,20,16,.10); --p-border-2:rgba(23,20,16,.14);
+  --p-ink:#1a1815; --p-ink-2:#5d5952; --p-ink-3:#8f8a80;
+  --p-accent:#a97c14; --g1:#e6bd63; --g2:#c39324; --g3:#a97c14;
+  --accent:#a97c14; --accent-strong:#8a6410; --accent-dim:rgba(197,150,44,.13); --accent-fg:#1a1509;
+  --sh-glow:0 8px 30px rgba(30,25,15,.10);
+  background:#f6f5f2 !important; color:#1a1815 !important;
+}
+:root[data-theme="dark"] body.premium{
+  --p-bg:#08080a; --p-surface:#141419; --p-surface-2:#17171d;
+  --p-border:rgba(255,255,255,.08); --p-border-2:rgba(255,255,255,.12);
+  --p-ink:#f4f3ef; --p-ink-2:#a5a29b; --p-ink-3:#6c6a64;
+  --p-accent:#e6bd63; --g1:#f0cd7d; --g2:#e6bd63; --g3:#c39324;
+  --accent:#e6bd63; --accent-strong:#f0cd7d; --accent-dim:rgba(230,189,99,.14); --accent-fg:#1a1509;
+  --sh-glow:0 10px 40px rgba(0,0,0,.5);
+  background:#08080a !important; color:#f4f3ef !important;
+}
+/* stray hardcoded purples */
+body.premium .bd-qp,body.premium .calc-kicker{color:var(--accent-strong)!important}
+body.premium #gpaOut{background:linear-gradient(135deg,var(--gold),var(--accent-strong))!important;-webkit-background-clip:text;background-clip:text}
+
+/* =========================================================================
+   FIXED APP SHELL for injected pages (body.sm2-shell)
+   ========================================================================= */
+body.sm2-shell{padding-left:var(--side-w);padding-top:66px;background:var(--app-bg)}
+body.sm2-shell .site-head{display:none!important}
+body.sm2-shell .sm2-side{position:fixed;top:0;left:0;height:100vh;width:var(--side-w);z-index:40}
+body.sm2-shell .sm2-top{position:fixed;top:0;left:var(--side-w);right:0;z-index:35}
+body.sm2-shell > main,body.sm2-shell #main-content{min-height:calc(100vh - 66px)}
+/* let existing content breathe inside the shell */
+body.sm2-shell #main-content > section > .wrap,
+body.sm2-shell #main-content .wrap{max-width:1120px}
+body.sm2-shell footer .wrap{max-width:1120px}
+/* soften the old decorative grid background on tool heads */
+body.sm2-shell .grid-bg{opacity:.35}
+
+@media(max-width:980px){
+  body.sm2-shell{padding-left:0;padding-top:60px}
+  body.sm2-shell .sm2-top{left:0}
+}
+@media(max-width:640px){
+  body.sm2-shell{padding-bottom:78px}
+}
+
+/* =========================================================================
+   PREMIUM COMPONENT POLISH (buttons, inputs, cards) — reuses existing classes
+   ========================================================================= */
+.btn{border-radius:12px;font-weight:600;transition:transform .12s var(--ease),box-shadow .16s,background .16s,border-color .16s}
+.btn:active{transform:translateY(1px)}
+.btn-primary,.btn.btn-primary{background:linear-gradient(180deg,var(--gold),var(--accent-strong));color:#1a1509;border:1px solid transparent;box-shadow:0 4px 14px rgba(197,150,44,.28)}
+.btn-primary:hover,.btn.btn-primary:hover{filter:brightness(1.04)}
+.btn-ghost,.btn.btn-ghost{background:var(--surface);color:var(--ink);border:1px solid var(--border)}
+.btn-ghost:hover,.btn.btn-ghost:hover{background:var(--surface-2);border-color:var(--accent);color:var(--accent-strong)}
+input,select,textarea{border-radius:12px!important}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--accent)!important;box-shadow:0 0 0 4px var(--accent-dim)!important}
+/* footer refinement */
+body.sm2-shell footer{border-top:1px solid var(--border);background:var(--surface);margin-top:40px}
+
+/* kill purple/heavy glows from premium page-transition */
+body.premium{opacity:1!important}
+
+/* remove legacy premium purple animated background + noise (perf + purple removal) */
+.prem-bg,.noise-overlay{display:none!important}
