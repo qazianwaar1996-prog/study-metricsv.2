@@ -49,7 +49,6 @@
 <link rel="stylesheet" href="css/studymetrics-v2.css">
 <script>(function(){try{var t=localStorage.getItem('sm_theme');if(!t){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
-/* Sentence comparison table styles built directly with theme variables */
 .compare-table {
   width: 100%;
   border-collapse: collapse;
@@ -70,17 +69,6 @@
 }
 .compare-table tr:hover td {
   background: var(--card-2);
-}
-.diff-del {
-  background: var(--danger-dim);
-  text-decoration: line-through;
-  padding: 1px 4px;
-  border-radius: 4px;
-}
-.diff-add {
-  background: var(--ok-dim);
-  padding: 1px 4px;
-  border-radius: 4px;
 }
 </style>
 </head>
@@ -187,7 +175,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy
               </button>
               <button class="btn btn-ghost" id="downloadBtn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Save
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><path d="M21 15v4a2 2 0 0 1-2-2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Save
               </button>
             </div>
           </div>
@@ -265,206 +253,12 @@
 <script defer src="js/personalization.js"></script>
 <script defer src="js/premium.js"></script>
 <script defer src="js/ai-service.js"></script>
+<script defer src="js/paraphraser.js"></script>
 <script defer src="js/analytics.js"></script>
 <script defer src="js/consent.js"></script>
 
 <script>
 function sm2Theme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);try{localStorage.setItem('sm_theme',n);}catch(e){}if(window.SM&&SM.toast){SM.toast(n==='dark'?'🌙 Dark mode on':'☀️ Light mode on','info');}}
-
-document.addEventListener("DOMContentLoaded", function() {
-  const inputEl = document.getElementById("inputText");
-  const outputEl = document.getElementById("outputText");
-  const clearBtn = document.getElementById("clearBtn");
-  const rewriteBtn = document.getElementById("rewriteBtn");
-  const copyBtn = document.getElementById("copyBtn");
-  const downloadBtn = document.getElementById("downloadBtn");
-  const compareBtn = document.getElementById("compareBtn");
-  const closeCompareBtn = document.getElementById("closeCompareBtn");
-  const comparePanel = document.getElementById("comparePanel");
-  const compareTableBody = document.getElementById("compareTableBody");
-
-  const inputWords = document.getElementById("inputWords");
-  const inputChars = document.getElementById("inputChars");
-  const outputWords = document.getElementById("outputWords");
-  const outputChars = document.getElementById("outputChars");
-
-  let currentMode = "Academic";
-
-  // Mode Selection Tabs
-  document.querySelectorAll(".tabs button").forEach(btn => {
-    btn.addEventListener("click", function() {
-      document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("on"));
-      this.classList.add("on");
-      currentMode = this.getAttribute("data-mode");
-    });
-  });
-
-  // Counting logic
-  function updateCounts(el, wordDisplay, charDisplay) {
-    const text = el.value || "";
-    const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
-    wordDisplay.textContent = words;
-    charDisplay.textContent = text.length;
-  }
-
-  inputEl.addEventListener("input", () => updateCounts(inputEl, inputWords, inputChars));
-  outputEl.addEventListener("input", () => updateCounts(outputEl, outputWords, outputChars));
-
-  // Clear action
-  clearBtn.addEventListener("click", () => {
-    inputEl.value = "";
-    updateCounts(inputEl, inputWords, inputChars);
-    if(window.SM) SM.toast("Input cleared", "info");
-  });
-
-  // Copy action
-  copyBtn.addEventListener("click", () => {
-    if (!outputEl.value.trim()) {
-      if(window.SM) SM.toast("Nothing to copy", "error");
-      return;
-    }
-    navigator.clipboard.writeText(outputEl.value).then(() => {
-      if(window.SM) SM.toast("Copied to clipboard!", "success");
-    });
-  });
-
-  // Download Action
-  downloadBtn.addEventListener("click", () => {
-    if (!outputEl.value.trim()) {
-      if(window.SM) SM.toast("Nothing to download", "error");
-      return;
-    }
-    const blob = new Blob([outputEl.value], { type: "text/plain;charset=utf-8" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `paraphrased-${currentMode.toLowerCase()}.txt`;
-    link.click();
-    URL.revokeObjectURL(link.href);
-  });
-
-  // Sentence parser helper
-  function splitSentences(text) {
-    return text.match(/[^.!?]+[.!?]+(\s|$)/g) || [text];
-  }
-
-  // Compare Action Toggle
-  compareBtn.addEventListener("click", function() {
-    const status = this.getAttribute("data-status");
-    if (status === "off") {
-      if (!inputEl.value.trim() || !outputEl.value.trim()) {
-        if(window.SM) SM.toast("Please write and paraphrase some text first", "error");
-        return;
-      }
-      this.setAttribute("data-status", "on");
-      this.classList.add("on");
-      comparePanel.style.display = "block";
-      renderComparison();
-      comparePanel.scrollIntoView({ behavior: "smooth" });
-    } else {
-      this.setAttribute("data-status", "off");
-      this.classList.remove("on");
-      comparePanel.style.display = "none";
-    }
-  });
-
-  closeCompareBtn.addEventListener("click", () => {
-    compareBtn.setAttribute("data-status", "off");
-    compareBtn.classList.remove("on");
-    comparePanel.style.display = "none";
-  });
-
-  // Build the side-by-side comparison DOM
-  function renderComparison() {
-    compareTableBody.innerHTML = "";
-    const inSents = splitSentences(inputEl.value);
-    const outSents = splitSentences(outputEl.value);
-    const maxLen = Math.max(inSents.length, outSents.length);
-
-    for (let i = 0; i < maxLen; i++) {
-      const row = document.createElement("tr");
-      const tdIn = document.createElement("td");
-      const tdOut = document.createElement("td");
-
-      tdIn.textContent = inSents[i] || "";
-      tdOut.textContent = outSents[i] || "";
-
-      row.appendChild(tdIn);
-      row.appendChild(tdOut);
-      compareTableBody.appendChild(row);
-    }
-  }
-
-  // Rewrite Engine Trigger
-  rewriteBtn.addEventListener("click", async () => {
-    const text = inputEl.value.trim();
-    if (!text) {
-      if(window.SM) SM.toast("Please enter some text to paraphrase.", "error");
-      return;
-    }
-
-    const rewriteBtnIcon = document.getElementById("rewriteBtnIcon");
-    const rewriteBtnText = document.getElementById("rewriteBtnText");
-
-    // Loading State
-    rewriteBtn.disabled = true;
-    outputEl.value = "Paraphrasing with AI...";
-    rewriteBtnText.textContent = "Processing Rewrite...";
-    if (rewriteBtnIcon) rewriteBtnIcon.style.animation = "spin 1.2s linear infinite";
-
-    const prompt = `Paraphrase the following text in a clear, cohesive "${currentMode}" tone. 
-    Ensure it is highly original and grammatically correct. Keep any formatting and paragraphs intact, 
-    but strictly return ONLY the resulting text. Do not preface it with statements like 'Here is the rewrite:' or wrap it in code blocks:
-
-    ${text}`;
-
-    try {
-      let resultText = "";
-      if (window.AIService && typeof window.AIService.sendMessage === "function") {
-        resultText = await window.AIService.sendMessage(prompt);
-      } else if (window.AIService && typeof window.AIService.generateText === "function") {
-        resultText = await window.AIService.generateText(prompt);
-      } else {
-        // Mock fallback/Direct call if service isn't loaded properly
-        resultText = await fallbackDirectGeminiCall(prompt);
-      }
-
-      outputEl.value = resultText.trim();
-      updateCounts(outputEl, outputWords, outputChars);
-      if(window.SM) SM.toast("Paraphrase complete!", "success");
-
-      // Auto-update comparison if currently open
-      if (compareBtn.getAttribute("data-status") === "on") {
-        renderComparison();
-      }
-
-    } catch (err) {
-      console.error(err);
-      outputEl.value = "";
-      if(window.SM) SM.toast("Rewrite request failed. Try again.", "error");
-    } finally {
-      rewriteBtn.disabled = false;
-      rewriteBtnText.textContent = "Paraphrase Text";
-      if (rewriteBtnIcon) rewriteBtnIcon.style.animation = "none";
-    }
-  });
-
-  async function fallbackDirectGeminiCall(prompt) {
-    const key = localStorage.getItem("gemini_api_key") || "";
-    if(!key) {
-      throw new Error("No API key discovered.");
-    }
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }]
-      })
-    });
-    const json = await response.json();
-    return json.candidates[0].content.parts[0].text;
-  }
-});
 </script>
 </body>
-  </html>
+</html>
