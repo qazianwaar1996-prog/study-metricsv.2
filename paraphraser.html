@@ -70,6 +70,75 @@
 .compare-table tr:hover td {
   background: var(--card-2);
 }
+.diff-add {
+  background: var(--ok-soft, rgba(75, 192, 127, 0.15));
+  color: var(--ok, #4bc07f);
+  font-weight: 500;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+.diff-del {
+  background: var(--danger-dim, rgba(240, 119, 106, 0.16));
+  color: var(--danger, #f0776a);
+  text-decoration: line-through;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--s3) var(--s4);
+  background: var(--card-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  transition: all 0.2s var(--ease);
+}
+.history-item:hover {
+  border-color: var(--gold-line);
+  background: var(--surface);
+}
+.history-item-body {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+.history-item-title {
+  font-size: var(--step-sm);
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.history-item-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  font-size: var(--step-xs);
+  color: var(--ink-3);
+  margin-top: 4px;
+}
+.history-item-tag {
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--gold-soft);
+  color: var(--gold-strong);
+}
+.history-del-btn {
+  background: none;
+  border: none;
+  color: var(--ink-3);
+  cursor: pointer;
+  padding: var(--s2);
+  border-radius: var(--r-sm);
+  transition: color 0.15s, background 0.15s;
+}
+.history-del-btn:hover {
+  background: var(--danger-dim);
+  color: var(--danger);
+}
 </style>
 </head>
 <body class="sm2">
@@ -145,9 +214,12 @@
             <textarea class="editor" id="inputText" placeholder="Paste or type your draft here... (e.g., 'I think that this study is very important because it shows some interesting facts.')" style="min-height: 280px;"></textarea>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s4)">
-            <div class="editor-info">
-              <span class="chip">Words: <b id="inputWords">0</b></span>
-              <span class="chip">Chars: <b id="inputChars">0</b></span>
+            <div class="editor-info" style="display:flex; gap: var(--s2); flex-wrap: wrap;">
+              <span class="chip">Words: <b id="inputWords" class="tnum">0</b></span>
+              <span class="chip">Chars: <b id="inputChars" class="tnum">0</b></span>
+              <span class="chip">Sentences: <b id="inputSentences" class="tnum">0</b></span>
+              <span class="chip">Paragraphs: <b id="inputParagraphs" class="tnum">0</b></span>
+              <span class="chip">Read Time: <b id="inputReadTime" class="tnum">0s</b></span>
             </div>
           </div>
           <div class="field">
@@ -183,9 +255,12 @@
             <textarea class="editor" id="outputText" readonly placeholder="Your rewritten text will appear here..." style="min-height: 280px;"></textarea>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--s2)">
-            <div class="editor-info">
-              <span class="chip">Words: <b id="outputWords">0</b></span>
-              <span class="chip">Chars: <b id="outputChars">0</b></span>
+            <div class="editor-info" style="display:flex; gap: var(--s2); flex-wrap: wrap;">
+              <span class="chip">Words: <b id="outputWords" class="tnum">0</b></span>
+              <span class="chip">Chars: <b id="outputChars" class="tnum">0</b></span>
+              <span class="chip">Sentences: <b id="outputSentences" class="tnum">0</b></span>
+              <span class="chip">Paragraphs: <b id="outputParagraphs" class="tnum">0</b></span>
+              <span class="chip">Read Time: <b id="outputReadTime" class="tnum">0s</b></span>
             </div>
             <button class="btn btn-ghost" id="compareBtn" data-status="off">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><path d="M16 3h5v5M8 21H3v-5M12 12V3h9M12 12v9H3"/></svg>Compare Changes
@@ -212,6 +287,17 @@
               <!-- Content loaded via JS -->
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- Rewrite History Panel -->
+      <div class="panel" style="margin-top: var(--s5);" id="historyPanel">
+        <div class="panel-head">
+          <h2>Rewrite History</h2>
+          <button class="btn btn-ghost" id="clearHistoryBtn" style="font-size: var(--step-xs);">Clear History</button>
+        </div>
+        <div id="historyList" style="display: flex; flex-direction: column; gap: var(--s3); max-height: 320px; overflow-y: auto; padding-right: 6px;">
+          <!-- Dynamic history items loaded via JS -->
         </div>
       </div>
 
@@ -261,4 +347,4 @@
 function sm2Theme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);try{localStorage.setItem('sm_theme',n);}catch(e){}if(window.SM&&SM.toast){SM.toast(n==='dark'?'🌙 Dark mode on':'☀️ Light mode on','info');}}
 </script>
 </body>
-</html>
+  </html>
