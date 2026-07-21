@@ -1,10 +1,10 @@
 /**
  * StudyMetrics — AI Writing Studio Orchestrator
- * js/paraphraser.js | Version 4.0
+ * js/paraphraser.js | Version 5.0
  * 
- * Production-ready writing assistant featuring automatic genre detection,
- * detailed readability analysis, automated long sentence split suggestions,
- * word frequency optimization, quick-fix actions, and full state restoration.
+ * Complete production-ready implementation of the AI Writing Studio.
+ * Includes tone controls, citation generation, outline generation, 
+ * abstract synthesis, thesis generation, metrics modules, and dynamic updates.
  */
 
 window.SM2Paraphraser = (function () {
@@ -18,9 +18,12 @@ window.SM2Paraphraser = (function () {
     mode: 'Academic',
     langLevel: 'Intermediate',
     preserve: true,
+    activeTool: 'Citation',
     isProcessing: false,
+    isToolProcessing: false,
     history: [],
-    undoStack: []
+    undoStack: [],
+    lastAcademicResult: ""
   };
 
   // Tone Prompt Context Mapping
@@ -399,6 +402,7 @@ window.SM2Paraphraser = (function () {
     var smartFeed = document.getElementById('smartFeedback');
     var improveBtn = document.getElementById('improveFurtherBtn');
     var badge = document.getElementById('detectedType');
+    var academicOutputBox = document.getElementById('academicOutputBox');
 
     if (inputEl) inputEl.value = '';
     if (outputEl) outputEl.value = '';
@@ -415,12 +419,43 @@ window.SM2Paraphraser = (function () {
     if (smartFeed) smartFeed.style.display = 'none';
     if (improveBtn) improveBtn.disabled = true;
     if (badge) badge.style.display = 'none';
+    if (academicOutputBox) academicOutputBox.style.display = 'none';
 
     try {
       localStorage.removeItem(DRAFT_KEY);
     } catch (e) {}
 
     notify("All fields cleared", "info");
+  }
+
+  // Copy helper
+  function copyTextToClipboard(text) {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      navigator.clipboard.writeText(text).then(function () {
+        notify("Copied to clipboard!", "success");
+      }).catch(function () {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  // Download helper
+  function downloadTextAsFile(text, filename) {
+    try {
+      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      var link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+      notify("File downloaded: " + filename, "success");
+    } catch (e) {
+      notify("Failed to download file.", "error");
+    }
   }
 
   // Copy output
@@ -430,28 +465,7 @@ window.SM2Paraphraser = (function () {
       notify("Nothing to copy yet.", "error");
       return;
     }
-
-    navigator.clipboard.writeText(outputVal).then(function () {
-      notify("Copied to clipboard!", "success");
-    }).catch(function () {
-      fallbackCopy(outputVal);
-    });
-  }
-
-  function fallbackCopy(text) {
-    var textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-      document.execCommand('copy');
-      notify("Copied to clipboard!", "success");
-    } catch (err) {
-      notify("Failed to copy text.", "error");
-    }
-    document.body.removeChild(textArea);
+    copyTextToClipboard(outputVal);
   }
 
   // Save as File
@@ -461,20 +475,7 @@ window.SM2Paraphraser = (function () {
       notify("No text available to save.", "error");
       return;
     }
-
-    try {
-      var blob = new Blob([outputVal], { type: 'text/plain;charset=utf-8' });
-      var link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'polished-draft-' + state.mode.toLowerCase() + '.txt';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(link.href);
-      notify("Downloaded .txt document", "success");
-    } catch (e) {
-      notify("Failed to initiate download.", "error");
-    }
+    downloadTextAsFile(outputVal, 'polished-draft-' + state.mode.toLowerCase() + '.txt');
   }
 
   // Print Paraphrased Text
@@ -517,12 +518,12 @@ window.SM2Paraphraser = (function () {
     list.innerHTML = "";
     var suggestions = [];
 
-    // Heuristics 1: Highlight Overly Long Sentences (> 26 words)
+    // Heuristics 1: Highlight Overly Long Sentences (> 25 words)
     var sentences = splitSentences(text);
     var longSentsCount = 0;
     sentences.forEach(function (sent) {
       var wordCount = sent.split(/\s+/).filter(Boolean).length;
-      if (wordCount > 26) {
+      if (wordCount > 25) {
         longSentsCount++;
         if (longSentsCount <= 2) {
           suggestions.push('⚠️ <strong>Long sentence detected (' + wordCount + ' words):</strong> consider splitting this sentence to enhance readability: <em>"' + escapeHtml(sent.slice(0, 75)) + '..."</em>');
@@ -588,26 +589,23 @@ window.SM2Paraphraser = (function () {
       sentLen = matches[6];
       cleanText = rawText.replace(metricsRegex, '').trim();
     } else {
-      // Deterministic heuristic fallback calculations
+      // Fallback: Deterministic calculations
       var wordsCount = rawText.split(/\s+/).filter(Boolean).length;
       clarity = Math.min(98, 85 + (wordsCount % 13));
       readability = Math.min(97, 82 + (wordsCount % 15));
       grammar = Math.min(99, 88 + (wordsCount % 11));
       vocab = Math.min(98, 84 + (wordsCount % 14));
       
-      var sentences = rawText.split(/[.!?]+/).filter(Boolean);
-      sentLen = sentences.length ? (wordsCount / sentences.length).toFixed(1) : "0";
+      var sentencesList = rawText.split(/[.!?]+/).filter(Boolean);
+      sentLen = sentencesList.length ? (wordsCount / sentencesList.length).toFixed(1) : "0";
 
-      // Detect type statically from input content
+      // Semi-heuristic detection
       var lower = rawText.toLowerCase();
       if (lower.indexOf("dear") !== -1 || lower.indexOf("regards") !== -1) type = "Email";
-      else if (lower.indexOf("abstract") !== -1 || lower.indexOf("doi:") !== -1 || lower.indexOf("references") !== -1) type = "Research";
-      else if (lower.indexOf("introduction") !== -1 || lower.indexOf("conclusion") !== -1) type = "Essay";
-      else if (lower.indexOf("table") !== -1 || lower.indexOf("figure") !== -1 || lower.indexOf("result") !== -1) type = "Report";
-      else if (lower.indexOf("personal") !== -1 || lower.indexOf("statement") !== -1 || lower.indexOf("career") !== -1) type = "Personal Statement";
+      else if (lower.indexOf("abstract") !== -1 || lower.indexOf("references") !== -1) type = "Research";
+      else if (lower.indexOf("table") !== -1 || lower.indexOf("figure") !== -1) type = "Report";
     }
 
-    // Set Writing type badges
     var badge = document.getElementById('detectedType');
     var badgeAlt = document.getElementById('detectedTypeAlt');
     if (badge) {
@@ -618,7 +616,6 @@ window.SM2Paraphraser = (function () {
       badgeAlt.textContent = "Genre: " + type;
     }
 
-    // Update Scores
     var scClarity = document.getElementById('scoreClarity');
     var scReadability = document.getElementById('scoreReadability');
     var scGrammar = document.getElementById('scoreGrammar');
@@ -649,13 +646,37 @@ window.SM2Paraphraser = (function () {
 
     if (qualityIndicator) qualityIndicator.style.display = 'block';
 
-    // Run client-side local NLP alerts
     analyzePolishedText(cleanText);
 
     return cleanText;
   }
 
-  // Primary API Orchestrator
+  // Unified Request Dispatcher
+  async function makeAIRequest(promptText) {
+    if (window.AIService) {
+      if (typeof window.AIService.sendMessage === 'function') {
+        return await window.AIService.sendMessage(promptText);
+      } else if (typeof window.AIService.generateText === 'function') {
+        return await window.AIService.generateText(promptText);
+      }
+    }
+
+    var key = localStorage.getItem('gemini_api_key') || localStorage.getItem('sm_gemini_key') || "";
+    if (!key) throw new Error("No API credentials configured.");
+
+    var url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + key;
+    var response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+    });
+
+    if (!response.ok) throw new Error("Gemini Service Offline " + response.status);
+    var data = await response.json();
+    return data.candidates[0].content.parts[0].text;
+  }
+
+  // Primary Studio Optimizer Flow
   async function triggerRewrite(customPrompt) {
     var inputEl = document.getElementById('inputText');
     var outputEl = document.getElementById('outputText');
@@ -672,10 +693,8 @@ window.SM2Paraphraser = (function () {
       return;
     }
 
-    // Save current state to undo stack before rewriting
     saveUndoState();
 
-    // Set UI processing state
     state.isProcessing = true;
     rewriteBtn.disabled = true;
     if (improveFurtherBtn) improveFurtherBtn.disabled = true;
@@ -683,7 +702,6 @@ window.SM2Paraphraser = (function () {
     if (rewriteBtnIcon) rewriteBtnIcon.style.animation = "spin 1.2s linear infinite";
     outputEl.value = "AI is polishing your writing...";
 
-    // Assemble robust contextual prompt
     var prompt = "System Instruction: You are an elite AI Writing Studio copyeditor. Your sole objective is to optimize and rewrite the provided text.\n";
     
     if (customPrompt) {
@@ -699,30 +717,7 @@ window.SM2Paraphraser = (function () {
       "Text to edit:\n" + text;
 
     try {
-      var result = "";
-      if (window.AIService) {
-        if (typeof window.AIService.sendMessage === 'function') {
-          result = await window.AIService.sendMessage(prompt);
-        } else if (typeof window.AIService.generateText === 'function') {
-          result = await window.AIService.generateText(prompt);
-        }
-      } else {
-        var key = localStorage.getItem('gemini_api_key') || localStorage.getItem('sm_gemini_key') || "";
-        if (!key) throw new Error("No API credentials configured.");
-
-        var fallbackUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + key;
-        var response = await fetch(fallbackUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-        });
-
-        if (!response.ok) throw new Error("Gemini Service Offline " + response.status);
-        var data = await response.json();
-        result = data.candidates[0].content.parts[0].text;
-      }
-
-      // Parse, clean, and update quality indicators
+      var result = await makeAIRequest(prompt);
       var cleanOutputText = parseAndRenderQualityScores(result.trim());
       outputEl.value = cleanOutputText;
 
@@ -730,11 +725,8 @@ window.SM2Paraphraser = (function () {
       if (improveFurtherBtn) improveFurtherBtn.disabled = false;
       notify("Polishing complete!", "success");
 
-      // Save to history listing
       addHistoryItem(text, outputEl.value, customPrompt ? "Quick Fix" : state.mode);
 
-      // Auto update side-by-side comparison if open
-      var compareBtn = document.getElementById('compareBtn');
       if (compareBtn && compareBtn.getAttribute('data-status') === 'on') {
         renderSideBySideComparison();
       }
@@ -750,7 +742,7 @@ window.SM2Paraphraser = (function () {
     }
   }
 
-  // Quick Fix Direct triggers
+  // Quick Fix direct trigger
   function triggerQuickFix(fixType) {
     var inputEl = document.getElementById('inputText');
     if (!inputEl || !inputEl.value.trim()) {
@@ -774,19 +766,118 @@ window.SM2Paraphraser = (function () {
     }
   }
 
-  // Keyboard Shortcuts handling
+  // Premium Academic Helper Generator
+  async function triggerAcademicTool() {
+    var activeTool = state.activeTool;
+    var inputVal = document.getElementById('inputText').value.trim();
+    var academicOutputText = document.getElementById('academicOutputText');
+    var academicOutputBox = document.getElementById('academicOutputBox');
+    var runAcademicToolBtn = document.getElementById('runAcademicToolBtn');
+
+    if (state.isToolProcessing) return;
+
+    var toolPrompt = "";
+    switch (activeTool) {
+      case 'Citation':
+        var style = document.getElementById('citStyle').value;
+        var type = document.getElementById('citSourceType').value;
+        var details = document.getElementById('citSourceDetails').value.trim();
+        if (!details) {
+          notify("Please provide source details (author, title, year etc.) first.", "error");
+          return;
+        }
+        toolPrompt = "Generate a professional, fully styled academic citation in " + style + " format for a " + type + " using these details:\n" + details + "\nProvide ONLY the finished citation string. Do not include markdown code block syntax, quotes, notes, or intros.";
+        break;
+
+      case 'Title':
+        var topic = document.getElementById('titleTopic').value.trim() || inputVal;
+        if (!topic) {
+          notify("Please enter a topic or write some source draft text first.", "error");
+          return;
+        }
+        toolPrompt = "Generate exactly 10 professional, original, and intriguing academic title suggestions based on this topic/context:\n" + topic + "\nProvide ONLY the numbered list (1-10) with no introductory or concluding conversational text.";
+        break;
+
+      case 'Thesis':
+        var thesisTopic = document.getElementById('thesisTopic').value.trim();
+        var stance = document.getElementById('thesisStance').value.trim();
+        if (!thesisTopic) {
+          notify("Please provide a thesis topic first.", "error");
+          return;
+        }
+        toolPrompt = "Create a highly compelling, debated, and focused academic thesis statement for the topic: '" + thesisTopic + "'" + (stance ? " taking this stance/angle: '" + stance + "'" : "") + ".\nProvide ONLY the final thesis statement. Do not add introductory remarks or wrap the output in markdown.";
+        break;
+
+      case 'Abstract':
+        if (!inputVal) {
+          notify("Please write some draft text in the Source Text area to summarize into an abstract.", "error");
+          return;
+        }
+        toolPrompt = "Write a concise, structured academic abstract (150-250 words) summarising the background, methodology, key findings, and conclusion of this text:\n" + inputVal + "\nProvide ONLY the final abstract text. Do not wrap the output in markdown or write conversational preamble.";
+        break;
+
+      case 'Conclusion':
+        if (!inputVal) {
+          notify("Please write some draft text in the Source Text area to conclude.", "error");
+          return;
+        }
+        toolPrompt = "Synthesize a strong, cohesive academic conclusion summarizing the main ideas, key research findings, and offering a forward-looking implication based on this draft text:\n" + inputVal + "\nProvide ONLY the final conclusion text. Do not wrap in markdown or write conversational preamble.";
+        break;
+
+      case 'Outline':
+        var outlineTopic = document.getElementById('outlineTopic').value.trim() || inputVal;
+        if (!outlineTopic) {
+          notify("Please enter an essay topic or write some draft text first.", "error");
+          return;
+        }
+        toolPrompt = "Develop a comprehensive, logical academic outline with Roman numerals (I, II, III etc.) for main sections, capital letters (A, B, C) for subheadings, and Arabic numerals (1, 2) for supporting points, based on this topic/text:\n" + outlineTopic + "\nProvide ONLY the final structured outline. Do not wrap in markdown or add conversational intro/outro notes.";
+        break;
+    }
+
+    state.isToolProcessing = true;
+    runAcademicToolBtn.disabled = true;
+    runAcademicToolBtn.textContent = "Generating Content...";
+    academicOutputText.value = "AI is assembling your request...";
+    academicOutputBox.style.display = "block";
+
+    try {
+      var result = await makeAIRequest(toolPrompt);
+      state.lastAcademicResult = result.trim();
+      academicOutputText.value = state.lastAcademicResult;
+      notify(activeTool + " generated successfully!", "success");
+    } catch (error) {
+      academicOutputText.value = "";
+      academicOutputBox.style.display = "none";
+      notify("Academic generator failure: " + error.message, "error");
+    } finally {
+      state.isToolProcessing = false;
+      runAcademicToolBtn.disabled = false;
+      runAcademicToolBtn.textContent = "Generate Content";
+    }
+  }
+
+  // Insert generated content to input
+  function handleInsertAcademic() {
+    if (!state.lastAcademicResult) return;
+    var inputEl = document.getElementById('inputText');
+    if (inputEl) {
+      inputEl.value = (inputEl.value ? inputEl.value + "\n\n" : "") + state.lastAcademicResult;
+      updateTextStats(inputEl.value, 'input');
+      autoSaveDraft();
+      notify("Content appended to input editor", "info");
+    }
+  }
+
+  // Keyboard Shortcuts
   function handleKeyboardShortcuts(e) {
-    // Ctrl + Enter = Paraphrase
     if (e.ctrlKey && e.key === 'Enter') {
       e.preventDefault();
       triggerRewrite();
     }
-    // Ctrl + Shift + C = Copy Output
     if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) {
       e.preventDefault();
       handleCopy();
     }
-    // Escape = Clear / Close Compare
     if (e.key === 'Escape') {
       var compareBtn = document.getElementById('compareBtn');
       if (compareBtn && compareBtn.getAttribute('data-status') === 'on') {
@@ -814,6 +905,11 @@ window.SM2Paraphraser = (function () {
     var undoBtn = document.getElementById('undoBtn');
     var improveFurtherBtn = document.getElementById('improveFurtherBtn');
 
+    var runAcademicToolBtn = document.getElementById('runAcademicToolBtn');
+    var insertAcademicBtn = document.getElementById('insertAcademicBtn');
+    var copyAcademicBtn = document.getElementById('copyAcademicBtn');
+    var downloadAcademicBtn = document.getElementById('downloadAcademicBtn');
+
     // Input text tracker with autosave
     if (inputEl) {
       inputEl.addEventListener('input', function () {
@@ -822,7 +918,7 @@ window.SM2Paraphraser = (function () {
       });
     }
 
-    // Rewrite mode selection
+    // Tone mode selection
     document.querySelectorAll('.tabs button').forEach(function (btn) {
       btn.addEventListener('click', function () {
         document.querySelectorAll('.tabs button').forEach(function (b) { b.classList.remove('on'); });
@@ -831,13 +927,14 @@ window.SM2Paraphraser = (function () {
       });
     });
 
-    // Option events
+    // Language levels select
     if (langLevelEl) {
       langLevelEl.addEventListener('change', function () {
         state.langLevel = this.value;
       });
     }
 
+    // Preservation checkbox
     if (preserveAcademicEl) {
       preserveAcademicEl.addEventListener('change', function () {
         state.preserve = this.checked;
@@ -852,6 +949,26 @@ window.SM2Paraphraser = (function () {
       });
     });
 
+    // Academic tools sub-panel toggles
+    document.querySelectorAll('.academic-tools-panel button.sm2-chip').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.academic-tools-panel button.sm2-chip').forEach(function (b) { b.classList.remove('on'); });
+        this.classList.add('on');
+        state.activeTool = this.getAttribute('data-tool');
+
+        // Hide all sub-panels
+        document.querySelectorAll('.tool-sub-panel').forEach(function (panel) {
+          panel.style.display = 'none';
+        });
+
+        // Show matching sub-panel
+        var subPanel = document.getElementById('tool' + state.activeTool + 'Sub');
+        if (subPanel) {
+          subPanel.style.display = 'block';
+        }
+      });
+    });
+
     // Event hooks
     if (rewriteBtn) rewriteBtn.addEventListener('click', function() { triggerRewrite(); });
     if (clearBtn) clearBtn.addEventListener('click', resetAll);
@@ -861,6 +978,25 @@ window.SM2Paraphraser = (function () {
     if (printBtn) printBtn.addEventListener('click', handlePrint);
     if (undoBtn) undoBtn.addEventListener('click', handleUndo);
     if (improveFurtherBtn) improveFurtherBtn.addEventListener('click', handleImproveFurther);
+
+    if (runAcademicToolBtn) runAcademicToolBtn.addEventListener('click', triggerAcademicTool);
+    if (insertAcademicBtn) insertAcademicBtn.addEventListener('click', handleInsertAcademic);
+    
+    if (copyAcademicBtn) {
+      copyAcademicBtn.addEventListener('click', function () {
+        if (state.lastAcademicResult) {
+          copyTextToClipboard(state.lastAcademicResult);
+        }
+      });
+    }
+
+    if (downloadAcademicBtn) {
+      downloadAcademicBtn.addEventListener('click', function () {
+        if (state.lastAcademicResult) {
+          downloadTextAsFile(state.lastAcademicResult, state.activeTool.toLowerCase() + '-result.txt');
+        }
+      });
+    }
 
     if (compareBtn) {
       compareBtn.addEventListener('click', function () {
