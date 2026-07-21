@@ -556,3 +556,47 @@ body.premium{opacity:1!important}
 
 /* remove legacy premium purple animated background + noise (perf + purple removal) */
 .prem-bg,.noise-overlay{display:none!important}
+
+/* ====================================================
+   StudyMetrics PWA — Install Button & Offline Banner
+   v2.1
+   ==================================================== */
+
+/* Desktop install button in topbar */
+.sm2-top-tools .sm-install-btn {
+  color: var(--gold, #e6bd63);
+  position: relative;
+}
+.sm2-top-tools .sm-install-btn:hover {
+  background: var(--surface-2, rgba(255,255,255,.06));
+}
+
+/* Mobile bottom-nav install button */
+.sm2-bottomnav .sm-install-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 4px 4px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  opacity: .8;
+  min-width: 48px;
+}
+.sm2-bottomnav .sm-install-btn:hover { opacity: 1; }
+.sm2-bottomnav .sm-install-btn svg { width: 22px; height: 22px; }
+
+/* Offline banner (injected by pwa.js) */
+#sm-offline-banner {
+  font-weight: 500;
+}
+
+/* Pomodoro notification button active state */
+#pomNotifBtn.notif-on {
+  color: var(--ok, #22c55e) !important;
+  cursor: default;
+}
