@@ -10,7 +10,9 @@
 <title>Study Metrics — Free Tools & Calculators for Students</title>
 <meta name="description" content="25+ free student academic tools: GPA calculator, CGPA, grade predictor, Pomodoro timer, attendance tracker, study planner, and more. No signup required.">
 <link rel="canonical" href="https://studymetrics.app/">
+<!-- Critical Path Preloads -->
 <link rel="preload" href="css/style.css" as="style">
+<link rel="preload" href="css/studymetrics-v2.css" as="style">
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="apple-touch-icon" href="images/favicon.svg">
 <meta property="og:locale" content="en_US">
@@ -37,8 +39,8 @@
 <link rel="stylesheet" href="css/premium.css">
 <link rel="stylesheet" href="css/personalization.css">
 <link rel="stylesheet" href="css/content-platform.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Study Metrics","url":"https://studymetrics.app/","logo":"https://studymetrics.app/images/favicon.svg","sameAs":[]}</script>
-<link rel="stylesheet" href="css/consent.css">
+<!-- Non-Critical Consent Banner CSS Loaded Asynchronously -->
+<link rel="stylesheet" href="css/consent.css" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="css/studymetrics-v2.css">
 <script>(function(){try{var t=localStorage.getItem('sm_theme');if(!t){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
@@ -79,7 +81,7 @@
       <img src="images/avatar.svg" alt="Profile">
       <span class="nm">Profile</span>
       <button class="sm2-icon-btn sm-theme-toggle" onclick="sm2Theme()" aria-label="Toggle theme" title="Toggle theme"><svg class="sm-theme-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg></button>
-      <a href="dashboard.html" class="sm2-icon-btn" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.7l-.1-.1A2 2 0 1 1 6.9 3.6l.1.1a1.6 1.6 0 0 0 2.7-1.1V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8Z"/></svg></a>
+      <a href="dashboard.html" class="sm2-icon-btn" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.7l-.1-.1A2 2 0 1 1 6.9 3.6l.1.1a1.6 1.6 0 0 0 2.7-1.1V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-.3 1.8Z"/></svg></a>
     </div>
   </aside>
 
@@ -128,7 +130,8 @@
         </div>
         <div class="sm2-hero-r">
           <div class="sm2-statcards">
-            <img class="sm2-hero-illu" src="images/hero-illustration.png" alt="" aria-hidden="true">
+            <!-- Optimized Critical Hero Image Load -->
+            <img class="sm2-hero-illu" src="images/hero-illustration.png" alt="" aria-hidden="true" fetchpriority="high">
             <div class="sm2-statcard big">
               <div class="sm2-sc-top"><span>GPA</span> <svg viewBox="0 0 130 44" fill="none" aria-hidden="true" style="width:120px;height:38px"><polyline points="2,38 18,30 32,34 48,22 64,26 80,14 96,18 112,6 128,10" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none" style="stroke:var(--spark-gold)"/><circle cx="128" cy="10" r="2.6" fill="var(--gold)"/></svg></div>
               <div class="sm2-sc-val">3.75</div>
@@ -183,7 +186,7 @@
       <div class="sm2-stats sm2-rev d2">
         <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19h16M7 16V9M12 16V5M17 16v-4"/></svg> 1M+</div><div class="l">Calculations Performed</div></div>
         <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16 5.2a3.2 3.2 0 0 1 0 6M17.5 19a5.5 5.5 0 0 0-2-4.3"/></svg> 200K+</div><div class="l">Students Helped</div></div>
-        <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>2 50+</div><div class="l">Academic Tools</div></div>
+        <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg> 50+</div><div class="l">Academic Tools</div></div>
         <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 0 1 4.6 1.2c0 1.7-2.6 2-2.6 3.3"/><path d="M12 17h.01"/></svg> 100%</div><div class="l">Free Forever</div></div>
         <div class="sm2-stat"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg> Global</div><div class="l">Trusted by students worldwide</div></div>
       </div>
@@ -261,11 +264,9 @@ document.body.classList.remove('premium');
 try{new MutationObserver(function(){if(document.body.classList.contains('premium'))document.body.classList.remove('premium');}).observe(document.body,{attributes:true,attributeFilter:['class']});}catch(e){}
 </script>
 <script defer src="js/script.js"></script>
-<script defer src="js/grading-systems.js"></script>
-<script defer src="js/country-selector.js"></script>
+<!-- Optimized Script Loads (Removed Redundant country data & content platform scripts on the homepage) -->
 <script defer src="js/personalization.js"></script>
 <script defer src="js/premium.js"></script>
-<script defer src="js/content-platform.js"></script>
 <script defer src="js/sm-shell.js"></script>
 <script defer src="js/sm-v2-features.js"></script>
 <script defer src="js/analytics.js"></script>
@@ -273,4 +274,4 @@ try{new MutationObserver(function(){if(document.body.classList.contains('premium
 <script defer src="js/email-capture.js"></script>
 <script src="js/pwa.js" defer></script>
 </body>
-</html>
+                                                                                                                                                                                                                                                                                                                     </html> 
