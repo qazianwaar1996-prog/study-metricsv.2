@@ -7,33 +7,33 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0a0a0a">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Paraphraser — StudyMetrics</title>
-<meta name="description" content="Rewrite your essays, research papers, and assignments in clearer, more professional academic language with our free online paraphraser.">
+<title>AI Writing Studio — StudyMetrics</title>
+<meta name="description" content="Rewrite your essays, research papers, and assignments in clearer, more professional academic or persuasive language with our premium AI writing studio.">
 <link rel="canonical" href="https://studymetrics.app/paraphraser.html">
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="apple-touch-icon" href="images/favicon.svg">
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Study Metrics">
-<meta property="og:title" content="AI Paraphraser — StudyMetrics">
-<meta property="og:description" content="Rewrite your writing in clearer, more original academic language. No sign-up required.">
+<meta property="og:title" content="AI Writing Studio — StudyMetrics">
+<meta property="og:description" content="Premium rewriting and optimization tool. Preserve citations, control tones, and analyze originality.">
 <meta property="og:url" content="https://studymetrics.app/paraphraser.html">
 <meta property="og:image" content="https://studymetrics.app/images/og-image.svg">
 <meta name="twitter:site" content="@studymetrics">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://studymetrics.app/images/og-image.svg">
-<meta name="twitter:title" content="AI Paraphraser — StudyMetrics">
-<meta name="twitter:description" content="Rewrite your writing in clearer, more original academic language. No sign-up required.">
+<meta name="twitter:title" content="AI Writing Studio — StudyMetrics">
+<meta name="twitter:description" content="Premium rewriting and optimization tool. Preserve citations, control tones, and analyze originality.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "StudyMetrics AI Paraphraser",
+  "name": "StudyMetrics AI Writing Studio",
   "url": "https://studymetrics.app/paraphraser.html",
   "applicationCategory": "EducationalApplication",
   "isAccessibleForFree": true,
   "operatingSystem": "All",
-  "description": "Rewrite your writing in clearer, more original academic language with our free, smart AI paraphraser."
+  "description": "Rewrite and polish your drafts with tone controls, language levels, citation preservation, and quality assessments."
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -196,8 +196,8 @@
     <main id="main-content" class="sm2-content">
       <!-- Hero -->
       <div class="sm2-page-head">
-        <h1>AI Paraphraser</h1>
-        <p>Rewrite your writing in clearer, more original academic language.</p>
+        <h1>AI Writing Studio</h1>
+        <p>Rewrite, simplify, and optimize your writing with advanced tone, preservation, and readability metrics.</p>
       </div>
 
       <!-- Main Interface -->
@@ -211,7 +211,7 @@
             </button>
           </div>
           <div class="field" style="margin-bottom: var(--s4)">
-            <textarea class="editor" id="inputText" placeholder="Paste or type your draft here... (e.g., 'I think that this study is very important because it shows some interesting facts.')" style="min-height: 280px;"></textarea>
+            <textarea class="editor" id="inputText" placeholder="Paste or type your draft here... (e.g., 'In this study, we are researching how climate change has affected the migration of birds. As shown by Smith (2023), the impact is very high.')" style="min-height: 280px;"></textarea>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s4)">
             <div class="editor-info" style="display:flex; gap: var(--s2); flex-wrap: wrap;">
@@ -222,27 +222,52 @@
               <span class="chip">Read Time: <b id="inputReadTime" class="tnum">0s</b></span>
             </div>
           </div>
-          <div class="field">
-            <label style="margin-bottom: var(--s2)">Select Rewrite Style</label>
+          
+          <!-- Advanced Studio Controls Line 1: Tone Selector -->
+          <div class="field" style="margin-bottom: var(--s4)">
+            <label style="margin-bottom: var(--s2)">Tone Selector</label>
             <div class="tabs" role="tablist">
               <button class="on" data-mode="Academic">Academic</button>
-              <button data-mode="Formal">Formal</button>
-              <button data-mode="Simple">Simple</button>
-              <button data-mode="Concise">Concise</button>
-              <button data-mode="Expand">Expand</button>
+              <button data-mode="Professional">Professional</button>
+              <button data-mode="Friendly">Friendly</button>
+              <button data-mode="Persuasive">Persuasive</button>
+              <button data-mode="Neutral">Neutral</button>
             </div>
           </div>
-          <button class="sm2-btn sm2-btn-primary btn-lg" id="rewriteBtn" style="width: 100%; justify-content: center; margin-top: var(--s4)">
+
+          <!-- Advanced Studio Controls Line 2: Level & Preservation -->
+          <div style="display: flex; gap: var(--s4); margin-bottom: var(--s4); flex-wrap: wrap; align-items: center;">
+            <div class="field" style="flex: 1; min-width: 140px;">
+              <label for="langLevel" style="margin-bottom: var(--s1)">Language Level</label>
+              <select class="select" id="langLevel" style="padding: 8px 12px; height: 38px; border-radius: var(--r-sm) !important;">
+                <option value="Basic">Basic</option>
+                <option value="Intermediate" selected>Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 18px;">
+              <input type="checkbox" id="preserveAcademic" checked style="width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer;">
+              <label for="preserveAcademic" style="font-size: var(--step-sm); font-weight: 500; color: var(--ink-2); cursor: pointer;">Preserve citations & math</label>
+            </div>
+          </div>
+
+          <button class="sm2-btn sm2-btn-primary btn-lg" id="rewriteBtn" style="width: 100%; justify-content: center;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" id="rewriteBtnIcon" style="margin-right:6px"><path d="m12 3-1.6 5.4L5 10l5.4 1.6L12 17l1.6-5.4L19 10l-5.4-1.6L12 3Z"/></svg>
-            <span id="rewriteBtnText">Paraphrase Text</span>
+            <span id="rewriteBtnText">Optimize Writing</span>
           </button>
         </div>
 
         <!-- Right Panel: Output -->
         <div class="panel">
           <div class="panel-head">
-            <h2>Paraphrased Text</h2>
+            <h2>Polished Text</h2>
             <div class="mini-actions" style="display: flex; gap: var(--s2)">
+              <button class="btn btn-ghost" id="undoBtn" disabled title="Undo Last Rewrite">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><path d="M3 7v6h6M21 17a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 13m18-1a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 11" stroke-linecap="round" stroke-linejoin="round"/></svg>Undo
+              </button>
+              <button class="btn btn-ghost" id="printBtn" title="Print-Friendly View">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z" stroke-linecap="round" stroke-linejoin="round"/></svg>Print
+              </button>
               <button class="btn btn-ghost" id="copyBtn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy
               </button>
@@ -252,7 +277,7 @@
             </div>
           </div>
           <div class="field" style="margin-bottom: var(--s4)">
-            <textarea class="editor" id="outputText" readonly placeholder="Your rewritten text will appear here..." style="min-height: 280px;"></textarea>
+            <textarea class="editor" id="outputText" readonly placeholder="Your polished text will appear here..." style="min-height: 280px;"></textarea>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--s2)">
             <div class="editor-info" style="display:flex; gap: var(--s2); flex-wrap: wrap;">
@@ -266,6 +291,22 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><path d="M16 3h5v5M8 21H3v-5M12 12V3h9M12 12v9H3"/></svg>Compare Changes
             </button>
           </div>
+
+          <!-- Quality Metric Indicator Module -->
+          <div id="qualityIndicator" style="display: none; margin-top: var(--s4); padding: var(--s3); background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-md); animation: aiPanelIn .22s var(--ease);">
+            <div style="font-size: var(--step-xs); font-weight: 600; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; letter-spacing: 0.05em;">Rewrite Quality Scores</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--s3); text-align: center;">
+              <div><div style="font-weight:700; font-size: 1.1rem; color: var(--ok);" id="scoreClarity">--</div><div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Clarity</div></div>
+              <div><div style="font-weight:700; font-size: 1.1rem; color: var(--info);" id="scoreReadability">--</div><div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Readability</div></div>
+              <div><div style="font-weight:700; font-size: 1.1rem; color: var(--gold-strong);" id="scoreOriginality">--</div><div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Originality</div></div>
+            </div>
+          </div>
+
+          <!-- Improve Further follow-up button -->
+          <button class="sm2-btn sm2-btn-ghost btn-lg" id="improveFurtherBtn" disabled style="width: 100%; justify-content: center; margin-top: var(--s4)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.2 8H16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Improve Output Further
+          </button>
         </div>
       </div>
 
@@ -293,7 +334,7 @@
       <!-- Rewrite History Panel -->
       <div class="panel" style="margin-top: var(--s5);" id="historyPanel">
         <div class="panel-head">
-          <h2>Rewrite History</h2>
+          <h2>Studio History</h2>
           <button class="btn btn-ghost" id="clearHistoryBtn" style="font-size: var(--step-xs);">Clear History</button>
         </div>
         <div id="historyList" style="display: flex; flex-direction: column; gap: var(--s3); max-height: 320px; overflow-y: auto; padding-right: 6px;">
@@ -344,7 +385,7 @@
 <script defer src="js/consent.js"></script>
 
 <script>
-function sm2Theme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);try{localStorage.setItem('sm_theme',n);}catch(e){}if(window.SM&&SM.toast){SM.toast(n==='dark'?'🌙 Dark mode on':'☀️ Light mode on','info');}}
+function sm2Theme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);try{localStorage.setItem('sm_theme',n);}catch(e){}if(window.SM&&SM.toast){SM.toast(n==='dark'?'🌙 Dark mode on':'☀️ Light mode on','info');} }
 </script>
 </body>
-  </html>
+      </html>
