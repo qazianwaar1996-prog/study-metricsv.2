@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0a0a0a">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flashcards — StudyMetrics</title>
@@ -543,5 +544,7 @@ window.SM2FC = (function(){
   return{startStudy:startStudy,editDeck:editDeck,deleteDeck:deleteDeck,flip:flip,rate:rate,next:next,prev:prev,restartStudy:restartStudy,studyWrong:studyWrong,backToDecks:backToDecks,cancelEdit:cancelEdit,_updateRow:window.SM2FC&&window.SM2FC._updateRow,_delRow:window.SM2FC&&window.SM2FC._delRow};
 })();
 </script>
+<script defer src="js/email-capture.js"></script>
+<script src="js/pwa.js" defer></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0a0a0a">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Notes — StudyMetrics</title>
@@ -376,7 +377,8 @@ window.SM2Notes = (function(){
     var body = document.getElementById('noteBody');
     if(!n||!body) return;
     var w = window.open('','_blank','width=700,height=600');
-    w.document.write('<html><head><title>'+((n.title||'Note')).replace(/</g,'&lt;')+'</title></head><body style="font-family:Georgia,serif;max-width:700px;margin:40px auto;line-height:1.7;color:#111"><h1 style="font-size:22px;border-bottom:1px solid #ddd;padding-bottom:10px">'+((n.title||'Untitled')).replace(/</g,'&lt;')+'</h1>'+body.innerHTML+'</body></html>');
+    w.document.write('<html><head><title>'+((n.title||'Note')).replace(/</g,'&lt;')+'</title></head><body style="font-family:Georgia,serif;max-width:700px;margin:40px auto;line-height:1.7;color:#111"><h1 style="font-size:22px;border-bottom:1px solid #ddd;padding-bottom:10px">'+((n.title||'Untitled')).replace(/</g,'&lt;')+'</h1>'+body.innerHTML+'<script src="js/pwa.js" defer></script>
+</body></html>');
     w.document.close(); w.print();
   }
 
@@ -432,5 +434,7 @@ window.NotesFmt = {
   redo: function(){ document.execCommand('redo'); document.getElementById('noteBody').focus(); },
 };
 </script>
+<script defer src="js/email-capture.js"></script>
+<script src="js/pwa.js" defer></script>
 </body>
 </html>
