@@ -8,6 +8,9 @@
 <title>Student Dashboard — Study Metrics</title>
 <meta name="description" content="Your personal Study Metrics dashboard. View your GPA history, CGPA, recent calculations, favorite tools, and quickly access all calculators in one place.">
 <link rel="canonical" href="https://studymetrics.app/dashboard.html">
+<!-- Critical Path Preloads -->
+<link rel="preload" href="css/style.css" as="style">
+<link rel="preload" href="css/studymetrics-v2.css" as="style">
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="apple-touch-icon" href="images/favicon.svg">
 <meta property="og:locale" content="en_US">
@@ -28,7 +31,8 @@
 <link rel="stylesheet" href="css/personalization.css">
 <link rel="stylesheet" href="css/dashboard.css">
 <link rel="stylesheet" href="css/content-platform.css">
-<link rel="stylesheet" href="css/consent.css">
+<!-- Non-Critical Consent Banner CSS Loaded Asynchronously -->
+<link rel="stylesheet" href="css/consent.css" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="css/studymetrics-v2.css">
 <script>(function(){try{var t=localStorage.getItem('sm_theme');if(!t){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
@@ -67,7 +71,7 @@
       <img src="images/avatar.svg" alt="Profile">
       <span class="nm">Profile</span>
       <button class="sm2-icon-btn sm-theme-toggle" onclick="sm2Theme()" aria-label="Toggle theme" title="Toggle theme"><svg class="sm-theme-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg></button>
-      <a href="dashboard.html" class="sm2-icon-btn" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.7l-.1-.1A2 2 0 1 1 6.9 3.6l.1.1a1.6 1.6 0 0 0 2.7-1.1V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8Z"/></svg></a>
+      <a href="dashboard.html" class="sm2-icon-btn" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.7l-.1-.1A2 2 0 1 1 6.9 3.6l.1.1a1.6 1.6 0 0 0 2.7-1.1V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-.3 1.8Z"/></svg></a>
     </div>
   </aside>
   <div class="sm2-main">
@@ -270,7 +274,7 @@ document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){
 <script defer src="js/dashboard.js"></script>
 <script defer src="js/personalization.js"></script>
 <script defer src="js/premium.js"></script>
-<script defer src="js/content-platform.js"></script>
+<!-- Optimized Script Loads (Removed Redundant content-platform.js) -->
 <script defer src="js/sm-shell.js"></script>
 <script defer src="js/sm-v2-features.js"></script>
 <script defer src="js/analytics.js"></script>
@@ -278,4 +282,4 @@ document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){
 <script defer src="js/email-capture.js"></script>
 <script src="js/pwa.js" defer></script>
 </body>
-    </html>
+                                     </html>
