@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0a0a0a">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Writing Studio — StudyMetrics</title>
-<meta name="description" content="Rewrite your essays, research papers, and assignments in clearer, more professional academic or persuasive language with our premium AI writing studio.">
+<meta name="description" content="Rewrite, simplify, and optimize your essays, research papers, or reports with our premium AI Writing Studio featuring auto-detection, quality scores, and custom writing levels.">
 <link rel="canonical" href="https://studymetrics.app/paraphraser.html">
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 <link rel="apple-touch-icon" href="images/favicon.svg">
@@ -139,6 +139,21 @@
   background: var(--danger-dim);
   color: var(--danger);
 }
+.quick-fixes-panel button.sm2-chip {
+  background: var(--card-2);
+  border: 1px solid var(--border);
+  color: var(--ink-2);
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+.quick-fixes-panel button.sm2-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+  background: var(--accent-dim);
+}
 </style>
 </head>
 <body class="sm2">
@@ -188,6 +203,7 @@
         <a href="academic-resources.html">Resources</a>
       </nav>
       <div class="sm2-top-tools">
+        <button class="sm2-icon-btn" style="position:relative" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8.5a6 6 0 1 0-12 0c0 6-2.5 7.5-2.5 7.5h17S18 14.5 18 8.5Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span class="sm2-dot"></span></button>
         <button class="sm2-icon-btn sm-theme-toggle" onclick="sm2Theme()" aria-label="Toggle theme"><svg class="sm-theme-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg></button>
         <img class="sm2-avatar" src="images/avatar.svg" alt="Profile">
       </div>
@@ -197,7 +213,7 @@
       <!-- Hero -->
       <div class="sm2-page-head">
         <h1>AI Writing Studio</h1>
-        <p>Rewrite, simplify, and optimize your writing with advanced tone, preservation, and readability metrics.</p>
+        <p>Rewrite, simplify, and optimize your writing with advanced tone, preservation, and intelligent metrics.</p>
       </div>
 
       <!-- Main Interface -->
@@ -255,12 +271,25 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" id="rewriteBtnIcon" style="margin-right:6px"><path d="m12 3-1.6 5.4L5 10l5.4 1.6L12 17l1.6-5.4L19 10l-5.4-1.6L12 3Z"/></svg>
             <span id="rewriteBtnText">Optimize Writing</span>
           </button>
+
+          <!-- Quick Fix Dashboard Module -->
+          <div class="quick-fixes-panel" style="margin-top: var(--s5); border-top: 1px solid var(--border-soft); padding-top: var(--s4);">
+            <label style="display: block; font-size: var(--step-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-3); margin-bottom: 10px;">Quick Fixes</label>
+            <div class="sm2-chips" style="gap: 6px; display: flex; flex-wrap: wrap;">
+              <button class="sm2-chip" data-fix="Fix Grammar">✨ Fix Grammar</button>
+              <button class="sm2-chip" data-fix="Improve Clarity">💡 Improve Clarity</button>
+              <button class="sm2-chip" data-fix="Make Academic">🎓 Make Academic</button>
+              <button class="sm2-chip" data-fix="Shorten">✂️ Shorten</button>
+              <button class="sm2-chip" data-fix="Expand">📝 Expand</button>
+              <button class="sm2-chip" data-fix="Simplify">🍃 Simplify</button>
+            </div>
+          </div>
         </div>
 
         <!-- Right Panel: Output -->
         <div class="panel">
           <div class="panel-head">
-            <h2>Polished Text</h2>
+            <h2 style="display: flex; align-items: center; gap: 8px;">Polished Text <span id="detectedType" class="sm2-badge" style="display:none; font-size: 11px; background: var(--info-soft); color: var(--info); border: 1px solid oklch(.55 .13 240 / .2);">Detecting...</span></h2>
             <div class="mini-actions" style="display: flex; gap: var(--s2)">
               <button class="btn btn-ghost" id="undoBtn" disabled title="Undo Last Rewrite">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><path d="M3 7v6h6M21 17a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 13m18-1a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 11" stroke-linecap="round" stroke-linejoin="round"/></svg>Undo
@@ -292,17 +321,36 @@
             </button>
           </div>
 
-          <!-- Quality Metric Indicator Module -->
-          <div id="qualityIndicator" style="display: none; margin-top: var(--s4); padding: var(--s3); background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-md); animation: aiPanelIn .22s var(--ease);">
-            <div style="font-size: var(--step-xs); font-weight: 600; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; letter-spacing: 0.05em;">Rewrite Quality Scores</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--s3); text-align: center;">
-              <div><div style="font-weight:700; font-size: 1.1rem; color: var(--ok);" id="scoreClarity">--</div><div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Clarity</div></div>
-              <div><div style="font-weight:700; font-size: 1.1rem; color: var(--info);" id="scoreReadability">--</div><div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Readability</div></div>
-              <div><div style="font-weight:700; font-size: 1.1rem; color: var(--gold-strong);" id="scoreOriginality">--</div><div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Originality</div></div>
+          <!-- Advanced Writing Analytics & Quality Module -->
+          <div id="qualityIndicator" style="display: none; margin-top: var(--s4); padding: var(--s4); background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-md); animation: aiPanelIn .22s var(--ease);">
+            <div style="font-size: var(--step-xs); font-weight: 600; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; letter-spacing: 0.05em; display: flex; align-items: center; justify-content: space-between;">
+              <span>Writing Analytics</span>
+              <span id="detectedTypeAlt" style="font-size: 10px; text-transform: none; font-weight: 500; color: var(--info);"></span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s4); text-align: center; margin-bottom: 12px;">
+              <div><div style="font-weight:700; font-size: 1.25rem; color: var(--ok);" id="scoreClarity">--</div><div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Clarity Score</div></div>
+              <div><div style="font-weight:700; font-size: 1.25rem; color: var(--info);" id="scoreReadability">--</div><div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Readability Score</div></div>
+              <div><div style="font-weight:700; font-size: 1.25rem; color: var(--gold-strong);" id="scoreGrammar">--</div><div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Grammar Score</div></div>
+              <div><div style="font-weight:700; font-size: 1.25rem; color: var(--violet);" id="scoreVocab">--</div><div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Vocabulary Richness</div></div>
+            </div>
+            <div style="border-top: 1px solid var(--border-soft); padding-top: 12px; text-align: left; display: flex; justify-content: space-between; font-size: var(--step-xs); color: var(--ink-2);">
+              <span>Average Sentence Length: <strong id="statSentenceLen" class="tnum" style="color: var(--ink);">0 words</strong></span>
+              <span id="lenVerdict" style="font-weight: 600;">Good</span>
             </div>
           </div>
 
-          <!-- Improve Further follow-up button -->
+          <!-- Smart Writing Assistant suggestions box -->
+          <div id="smartFeedback" style="display: none; margin-top: var(--s4); padding: var(--s4); background: var(--warn-dim); border: 1px solid oklch(.7 .15 65 / .2); border-radius: var(--r-md); animation: aiPanelIn .22s var(--ease);">
+            <div style="font-size: var(--step-xs); font-weight: 600; text-transform: uppercase; color: var(--warn); margin-bottom: 8px; letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Smart Writing Assistant
+            </div>
+            <div id="feedbackList" style="font-size: var(--step-sm); color: var(--ink-2); display: flex; flex-direction: column; gap: 8px; line-height: 1.5;">
+              <!-- Dynamic suggestions injected via JS -->
+            </div>
+          </div>
+
+          <!-- Improve further follow-up action button -->
           <button class="sm2-btn sm2-btn-ghost btn-lg" id="improveFurtherBtn" disabled style="width: 100%; justify-content: center; margin-top: var(--s4)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;margin-right:6px"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.2 8H16" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Improve Output Further
@@ -388,4 +436,4 @@
 function sm2Theme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);try{localStorage.setItem('sm_theme',n);}catch(e){}if(window.SM&&SM.toast){SM.toast(n==='dark'?'🌙 Dark mode on':'☀️ Light mode on','info');} }
 </script>
 </body>
-      </html>
+  </html>
