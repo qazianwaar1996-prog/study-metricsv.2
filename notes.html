@@ -83,7 +83,7 @@ body.sm2-shell .notes-app{height:calc(100vh - 126px)}
 body.sm2-shell main#main-content{padding:0}
 </style>
 </head>
-<body>
+<body class="sm2">
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <header class="site-head">
@@ -180,6 +180,12 @@ body.sm2-shell main#main-content{padding:0}
              style="min-height:300px;outline:none"
              data-placeholder="Start writing your note…"></div>
       </div>
+      <div class="notes-body">
+        <div id="noteBody" class="notes-textarea" contenteditable="true"
+             role="textbox" aria-multiline="true" aria-label="Note content"
+             style="min-height:300px;outline:none"
+             data-placeholder="Start writing your note…"></div>
+      </div>
       <div class="notes-footer">
         <span id="notesWordCount">0 words</span>
         <span id="notesCharCount">0 characters</span>
@@ -206,14 +212,12 @@ body.sm2-shell main#main-content{padding:0}
         <a href="gpa.html">GPA Calculator</a>
         <a href="semester-gpa.html">Semester GPA</a>
         <a href="cgpa.html">CGPA Calculator</a>
-        <a href="gpa-improvement-planner.html">GPA Planner</a>
       </div>
       <div class="foot-col">
         <h4>Grade Tools</h4>
         <a href="grade-calculator.html">Grade Calculator</a>
         <a href="final-exam-calculator.html">Final Exam</a>
         <a href="required-marks.html">Required Marks</a>
-        <a href="grade-predictor.html">Grade Predictor</a>
         <a href="attendance-calculator.html">Attendance</a>
       </div>
       <div class="foot-col">
@@ -227,15 +231,12 @@ body.sm2-shell main#main-content{padding:0}
       <div class="foot-col">
         <h4>Resources</h4>
         <a href="study-guides.html">Study Guides</a>
-        <a href="gpa-help-center.html">GPA Help Center</a>
         <a href="grading-guide.html">Grading Guide</a>
         <a href="dashboard.html">Dashboard</a>
         <a href="about.html">About</a>
       </div>
     </div>
-    <div class="foot-bottom">
-      <span>&copy; 2026 Study Metrics. All rights reserved.</span>
-    </div>
+    <div class="foot-bottom"><span>&copy; 2026 Study Metrics. All rights reserved.</span></div>
   </div>
 </footer>
 
@@ -248,6 +249,8 @@ body.sm2-shell main#main-content{padding:0}
 <script defer src="js/consent.js"></script>
 
 <script>
+function sm2Theme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);try{localStorage.setItem('sm_theme',n);}catch(e){}if(window.SM&&SM.toast){SM.toast(n==='dark'?'🌙 Dark mode on':'☀️ Light mode on','info');}}
+
 /* ── Notes App Logic ── */
 window.SM2Notes = (function(){
   'use strict';
@@ -377,8 +380,7 @@ window.SM2Notes = (function(){
     var body = document.getElementById('noteBody');
     if(!n||!body) return;
     var w = window.open('','_blank','width=700,height=600');
-    w.document.write('<html><head><title>'+((n.title||'Note')).replace(/</g,'&lt;')+'</title></head><body style="font-family:Georgia,serif;max-width:700px;margin:40px auto;line-height:1.7;color:#111"><h1 style="font-size:22px;border-bottom:1px solid #ddd;padding-bottom:10px">'+((n.title||'Untitled')).replace(/</g,'&lt;')+'</h1>'+body.innerHTML+'<script src="js/pwa.js" defer></script>
-</body></html>');
+    w.document.write('<html><head><title>'+((n.title||'Note')).replace(/</g,'&lt;')+'</title></head><body style="font-family:Georgia,serif;max-width:700px;margin:40px auto;line-height:1.7;color:#111"><h1 style="font-size:22px;border-bottom:1px solid #ddd;padding-bottom:10px">'+((n.title||'Untitled')).replace(/</g,'&lt;')+'</h1>'+body.innerHTML+'<script src="js/pwa.js" defer><\/script>\n</body></html>');
     w.document.close(); w.print();
   }
 
@@ -437,4 +439,4 @@ window.NotesFmt = {
 <script defer src="js/email-capture.js"></script>
 <script src="js/pwa.js" defer></script>
 </body>
-</html>
+</html> 
