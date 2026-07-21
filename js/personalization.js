@@ -57,7 +57,10 @@
       });
     }
     function _saved() {
-      return store.get(K.THEME, null);
+      /* Theme is stored as a RAW string ('dark'/'light') to stay consistent with
+         the inline boot script and the v2 sm2Theme() helper. Using SM.store here
+         would JSON-encode the value and break cross-page theme persistence. */
+      try { return localStorage.getItem(K.THEME) || null; } catch (e) { return null; }
     }
     function _system() {
       return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -68,7 +71,7 @@
     }
     function toggle() {
       var next = current() === 'dark' ? 'light' : 'dark';
-      store.set(K.THEME, next);
+      try { localStorage.setItem(K.THEME, next); } catch (e) {}
       _apply(next);
       SM.toast(next === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on', 'info');
     }

@@ -64,11 +64,28 @@
     btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13M8 12l4 4 4-4"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/></svg>';
     btn.addEventListener('click', triggerInstall);
 
+    var INSTALL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13M8 12l4 4 4-4"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/></svg>';
+
     /* Wait for shell to inject sm2-top-tools */
     function tryInjectDesktop() {
       var topTools = document.querySelector('.sm2-top-tools');
       if (topTools) {
         topTools.insertBefore(btn, topTools.firstChild);
+        return true;
+      }
+      /* Legacy pages (.site-head) have no .sm2-top-tools — inject into .nav-cta so
+         the install action is available on every page, desktop and mobile. */
+      var navCta = document.querySelector('.site-head .nav-cta');
+      if (navCta) {
+        var lbtn = document.createElement('button');
+        lbtn.className = 'btn btn-ghost sm-install-btn';
+        lbtn.setAttribute('aria-label', 'Install Study Metrics app');
+        lbtn.setAttribute('title', 'Install App');
+        lbtn.style.cssText = 'display:inline-flex;align-items:center;gap:6px;padding:8px 12px;min-width:0';
+        lbtn.innerHTML = INSTALL_ICON + '<span>Install</span>';
+        lbtn.addEventListener('click', triggerInstall);
+        var toggle = navCta.querySelector('#menuToggle, .menu-toggle');
+        if (toggle) { navCta.insertBefore(lbtn, toggle); } else { navCta.appendChild(lbtn); }
         return true;
       }
       return false;
@@ -79,6 +96,8 @@
         if (tryInjectDesktop()) obs.disconnect();
       });
       obs.observe(document.body, { childList: true, subtree: true });
+      /* Never leave the observer running indefinitely if no target ever appears. */
+      setTimeout(function () { obs.disconnect(); }, 10000);
     }
 
     /* --- Mobile bottom-nav: Add install item --- */
@@ -101,6 +120,7 @@
         if (tryInjectMobile()) obs2.disconnect();
       });
       obs2.observe(document.body, { childList: true, subtree: true });
+      setTimeout(function () { obs2.disconnect(); }, 10000);
     }
   }
 
