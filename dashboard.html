@@ -47,8 +47,8 @@
       <a href="dashboard.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="10" rx="2"/><rect x="3" y="16" width="8" height="5" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="11" width="7" height="10" rx="2"/></svg> Dashboard</a>
       <a href="ai.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M4.9 7l2.1 1.2M17 15.8 19.1 17M4.9 17 7 15.8M17 8.2 19.1 7"/><circle cx="12" cy="12" r="3.4"/></svg> AI Tutor <span class="sm2-badge">NEW</span></a>
       <a href="study-schedule.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M3.5 9h17M8 3v3M16 3v3M8 13h4M8 16.5h6"/></svg> Study Planner</a>
-      <a href="academic-resources.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h9l5 5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M14 3.5V9h5M8 13h8M8 16.5h5"/></svg> Notes</a>
-      <a href="grade-predictor.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="12" rx="2.5"/><path d="M7 3.5h11a2.5 2.5 0 0 1 2.5 2.5v9"/></svg> Flashcards</a>
+      <a href="notes.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h9l5 5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M14 3.5V9h5M8 13h8M8 16.5h5"/></svg> Notes</a>
+      <a href="flashcards.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="12" rx="2.5"/><path d="M7 3.5h11a2.5 2.5 0 0 1 2.5 2.5v9"/></svg> Flashcards</a>
       <a href="grading-guide.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg> Countries &amp; Grades</a>
       <a href="study-guides.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2 2 0 0 1 6 3.5h13v14H6a2 2 0 0 0-2 2V5.5Z"/><path d="M4 19.5a2 2 0 0 1 2-2h13v3H6a2 2 0 0 1-2-1Z"/></svg> Resources</a>
       <a href="gpa-improvement-planner.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg> Goals</a>
@@ -97,25 +97,25 @@
 
       <!-- METRIC ROW -->
       <div class="sm2-grid sm2-g4">
-        <div class="sm2-card sm2-metric sm2-rev d1">
+        <div class="sm2-card sm2-metric sm2-rev d1" id="db-metric-1" data-metric="semester-gpa">
           <div class="top"><span>Semester GPA</span><span class="mi ico-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 14.5h.01M12 14.5h.01M16 14.5v3M8 17.5h4"/></svg></span></div>
           <div class="mv">3.75</div><div class="ms">Excellent standing</div>
           <div class="md" style="color:var(--ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg> 0.15 vs last term</div>
           <div class="sm2-progress"><i style="width:93%"></i></div>
         </div>
-        <div class="sm2-card sm2-metric sm2-rev d2">
+        <div class="sm2-card sm2-metric sm2-rev d2" id="db-metric-2" data-metric="cgpa">
           <div class="top"><span>Overall CGPA</span><span class="mi ico-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="10" rx="2"/><rect x="3" y="16" width="8" height="5" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="11" width="7" height="10" rx="2"/></svg></span></div>
           <div class="mv">3.62</div><div class="ms">Very good · 6 semesters</div>
           <div class="md" style="color:var(--ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg> 0.12 this year</div>
           <div class="sm2-progress"><i style="width:90%"></i></div>
         </div>
-        <div class="sm2-card sm2-metric sm2-rev d3">
+        <div class="sm2-card sm2-metric sm2-rev d3" id="db-metric-3" data-metric="target-gpa">
           <div class="top"><span>Target GPA</span><span class="mi ico-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></span></div>
           <div class="mv">3.80</div><div class="ms">On track to reach goal</div>
           <div class="md" style="color:var(--ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg> 0.20 to go</div>
           <div class="sm2-progress"><i style="width:76%"></i></div>
         </div>
-        <div class="sm2-card sm2-metric sm2-rev d4">
+        <div class="sm2-card sm2-metric sm2-rev d4" id="db-metric-4" data-metric="study-hours">
           <div class="top"><span>Study Hours</span><span class="mi ico-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg></span></div>
           <div class="mv">42<span style="font-size:18px;color:var(--ink-3)">h</span></div><div class="ms">This week · goal 45h</div>
           <div class="md" style="color:var(--ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg> 8h vs last week</div>
@@ -172,7 +172,7 @@
           <div class="sm2-cal-head"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
           <div class="sm2-cal"><div class="cd mut"></div><div class="cd mut"></div><div class="cd mut"></div><div class="cd">1</div><div class="cd">2</div><div class="cd">3</div><div class="cd">4</div><div class="cd">5</div><div class="cd">6</div><div class="cd">7</div><div class="cd">8</div><div class="cd">9</div><div class="cd">10</div><div class="cd">11</div><div class="cd">12</div><div class="cd">13</div><div class="cd">14</div><div class="cd hd">15</div><div class="cd">16</div><div class="cd">17</div><div class="cd">18</div><div class="cd">19</div><div class="cd">20</div><div class="cd hd">21</div><div class="cd">22</div><div class="cd">23</div><div class="cd hd">24</div><div class="cd">25</div><div class="cd">26</div><div class="cd">27</div><div class="cd hd">28</div><div class="cd">29</div><div class="cd">30</div><div class="cd">31</div></div>
         </section>
-        <section class="sm2-card sm2-panel sm2-rev d2">
+        <section class="sm2-card sm2-panel sm2-rev d2" id="db-deadlines">
           <div class="sm2-panel-head"><h3>Deadlines &amp; Assignments</h3></div>
           <div class="sm2-list">
             <div class="sm2-list-row"><span class="sm2-list-ico ico-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h9l5 5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M14 3.5V9h5M8 13h8M8 16.5h5"/></svg></span><div class="sm2-list-body"><div class="t">Calculus Problem Set 6</div><div class="s">Mathematics · Due tomorrow</div></div><span class="sm2-tag tag-red">1 day</span></div>
@@ -237,7 +237,7 @@
             <a href="attendance-calculator.html"><span class="sm2-rec-ico ico-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 14.6 9l6 .8-4.4 4.2 1.1 6L12 17.2 6.7 20l1.1-6L3.4 9.8 9.4 9 12 3.5Z"/></svg></span><span class="nm">Attendance Tracker</span><span class="tm">Saved</span></a>
           </div>
         </section>
-        <section class="sm2-card sm2-panel sm2-rev d2">
+        <section class="sm2-card sm2-panel sm2-rev d2" id="db-ai-suggestions">
           <div class="sm2-panel-head"><h3>AI Suggestions</h3><span class="sm2-pill-badge">BETA</span></div>
           <div class="sm2-sug"><span class="si"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:14px;height:14px;display:inline;color:var(--gold-strong)"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/></svg>2</span><div class="st"><b>Boost your CGPA:</b> Score 3.9+ next term to hit your 3.80 goal a semester early.</div></div>
           <div class="sm2-sug"><span class="si"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:14px;height:14px;display:inline;color:var(--gold-strong)"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/></svg>2</span><div class="st"><b>Deadline alert:</b> Your Calculus set is due tomorrow — block 2 focused hours today.</div></div>
@@ -269,6 +269,7 @@ document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){
 <script defer src="js/personalization.js"></script>
 <script defer src="js/premium.js"></script>
 <script defer src="js/content-platform.js"></script>
+<script defer src="js/sm-v2-features.js"></script>
 <script defer src="js/analytics.js"></script>
 <script defer src="js/consent.js"></script>
 </body>
