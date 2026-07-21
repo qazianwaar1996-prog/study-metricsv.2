@@ -15,7 +15,19 @@
     var v = $("#verdict");
     var vt = $("#verdictText");
     if (!attendedInput || !heldInput || !reqInput) return;
-    var saved = store.get(KEY, null);
+
+    /* Shareable link: auto-fill from URL query params (?a=...&h=...&r=...) */
+    var sharedFromLink = false;
+    if (window.SMShare) {
+      var qp = SMShare.params();
+      if (qp.has("a") || qp.has("h") || qp.has("r")) {
+        if (qp.get("a") !== null) attendedInput.value = qp.get("a");
+        if (qp.get("h") !== null) heldInput.value = qp.get("h");
+        if (qp.get("r") !== null) reqInput.value = qp.get("r");
+        sharedFromLink = true;
+      }
+    }
+    var saved = sharedFromLink ? null : store.get(KEY, null);
     if (saved) {
       attendedInput.value = saved.a;
       heldInput.value = saved.h;
@@ -95,6 +107,23 @@
         SM.copy(text);
       });
     }
+    var copyLinkBtn = $("#attCopyLink");
+    if (copyLinkBtn && window.SMShare) {
+      copyLinkBtn.addEventListener("click", function () {
+        SMShare.copyLink({
+          a: attendedInput.value,
+          h: heldInput.value,
+          r: reqInput.value
+        });
+      });
+    }
     calc();
+
+    if (sharedFromLink && window.SMShare) {
+      SMShare.showBanner({
+        message: "Shared attendance result — <b>" + pctEl.textContent + "</b> attendance.",
+        host: document.querySelector(".tool-layout")
+      });
+    }
   });
 })();

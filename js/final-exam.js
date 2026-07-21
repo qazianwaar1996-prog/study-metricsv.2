@@ -93,7 +93,18 @@
     }
   }
   document.addEventListener("DOMContentLoaded", function () {
-    var saved = store.get(KEY, null);
+    /* Shareable link: auto-fill from URL query params (?cur=...&goal=...&weight=...) */
+    var sharedFromLink = false;
+    if (window.SMShare) {
+      var qp = SMShare.params();
+      if (qp.has("cur") || qp.has("goal") || qp.has("weight")) {
+        var sce = $("#feCurrentGrade"); if (sce && qp.get("cur") !== null) sce.value = qp.get("cur");
+        var sge = $("#feTargetGrade");  if (sge && qp.get("goal") !== null) sge.value = qp.get("goal");
+        var swe = $("#feWeight");       if (swe && qp.get("weight") !== null) swe.value = qp.get("weight");
+        sharedFromLink = true;
+      }
+    }
+    var saved = sharedFromLink ? null : store.get(KEY, null);
     if (saved) {
       var ce = $("#feCurrentGrade"); if (ce) ce.value = saved.cur || "";
       var ge = $("#feTargetGrade");  if (ge) ge.value = saved.goal || "";
@@ -122,6 +133,25 @@
         SM.copy("I need " + val + " on my final exam to hit my grade goal — calculated on Study Metrics (studymetrics.app)");
       };
     }
+    var copyLinkBtn = $("#feCopyLink");
+    if (copyLinkBtn && window.SMShare) {
+      copyLinkBtn.onclick = function () {
+        var curEl = $("#feCurrentGrade"), goalEl = $("#feTargetGrade"), weightEl = $("#feWeight");
+        SMShare.copyLink({
+          cur: curEl ? curEl.value : "",
+          goal: goalEl ? goalEl.value : "",
+          weight: weightEl ? weightEl.value : ""
+        });
+      };
+    }
     compute();
+
+    if (sharedFromLink && window.SMShare) {
+      var needVal = $("#feNeedOut") ? $("#feNeedOut").textContent : "—";
+      SMShare.showBanner({
+        message: "Shared final exam scenario — score needed on the final: <b>" + needVal + "</b>.",
+        host: document.querySelector(".tool-layout")
+      });
+    }
   });
 })();

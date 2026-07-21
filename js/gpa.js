@@ -35,6 +35,28 @@
       { id: uid(), name: "Course 2", grade: "B", credits: 3 }
     ];
   }
+
+  /* Shareable link: auto-fill rows/scale from URL query params (?rows=...&scale=...) */
+  var sharedFromLink = false;
+  (function () {
+    if (!window.SMShare) return;
+    var rowsParam = SMShare.params().get("rows");
+    if (!rowsParam) return;
+    try {
+      var parsed = JSON.parse(rowsParam);
+      if (Array.isArray(parsed) && parsed.length) {
+        rows = parsed.slice(0, 60).map(function (r) {
+          return { id: uid(), name: String((r && r[0]) || ""), grade: r ? r[1] : "A", credits: r ? r[2] : 0 };
+        });
+        var sharedScale = SMShare.params().get("scale");
+        if (sharedScale && ["letter", "percent", "points"].indexOf(sharedScale) !== -1) {
+          scale = sharedScale;
+          localStorage.setItem(SKEY, scale);
+        }
+        sharedFromLink = true;
+      }
+    } catch (e) {}
+  })();
   function gradeCell(r) {
     if (scale === "letter") {
       var opts = LETTERS.map(function(l){
@@ -172,8 +194,24 @@
         SM.copy("My GPA is " + g + "! Calculated on Study Metrics.");
       };
     }
+    var copyLink = $("#copyLinkBtn");
+    if (copyLink && window.SMShare) {
+      copyLink.onclick = function () {
+        var compact = rows.map(function (r) { return [r.name, r.grade, r.credits]; });
+        SMShare.copyLink({ scale: scale, rows: JSON.stringify(compact) });
+      };
+    }
     render();
     setScaleNote();
+
+    if (sharedFromLink && window.SMShare) {
+      save();
+      var gpaVal = $("#gpaOut") ? $("#gpaOut").textContent : "0.00";
+      SMShare.showBanner({
+        message: "You're viewing a shared GPA result of <b>" + gpaVal + "</b>. Edit any course below to make it your own.",
+        host: document.querySelector(".tool-layout")
+      });
+    }
   });
 })();
 (function patchGpaRing() {

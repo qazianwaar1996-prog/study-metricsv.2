@@ -17,6 +17,23 @@
       { id: uid(), name: "Semester 2", gpa: 3.60, credits: 15 }
     ];
   }
+
+  /* Shareable link: auto-fill semesters from URL query params (?rows=...) */
+  var sharedFromLink = false;
+  (function () {
+    if (!window.SMShare) return;
+    var rowsParam = SMShare.params().get("rows");
+    if (!rowsParam) return;
+    try {
+      var parsed = JSON.parse(rowsParam);
+      if (Array.isArray(parsed) && parsed.length) {
+        rows = parsed.slice(0, 60).map(function (r) {
+          return { id: uid(), name: String((r && r[0]) || ""), gpa: r ? r[1] : 0, credits: r ? r[2] : 0 };
+        });
+        sharedFromLink = true;
+      }
+    } catch (e) {}
+  })();
   function render() {
     var container = $("#rows");
     if (!container) return;
@@ -121,6 +138,22 @@
         SM.copy("My Cumulative GPA is " + result + ". Calculated on Study Metrics!");
       };
     }
+    var copyLinkBtn = $("#copyLinkBtn");
+    if (copyLinkBtn && window.SMShare) {
+      copyLinkBtn.onclick = function () {
+        var compact = rows.map(function (r) { return [r.name, r.gpa, r.credits]; });
+        SMShare.copyLink({ rows: JSON.stringify(compact) });
+      };
+    }
     render();
+
+    if (sharedFromLink && window.SMShare) {
+      save();
+      var cgpaVal = $("#cgpaOut") ? $("#cgpaOut").textContent : "0.00";
+      SMShare.showBanner({
+        message: "You're viewing a shared CGPA result of <b>" + cgpaVal + "</b>. Edit any semester below to make it your own.",
+        host: document.querySelector(".tool-layout")
+      });
+    }
   });
 })();
