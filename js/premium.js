@@ -165,6 +165,12 @@
       btt.addEventListener('click', function () {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
+      btt.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
     }
     if (toggle && navLinks) {
       toggle.addEventListener('click', function (e) {

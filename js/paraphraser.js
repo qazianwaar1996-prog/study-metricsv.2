@@ -53,8 +53,6 @@ window.SM2Paraphraser = (function () {
   function notify(msg, type) {
     if (window.SM && typeof window.SM.toast === 'function') {
       window.SM.toast(msg, type || 'info');
-    } else {
-      console.log(`[StudyMetrics AI Studio] ${type || 'info'}: ${msg}`);
     }
   }
 
