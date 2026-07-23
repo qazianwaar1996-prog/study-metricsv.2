@@ -1,12 +1,25 @@
 /* ============================================================
-   StudyMetrics PWA — Registration + Install Button  v2.1
+   StudyMetrics PWA — Registration + Install Button  v2.2
    • Registers sw.js
    • Captures beforeinstallprompt → shows "Install App" button
-   • Injects Install button into sm2-top-tools and mobile nav
+     ONLY when: prompt is available, not in standalone mode,
+     and installation hasn't already happened
+   • Hides install button after installation or prompt dismissal
+   • Never shows in standalone (PWA) mode
    • Offline banner on network change
    ============================================================ */
 (function () {
   'use strict';
+
+  /* ── Standalone / already-installed guard ── */
+  function isStandalone() {
+    return (
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.matchMedia('(display-mode: fullscreen)').matches ||
+      window.matchMedia('(display-mode: minimal-ui)').matches ||
+      navigator.standalone === true /* iOS Safari */
+    );
+  }
 
   /* ── Service Worker registration ── */
   if ('serviceWorker' in navigator) {
@@ -15,18 +28,48 @@
         .then(function (reg) {
           /* Check for updates once per hour */
           setInterval(function () { reg.update(); }, 60 * 60 * 1000);
+
+          /* When a new SW is waiting, reload once it activates to avoid
+             serving a mix of old HTML + new cached assets (blank page cause). */
+          reg.addEventListener('updatefound', function () {
+            var newWorker = reg.installing;
+            if (!newWorker) return;
+            newWorker.addEventListener('statechange', function () {
+              if (newWorker.state === 'activated' &&
+                  navigator.serviceWorker.controller) {
+                /* New SW is active and we had a previous controller —
+                   silently reload to get the fresh page + assets in sync. */
+                window.location.reload();
+              }
+            });
+          });
         })
         .catch(function (err) {
           console.warn('[PWA] SW registration failed:', err);
         });
+
+      /* Detect when the SW controlling this page changes (e.g. clients.claim)
+         and reload to prevent stale asset / fresh HTML mismatch. */
+      var firstController = navigator.serviceWorker.controller;
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        /* Only reload if there was already a controller (not first install). */
+        if (firstController) {
+          window.location.reload();
+        }
+      });
     });
   }
 
   /* ── Install Prompt ── */
   var deferredPrompt = null;
 
+  /* If already running as installed PWA, never touch the install button. */
+  if (isStandalone()) return;
+
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
+    /* Double-check: if user installed mid-session and we somehow still fire */
+    if (isStandalone()) return;
     deferredPrompt = e;
     injectInstallButton();
   });
@@ -41,40 +84,41 @@
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(function (choice) {
-      if (choice.outcome === 'accepted') {
-        deferredPrompt = null;
-        removeInstallButton();
-      }
+      deferredPrompt = null;
+      /* Remove the button regardless of outcome — the prompt can only be
+         used once; showing a dead button after dismiss is confusing. */
+      removeInstallButton();
     });
   }
 
   function removeInstallButton() {
-    document.querySelectorAll('.sm-install-btn').forEach(function (el) { el.remove(); });
+    document.querySelectorAll('.sm-install-btn').forEach(function (el) {
+      el.remove();
+    });
   }
 
   function injectInstallButton() {
     /* Avoid duplicates */
     if (document.querySelector('.sm-install-btn')) return;
-
-    /* --- Desktop: inject into sm2-top-tools --- */
-    var btn = document.createElement('button');
-    btn.className = 'sm2-icon-btn sm-install-btn';
-    btn.setAttribute('aria-label', 'Install Study Metrics app');
-    btn.setAttribute('title', 'Install App');
-    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13M8 12l4 4 4-4"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/></svg>';
-    btn.addEventListener('click', triggerInstall);
+    /* Final standalone check before injecting */
+    if (isStandalone()) return;
 
     var INSTALL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13M8 12l4 4 4-4"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/></svg>';
 
-    /* Wait for shell to inject sm2-top-tools */
+    /* --- Desktop: inject into sm2-top-tools or legacy nav-cta --- */
     function tryInjectDesktop() {
       var topTools = document.querySelector('.sm2-top-tools');
       if (topTools) {
+        var btn = document.createElement('button');
+        btn.className = 'sm2-icon-btn sm-install-btn';
+        btn.setAttribute('aria-label', 'Install Study Metrics app');
+        btn.setAttribute('title', 'Install App');
+        btn.innerHTML = INSTALL_ICON;
+        btn.addEventListener('click', triggerInstall);
         topTools.insertBefore(btn, topTools.firstChild);
         return true;
       }
-      /* Legacy pages (.site-head) have no .sm2-top-tools — inject into .nav-cta so
-         the install action is available on every page, desktop and mobile. */
+      /* Legacy pages (.site-head) */
       var navCta = document.querySelector('.site-head .nav-cta');
       if (navCta) {
         var lbtn = document.createElement('button');
@@ -96,18 +140,18 @@
         if (tryInjectDesktop()) obs.disconnect();
       });
       obs.observe(document.body, { childList: true, subtree: true });
-      /* Never leave the observer running indefinitely if no target ever appears. */
       setTimeout(function () { obs.disconnect(); }, 10000);
     }
 
-    /* --- Mobile bottom-nav: Add install item --- */
+    /* --- Mobile bottom-nav: inject ONLY if nav exists and we're not standalone --- */
     function tryInjectMobile() {
+      if (isStandalone()) return true; /* abort silently */
       var bottomnav = document.querySelector('.sm2-bottomnav');
       if (bottomnav && !bottomnav.querySelector('.sm-install-btn')) {
         var mBtn = document.createElement('button');
         mBtn.className = 'sm-install-btn';
         mBtn.setAttribute('aria-label', 'Install App');
-        mBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13M8 12l4 4 4-4"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/></svg><span>Install</span>';
+        mBtn.innerHTML = INSTALL_ICON + '<span>Install</span>';
         mBtn.addEventListener('click', triggerInstall);
         bottomnav.appendChild(mBtn);
         return true;
