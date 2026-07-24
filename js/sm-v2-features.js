@@ -14,6 +14,17 @@
 (function () {
   'use strict';
 
+  /* Guard: script.js must have run first to provide window.SM */
+  if (typeof window.SM === 'undefined') {
+    /* SM not ready yet — retry once after a short delay rather than failing silently */
+    setTimeout(function () {
+      if (typeof window.SM !== 'undefined') {
+        try { init(); } catch (e) { /* graceful */ }
+      }
+    }, 200);
+    return;
+  }
+
   /* ──────────────────────────────────────────────────────────────────────
      TOOL INDEX (used for search)
   ────────────────────────────────────────────────────────────────────── */

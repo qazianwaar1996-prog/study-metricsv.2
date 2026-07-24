@@ -80,6 +80,17 @@
     if (window.SM && SM.toast) SM.toast('Study Metrics installed! 🎉', 'success');
   });
 
+  /* Remove button immediately if the display-mode switches to standalone
+     (happens when user completes install while the page is still open) */
+  if (window.matchMedia) {
+    ['standalone', 'fullscreen', 'minimal-ui'].forEach(function (mode) {
+      var mq = window.matchMedia('(display-mode: ' + mode + ')');
+      var handler = function (e) { if (e.matches) { deferredPrompt = null; removeInstallButton(); } };
+      if (mq.addEventListener) { mq.addEventListener('change', handler); }
+      else if (mq.addListener) { mq.addListener(handler); } /* Safari <14 */
+    });
+  }
+
   function triggerInstall() {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
