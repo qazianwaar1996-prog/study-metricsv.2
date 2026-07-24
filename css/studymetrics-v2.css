@@ -354,7 +354,7 @@ body.sm2 #db-welcome{display:none}
 .sm2-metric .md{font-size:12px;font-weight:600;margin-top:8px;display:inline-flex;align-items:center;gap:4px}
 .sm2-progress{height:7px;border-radius:6px;background:var(--card-2);overflow:hidden;margin-top:12px}
 .sm2-progress i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--gold),var(--gold-strong))}
-@media(max-width:980px){.sm2-g4{grid-template-columns:1fr 1fr}.sm2-g3{grid-template-columns:1fr}.sm2-g2{grid-template-columns:1fr}}
+@media(max-width:980px){.sm2-g4{grid-template-columns:1fr 1fr}.sm2-g3{grid-template-columns:1fr}.sm2-g2{grid-template-columns:1fr}.sm2-trend-grid{grid-template-columns:1fr!important}}
 @media(max-width:640px){.sm2-g4{grid-template-columns:1fr}}
 
 /* calendar mini */
