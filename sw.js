@@ -18,8 +18,8 @@
    ============================================================ */
 'use strict';
 
-var CACHE_NAME  = 'sm-static-v2.2';
-var HTML_CACHE  = 'sm-pages-v2.2';
+var CACHE_NAME  = 'sm-static-v2.3';
+var HTML_CACHE  = 'sm-pages-v2.3';
 var OFFLINE_URL = '/index.html';
 
 /* ---- Files to pre-cache on install ---- */
@@ -56,6 +56,7 @@ var PRECACHE_HTML = [
   '/index.html',
   '/gpa.html',
   '/dashboard.html',
+  '/profile.html',
   '/pomodoro.html',
   '/404.html'
 ];

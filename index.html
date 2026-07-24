@@ -81,7 +81,7 @@
       <img src="images/avatar.svg" alt="Profile">
       <span class="nm">Profile</span>
       <button class="sm2-icon-btn sm-theme-toggle" onclick="sm2Theme()" aria-label="Toggle theme" title="Toggle theme"><svg class="sm-theme-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg></button>
-      <a href="dashboard.html" class="sm2-icon-btn" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.7l-.1-.1A2 2 0 1 1 6.9 3.6l.1.1a1.6 1.6 0 0 0 2.7-1.1V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-.3 1.8Z"/></svg></a>
+      <a href="profile.html" class="sm2-icon-btn" aria-label="Profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.7l-.1-.1A2 2 0 1 1 6.9 3.6l.1.1a1.6 1.6 0 0 0 2.7-1.1V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-.3 1.8Z"/></svg></a>
     </div>
   </aside>
 
@@ -243,7 +243,7 @@
           <h3>Premium Experience</h3>
           <p>Unlock advanced features, ad-free experience &amp; priority AI support.</p>
         </div>
-        <a href="dashboard.html" class="sm2-btn sm2-btn-gold">Go Premium <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        <button onclick="openPremium()" class="sm2-btn sm2-btn-gold">Go Premium <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
       </section>
     </main>
   </div>
@@ -255,11 +255,54 @@
   <a href="index.html#tools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg><span>Calculators</span></a>
   <a href="ai.html" class="ai"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M4.9 7l2.1 1.2M17 15.8 19.1 17M4.9 17 7 15.8M17 8.2 19.1 7"/><circle cx="12" cy="12" r="3.4"/></svg>W</span><span>AI</span></a>
   <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="10" rx="2"/><rect x="3" y="16" width="8" height="5" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="11" width="7" height="10" rx="2"/></svg><span>Dashboard</span></a>
-  <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg><span>Profile</span></a>
+  <a href="profile.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg><span>Profile</span></a>
 </nav>
 
 <script>
 function sm2Theme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);try{localStorage.setItem('sm_theme',n);}catch(e){}if(window.SM&&SM.toast){SM.toast(n==='dark'?'🌙 Dark mode on':'☀️ Light mode on','info');}}
+function openPremium(){
+  var existing=document.getElementById('sm2modalPremium');
+  if(existing){existing.remove();return;}
+  var html='<div style="padding:28px 28px 24px">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">'
+    +'<h2 style="margin:0;font-size:18px;font-weight:700;color:var(--ink)">⭐ Premium Experience</h2>'
+    +'<button onclick="document.getElementById(\'sm2modalPremium\').remove()" style="background:none;border:none;cursor:pointer;font-size:22px;color:var(--ink-3);line-height:1" aria-label="Close">×</button>'
+    +'</div>'
+    +'<p style="font-size:14px;color:var(--ink-2);margin:0 0 20px;line-height:1.6">Study Metrics is completely free. Premium features are coming soon — sign up below to be first in line when we launch.</p>'
+    +'<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">'
+    +'<div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2)"><span style="color:var(--gold-strong);font-size:16px">✓</span> Ad-free experience across all tools</div>'
+    +'<div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2)"><span style="color:var(--gold-strong);font-size:16px">✓</span> Priority AI Tutor responses</div>'
+    +'<div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2)"><span style="color:var(--gold-strong);font-size:16px">✓</span> Advanced analytics &amp; GPA forecasting</div>'
+    +'<div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2)"><span style="color:var(--gold-strong);font-size:16px">✓</span> Cloud sync across devices</div>'
+    +'<div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2)"><span style="color:var(--gold-strong);font-size:16px">✓</span> Export reports as PDF</div>'
+    +'</div>'
+    +'<div style="background:var(--card-2,#faf9f5);border:1px solid var(--border);border-radius:14px;padding:16px">'
+    +'<p style="font-size:12.5px;font-weight:600;color:var(--ink-3);margin:0 0 10px;text-transform:uppercase;letter-spacing:.04em">Get Early Access</p>'
+    +'<div style="display:flex;gap:8px">'
+    +'<input id="premiumEmail" type="email" placeholder="your@email.com" style="flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:10px;font-size:13.5px;background:var(--card);color:var(--ink);font-family:inherit">'
+    +'<button onclick="submitPremiumEmail()" style="padding:10px 16px;background:var(--gold);color:#1a1509;border:none;border-radius:10px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:inherit;white-space:nowrap">Notify Me</button>'
+    +'</div>'
+    +'</div>'
+    +'</div>';
+  var overlay=document.createElement('div');
+  overlay.id='sm2modalPremium';
+  overlay.style.cssText='position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:16px';
+  var box=document.createElement('div');
+  box.style.cssText='background:var(--panel,#fff);border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.24);border:1px solid var(--border);width:100%;max-width:460px;max-height:90vh;overflow-y:auto';
+  box.innerHTML=html;
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.remove();});
+  document.addEventListener('keydown',function onEsc(e){if(e.key==='Escape'){overlay.remove();document.removeEventListener('keydown',onEsc);}});
+  setTimeout(function(){var ei=document.getElementById('premiumEmail');if(ei)ei.focus();},100);
+}
+function submitPremiumEmail(){
+  var inp=document.getElementById('premiumEmail');
+  if(!inp||!inp.value.includes('@')){if(window.SM&&SM.toast)SM.toast('Please enter a valid email','error');return;}
+  if(window.SM&&SM.toast)SM.toast('You\'re on the list! We\'ll notify you at launch 🎉','success');
+  var overlay=document.getElementById('sm2modalPremium');
+  if(overlay)setTimeout(function(){overlay.remove();},1200);
+}
 document.body.classList.remove('premium');
 try{new MutationObserver(function(){if(document.body.classList.contains('premium'))document.body.classList.remove('premium');}).observe(document.body,{attributes:true,attributeFilter:['class']});}catch(e){}
 </script>
